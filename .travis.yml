@@ -1,4 +1,7 @@
 language: java
+sudo: true
 jdk:
  - oraclejdk15
-install: ant deps
+before_install: 
+ - cd api
+ - chmod +x mvnw
