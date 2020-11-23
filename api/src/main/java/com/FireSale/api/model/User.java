@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,4 +28,6 @@ public class User extends BaseEntity {
         fetch = FetchType.LAZY
     )
     private Address shippingAddress;
+    @OneToMany(mappedBy = "bid")
+    private Set<Bid> bids;
 }
