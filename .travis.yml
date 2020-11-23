@@ -1,7 +1,6 @@
 language: java
-sudo: true
+sudo: false
 jdk:
  - oraclejdk15
 before_install: 
  - cd api
- - chmod +x mvnw
