@@ -4,11 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-<<<<<<< HEAD
-import java.util.Date;
-=======
 import java.time.LocalDate;
->>>>>>> a577af561a27038679ffb00581c92eecf87dc99a
 import java.util.Set;
 
 @Getter
