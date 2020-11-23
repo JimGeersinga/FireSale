@@ -14,9 +14,7 @@ public class Review extends BaseEntity {
     private Integer rating;
     private String message;
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User receiver;
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User reviewer;
 }
