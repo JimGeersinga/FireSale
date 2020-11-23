@@ -40,4 +40,9 @@ public class User extends BaseEntity {
             mappedBy = "review"
     )
     private Set<Review> outgoingReviews;
+    @OneToOne(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY
+    )
+    private Role role;
 }
