@@ -14,10 +14,8 @@ import java.util.Set;
 @Entity
 public class Role extends BaseEntity {
     private String name;
-    @OneToMany(
-            cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY
-    )
+
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Claim> claims;
 
 }

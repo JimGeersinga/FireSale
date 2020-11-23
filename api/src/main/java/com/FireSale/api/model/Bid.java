@@ -10,9 +10,9 @@ import java.time.LocalDate;
 @Setter
 @Entity
 public class Bid extends BaseEntity {
-
     private double value;
     private LocalDate timeStamp;
+
     @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private User user;
 }

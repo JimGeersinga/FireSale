@@ -9,12 +9,14 @@ import javax.persistence.*;
 @Setter
 @Entity
 public class Review extends BaseEntity {
-
     @Column(length = 1)
     private Integer rating;
+
     private String message;
+
     @ManyToOne
     private User receiver;
+
     @ManyToOne
     private User reviewer;
 }

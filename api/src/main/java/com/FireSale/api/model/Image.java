@@ -10,5 +10,5 @@ import javax.persistence.Entity;
 @Entity
 public class Image extends BaseEntity {
     private String path;
-    private Integer order;
+    private Integer sort;
 }
