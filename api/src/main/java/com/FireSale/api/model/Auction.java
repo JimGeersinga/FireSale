@@ -16,7 +16,7 @@ public class Auction extends BaseEntity {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Double minimalBid;
-    private boolean isFeatured;
+    private Boolean isFeatured;
 
     @Enumerated(EnumType.STRING)
     private AuctionStatus status;
