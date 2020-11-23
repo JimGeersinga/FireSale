@@ -33,4 +33,9 @@ public class User extends BaseEntity {
         fetch = FetchType.LAZY
     )
     private Set<AccessToken> accessTokens;
+    @OneToOne(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY
+    )
+    private Role role;
 }
