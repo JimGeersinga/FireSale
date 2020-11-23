@@ -19,3 +19,4 @@ public class Review extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User reviewer;
+}
