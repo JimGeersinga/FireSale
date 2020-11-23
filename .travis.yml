@@ -1,7 +1,8 @@
 language: java
-sudo: true
+cache:
+  directories:
+    - $HOME/.m2
 jdk:
- - oraclejdk15
-before_install: 
- - cd api
- - chmod +x mvnw
+  - oraclejdk15
+before_install:
+  - cd api
