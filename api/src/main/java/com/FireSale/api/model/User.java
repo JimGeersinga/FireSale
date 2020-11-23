@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ public class User extends BaseEntity {
     private String nickname;
     private String firstName;
     private String lastName;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private Gender gender;
     @OneToOne(
         cascade = CascadeType.REMOVE,
@@ -27,4 +28,9 @@ public class User extends BaseEntity {
         fetch = FetchType.LAZY
     )
     private Address shippingAddress;
+    @OneToMany(
+        cascade = CascadeType.REMOVE,
+        fetch = FetchType.LAZY
+    )
+    private Set<AccessToken> accessTokens;
 }
