@@ -17,6 +17,7 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @OneToOne(
         cascade = CascadeType.REMOVE,
@@ -36,7 +37,7 @@ public class User extends BaseEntity {
     private Set<Review> incomingReviews;
     @OneToMany(
             cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY.EAGER,
+            fetch = FetchType.LAZY,
             mappedBy = "review"
     )
     private Set<Review> outgoingReviews;
