@@ -48,16 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     protected PasswordEncoder passwordEncoder() {
-        Integer x = 1;
-
-
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-
         //User Role
         UserDetails theUser = User.withUsername("user")
                 .passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder()::encode)
@@ -76,6 +72,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         return userDetailsManager;
     }
-
-
 }

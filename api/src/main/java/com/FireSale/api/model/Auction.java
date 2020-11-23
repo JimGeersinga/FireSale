@@ -17,6 +17,8 @@ public class Auction extends BaseEntity {
     private LocalDateTime endDate;
     private Double minimalBid;
     private boolean isFeatured;
+
+    @Enumerated(EnumType.STRING)
     private AuctionStatus status;
 
     @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -28,3 +30,4 @@ public class Auction extends BaseEntity {
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Image> images;
 }
+

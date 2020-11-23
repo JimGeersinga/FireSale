@@ -27,7 +27,7 @@ public class User extends BaseEntity {
     @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Address shippingAddress;
 
-    @OneToOne( cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Role role;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "receiver")
