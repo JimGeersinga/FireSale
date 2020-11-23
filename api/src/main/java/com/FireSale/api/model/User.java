@@ -50,4 +50,6 @@ public class User extends BaseEntity {
             fetch = FetchType.LAZY
     )
     private Role role;
+    @OneToMany(mappedBy = "bid")
+    private Set<Bid> bids;
 }
