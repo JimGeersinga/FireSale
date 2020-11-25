@@ -29,5 +29,11 @@ public class Auction extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Image> images;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Category> categories;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Tag> tags;
 }
 
