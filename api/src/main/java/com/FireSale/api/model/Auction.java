@@ -11,17 +11,29 @@ import java.util.Set;
 @Setter
 @Entity
 public class Auction extends BaseEntity {
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = true)
     private String description;
+
+    @Column(nullable = false)
     private LocalDateTime startDate;
+
+    @Column(nullable = false)
     private LocalDateTime endDate;
+
+    @Column(nullable = true)
     private Double minimalBid;
-    private Boolean isFeatured;
+
+    @Column(nullable = false)
+    private Boolean isFeatured = false;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AuctionStatus status;
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, optional = true)
     private Bid finalBid;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

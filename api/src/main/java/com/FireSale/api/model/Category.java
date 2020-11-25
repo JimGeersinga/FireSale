@@ -14,6 +14,7 @@ import java.util.Set;
 public class Category extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
+
     @ManyToMany
     private Set<Auction> auctions;
 }
