@@ -14,14 +14,18 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
 
     @Version
+    @Column(nullable = false)
     private Integer version;
 
     @CreationTimestamp
+    @Column(nullable = false)
     private LocalDateTime created;
 
     @UpdateTimestamp
+    @Column(nullable = true)
     private LocalDateTime modified;
 }
