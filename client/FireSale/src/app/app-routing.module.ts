@@ -4,13 +4,12 @@ import { RegisterComponent } from './register/register/register.component';
 import { SharedModule } from './shared/shared.module';
 
 const routes: Routes = [
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent}
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes),
-    SharedModule
   ],
   exports: [RouterModule]
 })

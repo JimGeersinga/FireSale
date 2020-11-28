@@ -13,6 +13,7 @@ import { UserDetailComponent } from './users/user-detail/user-detail.component';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { RegisterComponent } from './register/register/register.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { RegisterComponent } from './register/register/register.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
