@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,21 +28,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web)  {
         web.ignoring().antMatchers("/v3/api-docs",
                 "/swagger-ui.html",
-                "/swagger-ui/**");
+                "/swagger-ui/**",
+                "/auth/login");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/**").permitAll() // allow everyone
-                .and().csrf().disable(); // This is required
+        http
+            .csrf()
+                .disable()
+            .cors()
+            .and()
+                .authorizeRequests()
+                    .antMatchers("/users/**").authenticated()
+            .and()
+                .httpBasic()
+            .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Bean
-    protected AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
+    protected AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
         authProvider.setPasswordEncoder(passwordEncoder);
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(userService);
 
         return authProvider;
     }
@@ -49,27 +60,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        //User Role
-        UserDetails theUser = User.withUsername("user")
-                .passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder()::encode)
-                .password("user").roles("USER").build();
-
-        //Admin Role
-        UserDetails theAdmin = User.withUsername("admin")
-                .passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder()::encode)
-                .password("admin").roles("ADMIN").build();
-
-
-        InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-
-        userDetailsManager.createUser(theUser);
-        userDetailsManager.createUser(theAdmin);
-
-        return userDetailsManager;
     }
 }
