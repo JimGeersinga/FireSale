@@ -33,19 +33,19 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Gender gender;
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = false)
     private Address address;
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, optional = true)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = true)
     private Address shippingAddress;
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = false)
     private Role role;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "receiver")
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "receiver")
     private Set<Review> incomingReviews;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "reviewer")
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "reviewer")
     private Set<Review> outgoingReviews;
 
     @OneToMany(mappedBy = "user")
