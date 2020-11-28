@@ -14,6 +14,6 @@ public class Bid extends BaseEntity {
     @Column(nullable = false)
     private Double value;
 
-    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = false)
     private User user;
 }
