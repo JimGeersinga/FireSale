@@ -18,7 +18,7 @@ public abstract class BaseEntity {
     private Long id;
 
     @Version
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer version;
 
     @CreationTimestamp

@@ -13,7 +13,9 @@ public class Role extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Claim> claims;
+
+
 
 }

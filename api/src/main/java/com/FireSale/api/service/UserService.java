@@ -16,7 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+
+    public User findUserByEmail(final String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("No user exists for email: %s", email), User.class));
+    }
 
     public User findUserById(final long userId) {
         return userRepository.findById(userId)
