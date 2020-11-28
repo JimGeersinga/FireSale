@@ -12,6 +12,7 @@ import { UserListComponent } from './users/user-list/user-list.component';
 import { UserDetailComponent } from './users/user-detail/user-detail.component';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
+import { RegisterComponent } from './register/register/register.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +24,13 @@ import { FooterComponent } from './core/footer/footer.component';
     UserListComponent,
     UserDetailComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
