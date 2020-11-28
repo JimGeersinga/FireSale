@@ -1,1 +1,50 @@
-<mat-card>Simple card</mat-card>
+<section>
+    <mat-card class="login-card">
+        <h2>Registreren</h2>
+        <form>
+            <p>
+                <mat-form-field>
+                    <mat-label>E-mailadres</mat-label>
+                    <input matInput type="text" required formControlName="email">
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Wachtwoord</mat-label>
+                    <input matInput type="password" required formControlName="password" />
+                </mat-form-field>
+            </p>
+            <p>
+                  <mat-form-field>
+                    <mat-label>Geslacht</mat-label>
+                    <mat-select required>
+                      <mat-option value="option">Vrouw</mat-option>
+                      <mat-option value="option">Man</mat-option>
+                      <mat-option value="option">Anders</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Voornaam</mat-label>
+                    <input matInput type="text" required formControlName="firstname" />
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Achternaam</mat-label>
+                    <input matInput type="text" required formControlName="lastname" />
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Nickname</mat-label>
+                    <input matInput type="text" required formControlName="nickname" />
+                </mat-form-field>
+            </p>
+            <p>
+                <button mat-raised-button color="primary" type="submit">Registreer</button>
+            </p>
+        </form>
+    </mat-card>
+</section>
