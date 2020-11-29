@@ -15,14 +15,14 @@
                 </mat-form-field>
             </p>
             <p>
-                  <mat-form-field>
+                <mat-form-field>
                     <mat-label>Geslacht</mat-label>
                     <mat-select required>
-                      <mat-option value="option">Vrouw</mat-option>
-                      <mat-option value="option">Man</mat-option>
-                      <mat-option value="option">Anders</mat-option>
+                        <mat-option value="option">Vrouw</mat-option>
+                        <mat-option value="option">Man</mat-option>
+                        <mat-option value="option">Anders</mat-option>
                     </mat-select>
-                  </mat-form-field>
+                </mat-form-field>
             </p>
             <p>
                 <mat-form-field>
@@ -34,6 +34,36 @@
                 <mat-form-field>
                     <mat-label>Achternaam</mat-label>
                     <input matInput type="text" required formControlName="lastname" />
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Geboortedatum</mat-label>
+                    <input matInput type="date" required formControlName="dateofbirth" />
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Straatnaam</mat-label>
+                    <input matInput type="text" required formControlName="street" />
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Huisnummer</mat-label>
+                    <input matInput type="number" required formControlName="housenumber" />
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Postcode</mat-label>
+                    <input matInput type="text" required pattern="[0-9]{4}[a-zA-Z]{2}" formControlName="zipcode" />
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                    <mat-label>Plaats</mat-label>
+                    <input matInput type="text" required formControlName="city" />
                 </mat-form-field>
             </p>
             <p>
