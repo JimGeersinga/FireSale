@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
 import { RegisterDto } from '../../models/registerDto';
 
 @Component({
@@ -29,13 +31,18 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-  ){}
-  
+    private dialog: MatDialog
+  ) { }
+
   ngOnInit(): void {
   }
 
-  submitRegistration(data: RegisterDto) : void {
-    console.log(data);
+  submitRegistration(data: RegisterDto): void {
+    if (!this.registerForm.valid) {
+      this.dialog.open(OkDialogComponent, {data: {title: "Registratieformulier", message: "Registratieformulier is niet correct ingevuld"}});
+    }
+    else {
+      this.dialog.open(OkDialogComponent, {data: {title: "Registratieformulier", message: "Registratieformulier is verzonden"}});
+    }
   }
-
 }

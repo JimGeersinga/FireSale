@@ -9,7 +9,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatCardModule } from "@angular/material/card";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatDialogModule } from "@angular/material/dialog";
+import { MatDialog, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatGridListModule } from "@angular/material/grid-list";
@@ -32,9 +32,10 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatStepperModule } from "@angular/material/stepper";
+import { OkDialogComponent } from './components/ok-dialog/ok-dialog.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [OkDialogComponent],
   imports: [
     CommonModule,
     MatAutocompleteModule,
@@ -101,6 +102,10 @@ import { MatStepperModule } from "@angular/material/stepper";
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule,]
+    MatTooltipModule
+  ],
+  providers:[
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } }
+  ]
 })
 export class SharedModule { }
