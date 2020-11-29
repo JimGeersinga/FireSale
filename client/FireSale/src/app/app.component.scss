@@ -1,0 +1,29 @@
+.page-container {
+    width: 100vw;
+    height: calc(100vh - 64px);
+  }
+  
+  .content-wrapper {
+    display: flex;
+    height: calc(100vh - 64px);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidenav{
+      padding:20px;
+  }
+  
+ul{
+    list-style: none;
+    padding:0;
+    a{
+        text-decoration: none;
+        color: red;
+        &:hover{
+            color:green;
+
+        }
+    }
+    
+}
