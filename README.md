@@ -6,7 +6,7 @@
 ## Definition of done
 ### Server:
 - De services die betrekking op deze feature hebben minimaal een falende en een succesvolle unit test hebben
-- De repositories minimaal voor elke methode de gebruikt wordt een Unit test heeft
+- Voor de repositories is minimaal voor elke methode die gebruikt wordt een Unit test geschreven.
 - De endpoints op de server zijn gecontroleerd (d.m.v. Postman o.i.d.)
 - De output van de endpoints is gecontroleerd (Inclusief hetgeen dat naar de database is
   geschreven).
@@ -24,6 +24,8 @@ component wordt getoond (denk aan modals etc.).
 ### Shared:
 - Er is overlegd met minimaal één teamgenoot (kan door middel van een pullrequest) over hoe de implementatie is gerealiseerd.
 - De code volgt de Coding standards zoals deze zijn gehanteerd in de colleges
+  - [Googles java guidelines komen goed overeen](https://google.github.io/styleguide/javaguide.html)
+  - Voor de rest volgt KIS (Keep it simple), zorg dat je functies makkelijk te begrijpen zijn. 
 - Er staat geen code in die je niet regel voor regel begrijpt (geen copy/paste werk van
 stackoverflow als je niet begrijpt wat hier staat)
 - Je code is encapsulated voor jou feature en zou geen andere features moeten treffen
