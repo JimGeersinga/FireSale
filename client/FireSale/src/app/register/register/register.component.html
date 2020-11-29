@@ -2,19 +2,13 @@
     <mat-card class="login-card">
         <h2>Registreren</h2>
         <form>
-            <p>
-                <mat-form-field>
+        
+                <mat-form-field fullWidth>
                     <mat-label>E-mailadres</mat-label>
                     <input matInput type="text" required formControlName="email">
                 </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field>
-                    <mat-label>Wachtwoord</mat-label>
-                    <input matInput type="password" required formControlName="password" />
-                </mat-form-field>
-            </p>
-            <p>
+           
+                
                 <mat-form-field>
                     <mat-label>Geslacht</mat-label>
                     <mat-select required>
@@ -23,58 +17,56 @@
                         <mat-option value="option">Anders</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </p>
-            <p>
+          
                 <mat-form-field>
                     <mat-label>Voornaam</mat-label>
                     <input matInput type="text" required formControlName="firstname" />
                 </mat-form-field>
-            </p>
-            <p>
+            
                 <mat-form-field>
                     <mat-label>Achternaam</mat-label>
                     <input matInput type="text" required formControlName="lastname" />
                 </mat-form-field>
-            </p>
-            <p>
+           
                 <mat-form-field>
                     <mat-label>Geboortedatum</mat-label>
                     <input matInput type="date" required formControlName="dateofbirth" />
                 </mat-form-field>
-            </p>
-            <p>
+           
                 <mat-form-field>
                     <mat-label>Straatnaam</mat-label>
                     <input matInput type="text" required formControlName="street" />
                 </mat-form-field>
-            </p>
-            <p>
+           
                 <mat-form-field>
                     <mat-label>Huisnummer</mat-label>
                     <input matInput type="number" required formControlName="housenumber" />
                 </mat-form-field>
-            </p>
-            <p>
+           
                 <mat-form-field>
                     <mat-label>Postcode</mat-label>
                     <input matInput type="text" required pattern="[0-9]{4}[a-zA-Z]{2}" formControlName="zipcode" />
                 </mat-form-field>
-            </p>
-            <p>
+           
                 <mat-form-field>
                     <mat-label>Plaats</mat-label>
                     <input matInput type="text" required formControlName="city" />
                 </mat-form-field>
-            </p>
-            <p>
+            
                 <mat-form-field>
-                    <mat-label>Nickname</mat-label>
+                    <mat-label>Gebruikersnaam</mat-label>
                     <input matInput type="text" required formControlName="nickname" />
                 </mat-form-field>
-            </p>
-            <p>
+                <mat-form-field>
+                    <mat-label>Wachtwoord</mat-label>
+                    <input matInput type="password" required formControlName="password" />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Wachtwoord bevestigen</mat-label>
+                    <input matInput type="password" required formControlName="password" />
+                </mat-form-field>
+            
                 <button mat-raised-button color="primary" type="submit">Registreer</button>
-            </p>
         </form>
     </mat-card>
 </section>

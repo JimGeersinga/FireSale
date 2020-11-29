@@ -14,6 +14,8 @@ import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { RegisterComponent } from './register/register/register.component';
 import { SharedModule } from './shared/shared.module';
+import { SideBarComponent } from './core/side-bar/side-bar.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { SharedModule } from './shared/shared.module';
     UserDetailComponent,
     HeaderComponent,
     FooterComponent,
-    RegisterComponent
+    RegisterComponent,
+    SideBarComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
