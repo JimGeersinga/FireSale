@@ -1,17 +1,17 @@
 <section>
-    <mat-card class="login-card">
-        <h2>Inloggen</h2>
-        <form>
-            <mat-form-field>
-                <mat-label>Gebruikersnaam</mat-label>
-                <input matInput type="text" required formControlName="nickname" />
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Wachtwoord</mat-label>
-                <input matInput type="password" required formControlName="password" />
-            </mat-form-field>
-            
-            <button mat-raised-button color="primary" type="submit">Inloggen</button>
-        </form>
-    </mat-card>
+  <mat-card class="login-card">
+    <h2>Inloggen</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="submitLogin(loginForm.value)">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput type="text" required formControlName="email" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Wachtwoord</mat-label>
+        <input matInput type="password" required formControlName="password" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Inloggen</button>
+    </form>
+  </mat-card>
 </section>

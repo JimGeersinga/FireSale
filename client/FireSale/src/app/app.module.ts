@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +17,16 @@ import { SharedModule } from './shared/shared.module';
 import { SideBarComponent } from './core/side-bar/side-bar.component';
 import { LoginComponent } from './users/components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ConfigService } from './core/services/config.service';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BasicAuthInterceptor} from './core/interceptors/basic-auth.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+
+const appInitializerFn = (appConfig: ConfigService) => {
+  return () => {
+    return appConfig.load();
+  };
+};
 
 @NgModule({
   declarations: [
@@ -38,9 +48,20 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    ConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [ConfigService]
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
 import { RegisterDto } from '../../models/registerDto';
+import { UserService } from '../../shared/user.service';
 
 @Component({
   selector: 'app-register',
@@ -31,7 +32,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -39,10 +41,13 @@ export class RegisterComponent implements OnInit {
 
   submitRegistration(data: RegisterDto): void {
     if (!this.registerForm.valid) {
-      this.dialog.open(OkDialogComponent, {data: {title: "Registratieformulier", message: "Registratieformulier is niet correct ingevuld"}});
+      this.dialog.open(OkDialogComponent, {data: {title: 'Registratieformulier', message: 'Registratieformulier is niet correct ingevuld'}});
     }
     else {
-      this.dialog.open(OkDialogComponent, {data: {title: "Registratieformulier", message: "Registratieformulier is verzonden"}});
+      this.userService.register(data).subscribe((response) => {
+        console.log(response);
+        this.dialog.open(OkDialogComponent, {data: {title: 'Registratieformulier', message: 'Registratieformulier is verzonden'}});
+      });
     }
   }
 }
