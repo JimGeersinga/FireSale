@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RegisterComponent } from './register/register/register.component';
-import { SharedModule } from './shared/shared.module';
+import { RegisterComponent } from './users/components/register/register.component';
 import { AuctionListComponent } from './auctions/auction-list/auction-list.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './users/components/login/login.component';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent},

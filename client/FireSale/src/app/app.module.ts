@@ -8,14 +8,15 @@ import { AuctionListComponent } from './auctions/auction-list/auction-list.compo
 import { AuctionDetailComponent } from './auctions/auction-detail/auction-detail.component';
 import { BidComponent } from './bids/bid/bid.component';
 import { BidHistoryComponent } from './bids/bid-history/bid-history.component';
-import { UserListComponent } from './users/user-list/user-list.component';
-import { UserDetailComponent } from './users/user-detail/user-detail.component';
+import { UserListComponent } from './users/components/user-list/user-list.component';
+import { UserDetailComponent } from './users/components/user-detail/user-detail.component';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
-import { RegisterComponent } from './register/register/register.component';
+import { RegisterComponent } from './users/components/register/register.component';
 import { SharedModule } from './shared/shared.module';
 import { SideBarComponent } from './core/side-bar/side-bar.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './users/components/login/login.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { LoginComponent } from './login/login.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
