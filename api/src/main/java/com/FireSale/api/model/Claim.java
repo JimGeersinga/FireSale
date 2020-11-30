@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Claim extends BaseEntity {
+public class Claim extends BaseEntity implements GrantedAuthority {
     @Column(nullable = false, unique = true)
     private String name;
 
