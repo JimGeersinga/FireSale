@@ -3,7 +3,10 @@ package com.FireSale.api.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
@@ -16,8 +19,10 @@ public class Review extends BaseEntity {
     private String message;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "receiver_user_id")
     private User receiver;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "reviewer_user_id")
     private User reviewer;
 }

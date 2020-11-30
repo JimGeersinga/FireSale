@@ -33,13 +33,14 @@ public class Auction extends BaseEntity {
     @Column(nullable = false)
     private AuctionStatus status;
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = true)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "final_bid_id")
     private Bid finalBid;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Bid> bids;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Image> images;
 
     @ManyToMany(fetch = FetchType.LAZY)

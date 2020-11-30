@@ -14,6 +14,11 @@ public class Bid extends BaseEntity {
     @Column(nullable = false)
     private Double value;
 
-    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "auction_id")
+    private Auction auction;
 }
