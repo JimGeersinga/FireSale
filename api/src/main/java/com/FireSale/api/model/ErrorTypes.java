@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorTypes {
     LOGIN_FAILED("LOGIN_FAILED"),
-    ACCOUNT_IS_DISABLED("ACCOUNT_DISABLED"),
+    ACCOUNT_IS_LOCKED("ACCOUNT_DISABLED"),
     UNKOWN("UNKOWN");
 
     private String code;

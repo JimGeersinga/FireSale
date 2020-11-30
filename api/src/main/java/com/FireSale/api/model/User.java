@@ -18,7 +18,7 @@ public class User extends BaseEntity {
     private String password;
 
     @Column(nullable = false, unique = true)
-    private String nickname;
+    private String displayName;
 
     @Column(nullable = false)
     private String firstName;
@@ -32,6 +32,9 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gender gender;
+
+    @Column(nullable = false)
+    private Boolean isLocked;
 
     @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = false)
     private Address address;
