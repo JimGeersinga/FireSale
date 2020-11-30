@@ -28,7 +28,7 @@ component wordt getoond (denk aan modals etc.).
   - Voor de rest volgt KIS (Keep it simple), zorg dat je functies makkelijk te begrijpen zijn. 
 - Er staat geen code in die je niet regel voor regel begrijpt (geen copy/paste werk van
 stackoverflow als je niet begrijpt wat hier staat)
-- Je code is encapsulated voor jou feature en zou geen andere features moeten treffen
+- Je code is encapsulated voor jouw feature en zou geen andere features moeten treffen
 ofwel die andere features zijn aangepast zodat deze blijven werken.
 - De checklists in de issue zijn achteraf nog gecontroleerd op volledigheid tegen je code
 en bij vragen is hierover overleg geweest met een codeowner en is de checklist aangepast
