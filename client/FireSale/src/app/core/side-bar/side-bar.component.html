@@ -1,0 +1,15 @@
+
+<ul>
+    <li>
+        <a mat-button routerLink="/" routerLinkActive="mat-accent">Home</a>
+    </li>
+    <li>
+        <a mat-button routerLink="/register" routerLinkActive="mat-accent">Registeren</a>
+    </li>
+    <li>
+        <ng-container [ngSwitch]="(currentUser$ | async) != null">
+        <a mat-button *ngSwitchDefault [routerLink]="'/login'" routerLinkActive="mat-accent"> Login </a>
+        <a mat-button *ngSwitchCase="true" (click)="logout()"> Logout ({{(currentUser$ | async)?.email }}) </a>
+        </ng-container>
+    </li>
+</ul>
