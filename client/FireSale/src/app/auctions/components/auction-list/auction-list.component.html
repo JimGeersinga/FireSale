@@ -1,6 +1,6 @@
-<p>auction-list works!</p>
-<ul>
-    <li *ngFor="let auction of this.auctions">
-        <app-auction-list-item [model]="auction"></app-auction-list-item>
-    </li>
-</ul>
+<div *ngFor="let n of [1,2,3,4,5]">
+    <h3>Categorie {{ n.toString() }}</h3>
+    <div class="item-wrapper">
+        <app-auction-list-item *ngFor="let auction of this.auctions" [model]="auction"></app-auction-list-item>
+    </div>
+</div>
