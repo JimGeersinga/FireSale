@@ -7,7 +7,4 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
-    Auction DTOToEntity(AuctionDTO auctionDTO);
-
-    AuctionDTO EntityToDTO(Auction auction);
 }
