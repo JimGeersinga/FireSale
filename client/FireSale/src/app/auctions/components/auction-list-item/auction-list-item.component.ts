@@ -23,9 +23,10 @@ export class AuctionListItemComponent implements OnInit {
       if(this.timeLeft > 0) {
         this.timeLeft--;
       } else {
-        this.interval.clear();
+        clearInterval(this.interval);
       }
     },1000)
+    
   }
 
 
