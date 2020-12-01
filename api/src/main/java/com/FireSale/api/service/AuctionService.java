@@ -1,5 +1,6 @@
 package com.FireSale.api.service;
 
+import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.model.Auction;
 import com.FireSale.api.repository.AuctionRepository;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,20 +31,25 @@ public class AuctionService {
         return auction;
     }
 
-    // R 1 - findall
+    // R 1 - get all
     public Collection<Auction> getAuctions() {
-        return auctionRepository.findAll();
+        List<Auction> results = auctionRepository.findAll();
+        if (results.isEmpty()) {
+            throw new ResourceNotFoundException("No auctions exists", Auction.class);
+        }
+        return results;
     }
 
     // R 2 - get by id
-    public Optional<Auction> getAuctionById(Long id) {
-        return auctionRepository.findById(id);
+    public Auction getAuctionById(final long id) {
+        return auctionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("No auction exists for id: %d", id), Auction.class));
     }
 
     // U - put by id (update)
-    public void updateAuction(Long id, Auction auction) {
+    public Auction updateAuction(Long id, Auction auction) {
         auction.setId((id));
-        auctionRepository.save(auction);
+        return auctionRepository.save(auction);
     }
 
     // D - delete by id
