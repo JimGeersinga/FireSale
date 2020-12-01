@@ -4,8 +4,8 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuctionListComponent } from './auctions/auction-list/auction-list.component';
-import { AuctionDetailComponent } from './auctions/auction-detail/auction-detail.component';
+import { AuctionListComponent } from './auctions/components/auction-list/auction-list.component';
+import { AuctionDetailComponent } from './auctions/components/auction-detail/auction-detail.component';
 import { BidComponent } from './bids/bid/bid.component';
 import { BidHistoryComponent } from './bids/bid-history/bid-history.component';
 import { UserListComponent } from './users/components/user-list/user-list.component';
@@ -22,6 +22,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicAuthInterceptor} from './core/interceptors/basic-auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { LayoutComponent } from './core/layout/layout.component';
+import { AuctionListItemComponent } from './auctions/components/auction-list-item/auction-list-item.component';
 
 const appInitializerFn = (appConfig: ConfigService) => {
   return () => {
@@ -43,7 +44,8 @@ const appInitializerFn = (appConfig: ConfigService) => {
     RegisterComponent,
     SideBarComponent,
     LoginComponent,
-    LayoutComponent
+    LayoutComponent,
+    AuctionListItemComponent
   ],
   imports: [
     BrowserModule,
