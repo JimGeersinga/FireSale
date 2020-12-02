@@ -2,12 +2,10 @@ package com.FireSale.api.controller;
 
 import com.FireSale.api.dto.ApiResponse;
 import com.FireSale.api.dto.ErrorResponse;
-import com.FireSale.api.dto.UserDTO;
 import com.FireSale.api.dto.auction.AuctionDTO;
 import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.model.Auction;
 import com.FireSale.api.model.ErrorTypes;
-import com.FireSale.api.model.User;
 import com.FireSale.api.service.AuctionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,8 +26,6 @@ public class AuctionController {
     private final AuctionService auctionService;
     private final AuctionMapper auctionMapper;
 
-
-    // C
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity create(@Valid @RequestBody AuctionDTO auctionDTO) {
@@ -43,7 +38,6 @@ public class AuctionController {
         }
     }
 
-    // R - TODO: Errormessage netjes maken
     @GetMapping
     public ResponseEntity all() {
         try {
@@ -54,32 +48,30 @@ public class AuctionController {
         }
     }
 
-    // R
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") final long id) {
         try {
             final Auction auction = auctionService.getAuctionById(id);
-             return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.OK);
-        }
-        catch (Exception exception) {
+            return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.OK);
+        } catch (Exception exception) {
             return new ResponseEntity<>(new ErrorResponse(ErrorTypes.AUCTION_NOT_FOUND, exception.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
-    // U
+
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity update(@PathVariable("id") final long id, @Valid @RequestBody final AuctionDTO auctionDTO) {
         try {
             final Auction auction = auctionService.updateAuction(id, auctionMapper.toModel(auctionDTO));
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             return new ResponseEntity<>(new ErrorResponse(ErrorTypes.AUCTION_NOT_FOUND, exception.getMessage()), HttpStatus.NOT_FOUND);
         }
         return null;
     }
 
-    // D
-
-
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") final long id) {
+        auctionService.deleteAuction(id);
+    }
 }
 
