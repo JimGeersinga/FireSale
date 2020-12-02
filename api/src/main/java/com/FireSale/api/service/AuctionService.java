@@ -40,8 +40,7 @@ public class AuctionService {
 
     @Transactional(readOnly = false)
     public Auction updateAuction(Long id, Auction auction) {
-        final Auction existing = auctionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("No auction exists for id: %d", id), Auction.class));
+        final Auction existing = getAuctionById(id);
         existing.setName(auction.getName());
         existing.setDescription(auction.getDescription());
         existing.setStartDate(auction.getStartDate());
@@ -49,15 +48,15 @@ public class AuctionService {
         existing.setMinimalBid(auction.getMinimalBid());
         existing.setIsFeatured(auction.getIsFeatured());
         existing.setStatus(auction.getStatus());
-        existing.setBids(auction.getBids());
-        existing.setImages(auction.getImages());
-        existing.setCategories(auction.getCategories());
-        existing.setTags(auction.getTags());
+        existing.setIsDeleted(auction.getIsDeleted());
         return auctionRepository.save(auction);
     }
 
-    public void deleteAuction(Long id) {
-        auctionRepository.deleteById(id);
+    @Transactional(readOnly = false)
+    public Auction deleteAuction(Long id) {
+        final Auction existing = getAuctionById(id);
+        existing.setIsDeleted(true);
+        return auctionRepository.save(existing);
     }
 }
 
