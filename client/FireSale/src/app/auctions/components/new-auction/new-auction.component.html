@@ -1,0 +1,28 @@
+<section>
+    <mat-card class="login-card">
+        <h2>Maak een nieuwe veiling aan</h2>
+        <form [formGroup]="newAuctionForm" (ngSubmit)="submitAuction(newAuctionForm.value)">
+            <mat-form-field fullWidth>
+                <mat-label>Naam van de veiling</mat-label>
+                <input matInput type="text" required formControlName="auctionName">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Omschrijving</mat-label>
+                <textarea matInput required formControlName="auctionDescription"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Minimumbod</mat-label>
+                <input matInput type="text" formControlName="minimalBid">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Startdatum</mat-label>
+                <input matInput type="datetime-local" required formControlName="auctionStartdate">
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Einddatum</mat-label>
+                <input matInput type="datetime-local" required formControlName="auctionEnddate">
+              </mat-form-field>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!newAuctionForm.valid">Start veiling</button>
+        </form>
+    </mat-card>
+</section>
