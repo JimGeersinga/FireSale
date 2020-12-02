@@ -4,11 +4,13 @@ import { RegisterComponent } from './users/components/register/register.componen
 import { AuctionListComponent } from './auctions/auction-list/auction-list.component';
 import { LoginComponent } from './users/components/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
 
 const routes: Routes = [
-  { path: 'register', component: RegisterComponent},
-  { path: 'login', component: LoginComponent},
-  { path: '', component: AuctionListComponent, canActivate: [AuthGuard]}
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '', component: AuctionListComponent, canActivate: [AuthGuard] },
+  { path: 'newauction', component: NewAuctionComponent }
 ];
 
 @NgModule({
