@@ -21,6 +21,7 @@ import { ConfigService } from './core/services/config.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicAuthInterceptor} from './core/interceptors/basic-auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
 
 const appInitializerFn = (appConfig: ConfigService) => {
   return () => {
@@ -41,7 +42,8 @@ const appInitializerFn = (appConfig: ConfigService) => {
     FooterComponent,
     RegisterComponent,
     SideBarComponent,
-    LoginComponent
+    LoginComponent,
+    NewAuctionComponent
   ],
   imports: [
     BrowserModule,
