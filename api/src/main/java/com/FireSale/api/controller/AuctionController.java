@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -60,6 +61,7 @@ public class AuctionController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("@guard.isSelf(#userId)")
     public ResponseEntity update(@PathVariable("id") final long id, @Valid @RequestBody final AuctionDTO auctionDTO) {
         try {
             final Auction auction = auctionService.updateAuction(id, auctionMapper.toModel(auctionDTO));
@@ -70,6 +72,7 @@ public class AuctionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@guard.isSelf(#userId)")
     public void delete(@PathVariable("id") final long id) {
         auctionService.deleteAuction(id);
     }
