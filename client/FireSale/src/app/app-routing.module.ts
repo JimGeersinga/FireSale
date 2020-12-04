@@ -10,13 +10,12 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: '', component: AuctionListComponent, canActivate: [AuthGuard] },
-  { path: 'newauction', component: NewAuctionComponent }
+  { path: 'newauction', component: NewAuctionComponent },
+  { path: 'autions', component: AuctionListComponent },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes),
-  ],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

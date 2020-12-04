@@ -19,9 +19,10 @@ import { LoginComponent } from './users/components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfigService } from './core/services/config.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { BasicAuthInterceptor} from './core/interceptors/basic-auth.interceptor';
+import { BasicAuthInterceptor } from './core/interceptors/basic-auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
+import { FormsModule } from '@angular/forms';
 
 const appInitializerFn = (appConfig: ConfigService) => {
   return () => {
@@ -43,7 +44,7 @@ const appInitializerFn = (appConfig: ConfigService) => {
     RegisterComponent,
     SideBarComponent,
     LoginComponent,
-    NewAuctionComponent
+    NewAuctionComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +52,9 @@ const appInitializerFn = (appConfig: ConfigService) => {
     BrowserAnimationsModule,
     SharedModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserModule,
+    FormsModule,
   ],
   providers: [
     ConfigService,
@@ -59,11 +62,11 @@ const appInitializerFn = (appConfig: ConfigService) => {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFn,
       multi: true,
-      deps: [ConfigService]
+      deps: [ConfigService],
     },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
