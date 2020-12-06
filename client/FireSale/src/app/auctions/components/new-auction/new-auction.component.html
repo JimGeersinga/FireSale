@@ -4,23 +4,23 @@
         <form [formGroup]="newAuctionForm" (ngSubmit)="submitAuction(newAuctionForm.value)">
             <mat-form-field fullWidth>
                 <mat-label>Naam van de veiling</mat-label>
-                <input matInput type="text" required formControlName="auctionName">
+                <input matInput type="text" required formControlName="name">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Omschrijving</mat-label>
-                <textarea matInput required formControlName="auctionDescription"></textarea>
+                <textarea matInput required formControlName="description"></textarea>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Minimumbod</mat-label>
-                <input matInput type="text" formControlName="minimalBid">
+                <input matInput type="text" min="1" formControlName="minimalBid">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Startdatum</mat-label>
-                <input matInput type="datetime-local" required formControlName="auctionStartdate">
+                <input matInput type="datetime-local" min="{{minDate | date:'yyyy-MM-dd'}}" required formControlName="startDate">
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Einddatum</mat-label>
-                <input matInput type="datetime-local" required formControlName="auctionEnddate">
+                <input matInput type="datetime-local" min="{{minDate | date:'yyyy-MM-dd'}}" required formControlName="endDate">
               </mat-form-field>
             <button mat-raised-button color="primary" type="submit" [disabled]="!newAuctionForm.valid">Start veiling</button>
         </form>
