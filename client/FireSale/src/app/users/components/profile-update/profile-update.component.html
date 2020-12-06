@@ -1,0 +1,62 @@
+<section>
+    <mat-card class="login-card">
+        <h2>Gegevens wijzigen</h2>
+        <form [formGroup]="profileUpdateForm" *ngIf="profileUpdateForm" (ngSubmit)="submitProfileUpdate(id, profileUpdateForm.value)">
+            <mat-form-field>
+                <mat-label>E-mailadres</mat-label>
+                <input matInput type="text" formControlName="email" />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Geslacht</mat-label>
+                <mat-select formControlName="gender">
+                    <mat-option value="FEMALE">Vrouw</mat-option>
+                    <mat-option value="MALE">Man</mat-option>
+                    <mat-option value="OTHER">Anders</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Voornaam</mat-label>
+                <input matInput type="text" formControlName="firstName" />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Achternaam</mat-label>
+                <input matInput type="text" formControlName="lastName" />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Geboortedatum</mat-label>
+                <input matInput type="date" formControlName="dateOfBirth" />
+            </mat-form-field>
+            <div formGroupName="address">
+                <mat-form-field>
+                    <mat-label>Straatnaam</mat-label>
+                    <input matInput type="text" formControlName="street" />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Huisnummer</mat-label>
+                    <input matInput type="text" formControlName="houseNumber" />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Postcode</mat-label>
+                    <input matInput type="text" pattern="[0-9]{4}[a-zA-Z]{2}" formControlName="zipCode" />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Plaats</mat-label>
+                    <input matInput type="text" formControlName="city" />
+                </mat-form-field>
+            </div>
+            <mat-form-field>
+                <mat-label>Weergavenaam</mat-label>
+                <input matInput type="text"formControlName="displayName" />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Wachtwoord</mat-label>
+                <input matInput type="password" formControlName="password" />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Wachtwoord bevestigen</mat-label>
+                <input matInput type="password" formControlName="passwordVerify" />
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit">Update gegevens</button>
+        </form>
+    </mat-card>
+</section>

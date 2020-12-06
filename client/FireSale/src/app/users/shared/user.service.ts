@@ -44,4 +44,12 @@ export class UserService {
     localStorage.removeItem('currentUser');
     this.currentUser$.next(null);
   }
+
+  public updateProfile(id: number, userDto: UserDto): Observable<any> {
+    return this.api.patch(`${this.baseUrl}/${id}`, userDto);
+  }
+
+  public getUserProfile(id: number) : Observable<any>{
+      return this.api.get(`${this.baseUrl}/${id}`);
+  }
 }
