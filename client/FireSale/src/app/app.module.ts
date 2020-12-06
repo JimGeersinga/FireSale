@@ -9,7 +9,6 @@ import { AuctionDetailComponent } from './auctions/auction-detail/auction-detail
 import { BidComponent } from './bids/bid/bid.component';
 import { BidHistoryComponent } from './bids/bid-history/bid-history.component';
 import { UserListComponent } from './users/components/user-list/user-list.component';
-import { UserDetailComponent } from './users/components/user-detail/user-detail.component';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { RegisterComponent } from './users/components/register/register.component';
@@ -22,6 +21,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicAuthInterceptor} from './core/interceptors/basic-auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
+import { ProfileComponent } from './users/components/profile/profile.component';
+import { ProfileUpdateComponent } from './users/components/profile-update/profile-update.component';
 
 const appInitializerFn = (appConfig: ConfigService) => {
   return () => {
@@ -37,13 +38,14 @@ const appInitializerFn = (appConfig: ConfigService) => {
     BidComponent,
     BidHistoryComponent,
     UserListComponent,
-    UserDetailComponent,
     HeaderComponent,
     FooterComponent,
     RegisterComponent,
     SideBarComponent,
     LoginComponent,
-    NewAuctionComponent
+    NewAuctionComponent,
+    ProfileComponent,
+    ProfileUpdateComponent
   ],
   imports: [
     BrowserModule,

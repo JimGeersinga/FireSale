@@ -1,0 +1,12 @@
+<section>
+  <div class="profile-header mat-elevation-z2">
+    <div class="avatar" style="background-image: url(https://i.pravatar.cc/75?img={{id}});"></div>
+    <div class="user-info" *ngIf="user$ | async as user">
+      <h2 class="display-name">{{user.displayName}}</h2>
+      <span class="user-since">Actief sinds: {{user.created | date:'dd MMMM yyyy'}}</span>
+    </div>
+    <button *ngIf="isCurrentUser" class="user-edit" mat-mini-fab color="primary" [routerLink]="['update']">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+</section>
