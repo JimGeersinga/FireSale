@@ -21,6 +21,7 @@ export class AuctionService {
       {
         let adate = new Date(now.setMinutes(now.getMinutes() + i));
         auctions.push({
+          id: i,
           name: 'Auction ' + i.toString(),
           description: 'Description ' + i.toString(),
           startDate: now,
@@ -31,10 +32,11 @@ export class AuctionService {
     return auctions;
   }
 
-  public getSingle(id:Number): AuctionDTO {
+  public getSingle(id:number): AuctionDTO {
     var now = new Date();
     let adate = new Date(now.setMinutes(now.getMinutes() + (id as number)));
     return {
+          id: id,
           name: 'Auction ' + id.toString(),
           description: 'Desription ' + id.toString(),
           startDate: now,

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AuctionService } from '../../shared/auction.service';
+import { AuctionDTO } from '../../models/auctionDTO';
 
 
 @Component({
@@ -7,8 +10,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./auction-detail.component.scss']
 })
 export class AuctionDetailComponent implements OnInit {
-
-  constructor() { }
+  private id: number;
+  public model: AuctionDTO;
+  constructor(private route: ActivatedRoute, private auctionService: AuctionService){
+    console.log('Called Constructor');
+    this.route.queryParams.subscribe(params => {
+        this.id = params['id'];
+        this.model = this.auctionService.getSingle(this.id);
+    });
+}
 
   ngOnInit(): void {
   }

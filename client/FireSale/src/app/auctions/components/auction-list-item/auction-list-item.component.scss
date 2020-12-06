@@ -2,3 +2,8 @@
   flex: 1;
   padding: 20px;
 }
+mat-card{
+  &:hover{
+    cursor: pointer;
+  }
+}
