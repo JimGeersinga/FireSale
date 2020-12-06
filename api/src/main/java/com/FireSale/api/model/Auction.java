@@ -29,6 +29,9 @@ public class Auction extends BaseEntity {
     @Column(nullable = false)
     private Boolean isFeatured = false;
 
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AuctionStatus status;
