@@ -5,6 +5,7 @@ import { AuctionListComponent } from './auctions/auction-list/auction-list.compo
 import { LoginComponent } from './users/components/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
+import { AuctionDetailComponent } from './auctions/auction-detail/auction-detail.component';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: '', component: AuctionListComponent, canActivate: [AuthGuard] },
   { path: 'newauction', component: NewAuctionComponent },
   { path: 'autions', component: AuctionListComponent },
+  { path: 'detail', component: AuctionDetailComponent },
 ];
 
 @NgModule({
