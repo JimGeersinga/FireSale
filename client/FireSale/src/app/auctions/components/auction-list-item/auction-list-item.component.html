@@ -1,4 +1,6 @@
 <div class="item">
+
+<mat-card>
     <img src="http://lorempixel.com/400/400/technics?{{model.title}}"/>
     <h4 class="title">{{ model.title }}</h4>
     <div class="decription">
@@ -7,4 +9,7 @@
     <div class="timer">
         {{ this.timeLeft > 0 ? this.timeLeft.toString() : 'Verlopen' }}
     </div>
+</mat-card>
+
+    
 </div>
