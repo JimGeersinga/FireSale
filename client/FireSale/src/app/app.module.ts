@@ -23,6 +23,8 @@ import { BasicAuthInterceptor } from './core/interceptors/basic-auth.interceptor
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
 import { FormsModule } from '@angular/forms';
+import { MatCurrencyFormatModule } from 'mat-currency-format'; // added
+
 
 const appInitializerFn = (appConfig: ConfigService) => {
   return () => {
@@ -55,6 +57,7 @@ const appInitializerFn = (appConfig: ConfigService) => {
     HttpClientModule,
     BrowserModule,
     FormsModule,
+    MatCurrencyFormatModule,
   ],
   providers: [
     ConfigService,
