@@ -9,7 +9,6 @@ import { AuctionDetailComponent } from './auctions/components/auction-detail/auc
 import { BidComponent } from './bids/bid/bid.component';
 import { BidHistoryComponent } from './bids/bid-history/bid-history.component';
 import { UserListComponent } from './users/components/user-list/user-list.component';
-import { UserDetailComponent } from './users/components/user-detail/user-detail.component';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { RegisterComponent } from './users/components/register/register.component';
@@ -25,7 +24,8 @@ import { LayoutComponent } from './core/layout/layout.component';
 import { AuctionListItemComponent } from './auctions/components/auction-list-item/auction-list-item.component';
 import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
 import { FormsModule } from '@angular/forms';
-
+import { ProfileComponent } from './users/components/profile/profile.component';
+import { ProfileUpdateComponent } from './users/components/profile-update/profile-update.component';
 
 const appInitializerFn = (appConfig: ConfigService) => {
   return () => {
@@ -41,7 +41,6 @@ const appInitializerFn = (appConfig: ConfigService) => {
     BidComponent,
     BidHistoryComponent,
     UserListComponent,
-    UserDetailComponent,
     HeaderComponent,
     FooterComponent,
     RegisterComponent,
@@ -50,6 +49,8 @@ const appInitializerFn = (appConfig: ConfigService) => {
     LayoutComponent,
     AuctionListItemComponent,
     NewAuctionComponent,
+    ProfileComponent,
+    ProfileUpdateComponent
   ],
   imports: [
     BrowserModule,
