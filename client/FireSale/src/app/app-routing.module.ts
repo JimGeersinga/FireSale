@@ -5,7 +5,10 @@ import { AuctionListComponent } from './auctions/components/auction-list/auction
 import { LoginComponent } from './users/components/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
+import { ProfileComponent } from './users/components/profile/profile.component';
+import { ProfileUpdateComponent } from './users/components/profile-update/profile-update.component';
 import { AuctionDetailComponent } from './auctions/components/auction-detail/auction-detail.component';
+
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent},
@@ -13,6 +16,8 @@ const routes: Routes = [
   { path: '', component: AuctionListComponent},
   { path: 'auctions/create', component: NewAuctionComponent, canActivate: [AuthGuard]  },
   { path: 'auctions/details', component: AuctionDetailComponent },
+  { path: 'profile/:id', component: ProfileComponent },
+  { path: 'profile/:id/update', component: ProfileUpdateComponent }
 ];
 
 @NgModule({
