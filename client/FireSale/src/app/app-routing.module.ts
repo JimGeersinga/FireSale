@@ -12,8 +12,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: '', component: AuctionListComponent},
   { path: 'newauction', component: NewAuctionComponent, canActivate: [AuthGuard]  },
-  { path: 'autions', component: AuctionListComponent },
-  { path: 'detail', component: AuctionDetailComponent },
+  { path: 'auctions/details', component: AuctionDetailComponent },
 ];
 
 @NgModule({

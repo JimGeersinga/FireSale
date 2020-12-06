@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuctionDTO } from '../../models/auctionDTO';
 
 @Component({
@@ -11,11 +12,17 @@ export class AuctionListItemComponent implements OnInit {
   public timeLeft: number;
   public lessThan2Minutes: boolean = false;
   interval: any;
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.timeLeft = this.timeDifference(new Date(), this.model.endDate);
     this.startTimer();
+  }
+
+  openDetails()
+  {
+    console.log('navigate');
+    this.router.navigate(['/auctions/details'], { queryParams: { id:this.model.id} });
   }
 
   startTimer() {
