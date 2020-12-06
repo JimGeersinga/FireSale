@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent},
   { path: 'login', component: LoginComponent},
   { path: '', component: AuctionListComponent},
-  { path: 'newauction', component: NewAuctionComponent, canActivate: [AuthGuard]  },
+  { path: 'auctions/create', component: NewAuctionComponent, canActivate: [AuthGuard]  },
   { path: 'auctions/details', component: AuctionDetailComponent },
 ];
 

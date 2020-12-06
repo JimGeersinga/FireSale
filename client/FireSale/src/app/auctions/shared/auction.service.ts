@@ -44,4 +44,12 @@ export class AuctionService {
           minimalBid: 100 - (id as number)
         };
   }
+
+  public post(auction:AuctionDTO)
+  {
+
+    console.log({posted: auction});
+
+  }
+
 }
