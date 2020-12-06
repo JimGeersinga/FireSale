@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
-import { AuctionDto } from '../../models/auctionDto';
+import { AuctionDTO } from '../../models/auctionDTO';
 
 @Component({
   selector: 'app-new-auction',
@@ -28,7 +28,7 @@ export class NewAuctionComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  submitAuction(data: AuctionDto) : void {
+  submitAuction(data: AuctionDTO) : void {
     if (!this.newAuctionForm.valid) {
       this.dialog.open(OkDialogComponent, {data: {title: 'Nieuwe veiling', message: 'Gegevens voor een nieuwe veiling zijn niet correct ingevuld'}});
     }

@@ -21,10 +21,11 @@ export class AuctionService {
       {
         let adate = new Date(now.setMinutes(now.getMinutes() + i));
         auctions.push({
-          title: 'Auction ' + i.toString(),
-          description: 'Desription ' + i.toString(),
-          end: adate,
-          minValue: 100 - i
+          name: 'Auction ' + i.toString(),
+          description: 'Description ' + i.toString(),
+          startDate: now,
+          endDate: adate,
+          minimalBid: 100 - i
         });
       }
     return auctions;
@@ -34,10 +35,11 @@ export class AuctionService {
     var now = new Date();
     let adate = new Date(now.setMinutes(now.getMinutes() + (id as number)));
     return {
-          title: 'Auction ' + id.toString(),
+          name: 'Auction ' + id.toString(),
           description: 'Desription ' + id.toString(),
-          end: adate,
-          minValue: 100 - (id as number)
+          startDate: now,
+          endDate: adate,
+          minimalBid: 100 - (id as number)
         };
   }
 }

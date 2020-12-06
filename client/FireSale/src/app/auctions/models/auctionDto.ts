@@ -1,9 +1,9 @@
 import { DateSelectionModelChange } from '@angular/material/datepicker';
 
-export interface AuctionDto {
-    auctionName: string;
-    auctionDescription: string;
-    minimalBid: string,
-    auctionStartdate: Date;
-    auctionEnddate: Date;
+export interface AuctionDTO {
+    name: string;
+    description: string;
+    minimalBid: number,
+    startDate: Date;
+    endDate: Date;
 }
