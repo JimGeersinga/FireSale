@@ -11,28 +11,10 @@ export class AuctionListItemComponent implements OnInit {
   @Input() public model: AuctionDTO;
 
   public timeLeft: number;
-  public lessThan2Minutes = false;
-  private interval: any;
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    console.log(this.model);
-    this.timeLeft = this.timeDifference(new Date(), this.model.endDate);
-    this.startTimer();
-  }
-
-  private startTimer(): void {
-    this.interval = setInterval(() => {
-      if (this.timeLeft > 0) {
-        this.timeLeft--;
-      } else {
-        clearInterval(this.interval);
-      }
-    }, 1000);
-  }
-
-  private timeDifference(start: Date, end: Date): number {
-    return Math.floor((new Date(end).getTime() - start.getTime()) / 1000);
+    this.timeLeft = new Date(this.model.endDate).getTime();
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuctionService } from '../../shared/auction.service';
 import { AuctionDTO } from '../../models/auctionDTO';
+import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { Observable } from 'rxjs';
 
 
@@ -12,17 +13,22 @@ import { Observable } from 'rxjs';
 })
 export class AuctionDetailComponent implements OnInit {
   private id: number;
-  public model$: Observable<AuctionDTO>;
-  constructor(private route: ActivatedRoute, private auctionService: AuctionService){
+  public model$: Observable<ApiResponse<AuctionDTO>>;
+
+  items: Array<any> = [{ name: 'assets/images/headphone1.jfif' }, { name: 'assets/images/headphone2.jfif' }, { name: 'assets/images/headphone3.jfif' }, { name: 'assets/images/headphone4.jfif' }]
+  timeLeft: number;
+
+  constructor(private route: ActivatedRoute, private auctionService: AuctionService) {
     console.log('Called Constructor');
     this.route.queryParams.subscribe(params => {
-        this.id = params.id;
-        this.model$ = this.auctionService.getSingle(this.id);
+      this.id = params.id;
+      this.model$ = this.auctionService.getSingle(this.id);
     });
   }
 
   ngOnInit(): void {
+    this.model$.subscribe(x => {
+      this.timeLeft = new Date(x.data.endDate).getTime();
+    });
   }
-
-
 }
