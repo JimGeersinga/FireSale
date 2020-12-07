@@ -1,11 +1,12 @@
-package com.FireSale.api.dto;
+package com.FireSale.api.dto.user;
 
+import com.FireSale.api.dto.BaseDTO;
+import com.FireSale.api.dto.address.AddressDTO;
 import com.FireSale.api.model.Gender;
 import com.FireSale.api.model.Role;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 public class UserDTO extends BaseDTO {
@@ -16,5 +17,6 @@ public class UserDTO extends BaseDTO {
     private LocalDate dateOfBirth;
     private Gender gender;
     private Role role;
-    private Set<String> claims;
+    private AddressDTO address;
+    private AddressDTO shippingAddress;
 }

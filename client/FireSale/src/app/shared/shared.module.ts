@@ -9,7 +9,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatCardModule } from "@angular/material/card";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatDialog, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
+import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatGridListModule } from "@angular/material/grid-list";
