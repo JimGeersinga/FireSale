@@ -6,8 +6,8 @@
       <div class="decription">
           {{ model.description }}
       </div>
-      <div class="timer">
-          {{ this.timeLeft > 0 ? this.timeLeft.toString() : 'Verlopen' }}
+      <div class="countdown-container">
+        <countdown class="countdown-timer" [config]="{ stopTime: timeLeft }"></countdown>
       </div>
   </mat-card>
 </a>
