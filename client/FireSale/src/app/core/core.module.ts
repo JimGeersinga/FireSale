@@ -1,6 +1,5 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LayoutComponent } from './layout/layout.component';
 import { CustomErrorStateMatcher } from './providers/CustomErrorStateMatcher';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicAuthInterceptor } from './interceptors/basic-auth.interceptor';
@@ -15,7 +14,7 @@ const appInitializerFn = (appConfig: ConfigService) => {
 
 
 @NgModule({
-  declarations: [LayoutComponent],
+  declarations: [],
   imports: [
     CommonModule
   ],

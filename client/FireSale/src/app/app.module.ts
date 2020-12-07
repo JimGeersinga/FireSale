@@ -22,7 +22,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { RouterModule } from '@angular/router';
 import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
-import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './users/components/profile/profile.component';
 import { ProfileUpdateComponent } from './users/components/profile-update/profile-update.component';
 
