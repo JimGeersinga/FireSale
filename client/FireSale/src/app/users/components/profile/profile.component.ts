@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { ProfileDto } from '../../models/profileDto';
 import { UserService } from '../../shared/user.service';
 
@@ -10,8 +11,8 @@ import { UserService } from '../../shared/user.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  public user$: Observable<ProfileDto>;
-  public isCurrentUser = true;
+  public user$: Observable<ApiResponse<ProfileDto>>;
+  public isCurrentUser = false;
   public id: number;
 
   constructor(
@@ -24,7 +25,7 @@ export class ProfileComponent implements OnInit {
       this.id = params.id;
       this.user$ = this.userService.getUserProfile(params.id);
       this.userService.currentUser$.subscribe(user => {
-        this.isCurrentUser = user.id === params.id;
+        this.isCurrentUser = user.id === +params.id;
       });
     });
   }

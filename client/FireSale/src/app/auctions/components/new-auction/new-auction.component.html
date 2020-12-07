@@ -1,6 +1,7 @@
-<section>
+<section class="wrapper">
+
+  <h2 class="page-title">Maak een nieuwe veiling aan</h2>
     <mat-card class="login-card">
-        <h2>Maak een nieuwe veiling aan</h2>
         <form [formGroup]="newAuctionForm" (ngSubmit)="submitAuction(newAuctionForm.value)">
             <mat-form-field fullWidth>
                 <mat-label>Naam van de veiling</mat-label>
