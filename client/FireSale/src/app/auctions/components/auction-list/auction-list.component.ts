@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AuctionDTO } from '../../models/auctionDTO';
 import { AuctionService } from '../../shared/auction.service';
 
@@ -8,7 +9,7 @@ import { AuctionService } from '../../shared/auction.service';
   styleUrls: ['./auction-list.component.scss']
 })
 export class AuctionListComponent implements OnInit {
-  public auctions: any = [];
+  public auctions: AuctionDTO[];
   
 
 
@@ -17,10 +18,9 @@ export class AuctionListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.auctionService.get().subscribe({
-      next(response) {
-        this.auctions = response.data;
-      }});
+    this.auctionService.get().subscribe(data => {
+      this.auctions = data.data;
+    });
     
   }
 

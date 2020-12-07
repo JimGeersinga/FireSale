@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuctionService } from '../../shared/auction.service';
 import { AuctionDTO } from '../../models/auctionDTO';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -16,13 +17,12 @@ export class AuctionDetailComponent implements OnInit {
     console.log('Called Constructor');
     this.route.queryParams.subscribe(params => {
         this.id = params['id'];
-      this.auctionService.getSingle(this.id).subscribe({
-        next(response) {
-          this.model = response.data;
-        }
+        this.auctionService.getSingle(this.id).subscribe(data => { 
+          this.model = data.data;
+
       });
     });
-}
+  }
 
   ngOnInit(): void {
   }
