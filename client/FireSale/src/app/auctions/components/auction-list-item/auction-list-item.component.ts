@@ -15,7 +15,9 @@ export class AuctionListItemComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    console.log(this.model);
     this.timeLeft = this.timeDifference(new Date(), this.model.endDate);
+    
     this.startTimer();
   }
 
@@ -38,6 +40,6 @@ export class AuctionListItemComponent implements OnInit {
 
 
   timeDifference(start: Date, end: Date): number {
-    return Math.floor((end.getTime() - start.getTime()) / 1000);
+    return Math.floor((new Date(end).getTime() - start.getTime()) / 1000);
   }
 }

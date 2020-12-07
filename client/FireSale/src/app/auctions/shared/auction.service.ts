@@ -25,7 +25,7 @@ export class AuctionService {
 
   public post(auction:AuctionDTO)
   {
-    return this.api.post(`${this.baseUrl}`, auction);
+    let result = this.api.post(`${this.baseUrl}`, auction);
   }
 
 }
