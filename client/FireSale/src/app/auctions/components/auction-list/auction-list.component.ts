@@ -8,7 +8,7 @@ import { AuctionService } from '../../shared/auction.service';
   styleUrls: ['./auction-list.component.scss']
 })
 export class AuctionListComponent implements OnInit {
-  public auctions: AuctionDTO[] = [];
+  public auctions: any = [];
   
 
 
@@ -17,7 +17,10 @@ export class AuctionListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.auctions = this.auctionService.get();
+    this.auctionService.get().subscribe({
+      next(response) {
+        this.auctions = response.data;
+      }});
     
   }
 
