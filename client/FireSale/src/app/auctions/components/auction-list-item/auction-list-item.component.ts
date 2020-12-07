@@ -22,11 +22,6 @@ export class AuctionListItemComponent implements OnInit {
     this.startTimer();
   }
 
-  public openDetails(): void {
-    console.log('navigate');
-    this.router.navigate(['/auctions/details'], { queryParams: { id: this.model.id } });
-  }
-
   private startTimer(): void {
     this.interval = setInterval(() => {
       if (this.timeLeft > 0) {

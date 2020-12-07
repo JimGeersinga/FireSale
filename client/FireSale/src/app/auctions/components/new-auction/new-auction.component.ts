@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
 import { AuctionDTO } from '../../models/auctionDTO';
 import { AuctionService } from '../../shared/auction.service';
@@ -26,7 +27,8 @@ export class NewAuctionComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-    private auctionService: AuctionService
+    private auctionService: AuctionService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -42,8 +44,9 @@ export class NewAuctionComponent implements OnInit {
         this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Gegevens voor een nieuwe veiling zijn niet correct ingevuld' } });
       }
       else {
-        this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Nieuwe veiling is gestart' } });
-        this.auctionService.post(data);
+        this.auctionService.post(data).subscribe(result => {
+          this.router.navigate(['/auctions/details', { queryParams: { id: result.data.id } }]);
+        });
       }
     }
   }

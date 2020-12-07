@@ -7,6 +7,7 @@ export interface UserDto extends BaseDto {
     firstName: string;
     lastName: string;
     address: AddressDto;
+    shippingAddress: AddressDto;
     dateOfBirth: Date;
     displayName: string;
     password: string;

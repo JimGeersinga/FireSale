@@ -15,7 +15,7 @@ public class Image extends BaseEntity {
     @Column(nullable = false)
     private Integer sort = 0;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "auction_id")
     private Auction auction;
 }
