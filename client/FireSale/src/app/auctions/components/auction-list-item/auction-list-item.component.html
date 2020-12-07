@@ -1,0 +1,15 @@
+<div class="item">
+
+    <mat-card (click)="openDetails()">
+        <img src="http://lorempixel.com/400/400/technics"/>
+        <h4 class="title">{{ model.name }}</h4>
+        <div class="decription">
+            {{ model.description }}
+        </div>
+        <div class="timer">
+            {{ this.timeLeft > 0 ? this.timeLeft.toString() : 'Verlopen' }}
+        </div>
+    </mat-card>
+
+    
+</div>
