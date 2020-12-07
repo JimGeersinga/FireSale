@@ -28,11 +28,14 @@ export class UserService {
   public login(loginDto: LoginDto): Observable<any> {
     return this.api.post(`${this.baseUrl}/authenticate`, loginDto).pipe(
       tap({
-        next: user => {
-          if (user.data) {
-            user.data.authData = window.btoa(`${loginDto.email}:${loginDto.password}`);
-            localStorage.setItem('currentUser', JSON.stringify(user.data));
-            this.currentUser$.next(user.data);
+        next: response => {
+          const user = response.data;
+          if (response.success && response.data) {
+            user.authData = window.btoa(`${loginDto.email}:${loginDto.password}`);
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            this.currentUser$.next(user);
+          } else if (!response.success) {
+            console.log(response.errorCode, response.errorMessage);
           }
           return user;
         },
@@ -49,7 +52,7 @@ export class UserService {
     return this.api.patch(`${this.baseUrl}/${id}`, userDto);
   }
 
-  public getUserProfile(id: number) : Observable<any>{
-      return this.api.get(`${this.baseUrl}/${id}`);
+  public getUserProfile(id: number): Observable<any> {
+    return this.api.get(`${this.baseUrl}/${id}`);
   }
 }

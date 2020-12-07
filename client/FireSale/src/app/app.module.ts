@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,23 +15,17 @@ import { RegisterComponent } from './users/components/register/register.componen
 import { SharedModule } from './shared/shared.module';
 import { SideBarComponent } from './core/side-bar/side-bar.component';
 import { LoginComponent } from './users/components/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ConfigService } from './core/services/config.service';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { BasicAuthInterceptor } from './core/interceptors/basic-auth.interceptor';
-import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { LayoutComponent } from './core/layout/layout.component';
 import { AuctionListItemComponent } from './auctions/components/auction-list-item/auction-list-item.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { CoreModule } from './core/core.module';
+import { RouterModule } from '@angular/router';
 import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
 import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './users/components/profile/profile.component';
 import { ProfileUpdateComponent } from './users/components/profile-update/profile-update.component';
 
-const appInitializerFn = (appConfig: ConfigService) => {
-  return () => {
-    return appConfig.load();
-  };
-};
 
 @NgModule({
   declarations: [
@@ -58,20 +52,12 @@ const appInitializerFn = (appConfig: ConfigService) => {
     BrowserAnimationsModule,
     SharedModule,
     ReactiveFormsModule,
-    HttpClientModule,
-    BrowserModule,
     FormsModule,
+    HttpClientModule,
+    CoreModule,
+    RouterModule
   ],
   providers: [
-    ConfigService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: appInitializerFn,
-      multi: true,
-      deps: [ConfigService],
-    },
-    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

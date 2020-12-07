@@ -27,33 +27,33 @@ export class ProfileUpdateComponent implements OnInit {
       this.id = params.id;
       this.userService.currentUser$.subscribe(user => {
         this.profileUpdateForm = this.formBuilder.group({
-            email: [user?.email, Validators.email],
-            gender: [user?.gender],
-            firstName: [user?.firstName],
-            lastName: [user?.lastName],
-            dateOfBirth: [user?.dateOfBirth],
-            address: this.formBuilder.group({
-              street: [user?.address?.street],
-              houseNumber: [user?.address?.houseNumber],
-              zipCode: [user?.address?.zipCode],
-              city: [user?.address?.city]
-            }),
-            displayName: [user.displayName],
-            password: [''],
-            passwordVerify: ['']
-          });
+          email: [user?.email, Validators.email],
+          gender: [user?.gender],
+          firstName: [user?.firstName],
+          lastName: [user?.lastName],
+          dateOfBirth: [user?.dateOfBirth],
+          address: this.formBuilder.group({
+            street: [user?.address?.street],
+            houseNumber: [user?.address?.houseNumber],
+            postalCode: [user?.address?.postalCode],
+            city: [user?.address?.city]
+          }),
+          displayName: [user.displayName],
+          password: [''],
+          passwordVerify: ['']
+        });
       });
     });
   }
 
   submitProfileUpdate(id: number, data: UserDto): void {
-      if(!this.profileUpdateForm.valid) {
+    if (!this.profileUpdateForm.valid) {
       this.dialog.open(OkDialogComponent, { data: { title: 'Wijzigen gegevens', message: 'Formulier is niet correct ingevuld' } });
     }
     else {
       this.userService.updateProfile(id, data);
 
-        this.dialog.open(OkDialogComponent, { data: { title: 'Wijzigen gegevens', message: 'Gegevens zijn gewijzigd' } });
+      this.dialog.open(OkDialogComponent, { data: { title: 'Wijzigen gegevens', message: 'Gegevens zijn gewijzigd' } });
     }
   }
 }

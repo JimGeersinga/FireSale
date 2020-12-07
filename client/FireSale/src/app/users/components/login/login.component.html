@@ -1,17 +1,26 @@
-<section>
+<section class="wrapper">
+  <h2 class="page-title">Inloggen</h2>
   <mat-card class="login-card">
-    <h2>Inloggen</h2>
     <form [formGroup]="loginForm" (ngSubmit)="submitLogin(loginForm.value)">
       <mat-form-field>
         <mat-label>Email</mat-label>
         <input matInput type="text" required formControlName="email" />
+        <mat-error *ngIf="loginForm.hasError('email', 'email') || loginForm.hasError('required', 'email') ">
+          Vul een geldig email adres in
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Wachtwoord</mat-label>
         <input matInput type="password" required formControlName="password" />
+        <mat-error *ngIf="loginForm.hasError('required', 'password') ">
+          Vul het wachtwoord in
+        </mat-error>
       </mat-form-field>
 
       <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Inloggen</button>
     </form>
   </mat-card>
+
+  <a href="" [routerLink]="['/register']" class="page-link">Nog geen account? Registreer je nu!</a>
+
 </section>

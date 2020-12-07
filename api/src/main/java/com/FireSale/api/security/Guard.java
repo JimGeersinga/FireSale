@@ -1,19 +1,20 @@
 package com.FireSale.api.security;
 
+import com.FireSale.api.model.Role;
+import com.FireSale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class Guard {
+    public static boolean isAdmin() {
+        return SecurityUtil.getSecurityContextUser().getUser().getRole() == Role.ADMIN;
+    }
 
-    public boolean checkAuthority(final Authentication authentication, final String authority) {
-        return  ((UserPrincipal) authentication.getPrincipal())
-                .getAuthorities()
-                .stream()
-                .anyMatch(c -> c.getAuthority() == authority);
+    public static boolean isSelf(final Long id) {
+        return SecurityUtil.getSecurityContextUser().getUser().getId() == id;
     }
 }
