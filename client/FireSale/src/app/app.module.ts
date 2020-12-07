@@ -24,6 +24,8 @@ import { RouterModule } from '@angular/router';
 import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
 import { ProfileComponent } from './users/components/profile/profile.component';
 import { ProfileUpdateComponent } from './users/components/profile-update/profile-update.component';
+import { CountdownModule } from 'ngx-countdown';
+import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 
 
 @NgModule({
@@ -54,7 +56,9 @@ import { ProfileUpdateComponent } from './users/components/profile-update/profil
     FormsModule,
     HttpClientModule,
     CoreModule,
-    RouterModule
+    RouterModule,
+    CountdownModule,
+    Ng2CarouselamosModule
   ],
   providers: [
   ],
