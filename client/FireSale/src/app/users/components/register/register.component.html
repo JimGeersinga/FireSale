@@ -91,7 +91,7 @@
       <mat-card formGroupName="shippingAddress" class="sub-form">
         <h4><mat-checkbox formControlName="supplyShippingAddress">Leveringsadres</mat-checkbox></h4>
 
-        <ng-container *ngIf="registerForm.value.shippingAddress.supplyShippingAddress">
+        <ng-container *ngIf="registerForm.value.shippingAddress?.supplyShippingAddress || false">
           <mat-form-field>
             <mat-label>Straatnaam</mat-label>
             <input matInput type="text" required formControlName="street" />

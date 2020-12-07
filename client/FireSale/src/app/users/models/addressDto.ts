@@ -3,4 +3,5 @@ export interface AddressDto {
     houseNumber: string;
     postalCode: string;
     city: string;
+    country: string;
 }

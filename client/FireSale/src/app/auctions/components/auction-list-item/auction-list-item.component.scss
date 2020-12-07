@@ -1,9 +1,9 @@
 .item {
   flex: 1;
-  padding: 20px;
-}
-mat-card{
-  &:hover{
-    cursor: pointer;
+  margin: 20px;
+
+  img {
+    max-width: 250px;
+    max-height: 250px;
   }
 }

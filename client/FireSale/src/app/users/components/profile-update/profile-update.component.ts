@@ -36,7 +36,15 @@ export class ProfileUpdateComponent implements OnInit {
             street: [user?.address?.street],
             houseNumber: [user?.address?.houseNumber],
             postalCode: [user?.address?.postalCode],
-            city: [user?.address?.city]
+            city: [user?.address?.city],
+            country: [user?.shippingAddress?.country]
+          }),
+          shippingAddress: this.formBuilder.group({
+            street: [user?.shippingAddress?.street],
+            houseNumber: [user?.shippingAddress?.houseNumber],
+            postalCode: [user?.shippingAddress?.postalCode],
+            city: [user?.shippingAddress?.city],
+            country: [user?.shippingAddress?.country]
           }),
           displayName: [user.displayName],
           password: [''],

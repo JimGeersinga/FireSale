@@ -55,5 +55,8 @@ public class User extends BaseEntity {
     private Set<Review> outgoingReviews;
 
     @OneToMany(mappedBy = "user")
+    private Set<Auction> auctions;
+
+    @OneToMany(mappedBy = "user")
     private Set<Bid> bids;
 }
