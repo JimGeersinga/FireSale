@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
     private dialog: MatDialog,
     private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private snackbar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -40,10 +42,8 @@ export class LoginComponent implements OnInit {
       this.dialog.open(OkDialogComponent, { data: { title: 'Loginformulier', message: 'Loginformulier is niet correct ingevuld' } });
     }
     else {
-      this.userService.login(data).subscribe(
-        _ => this.router.navigate([this.returnUrl]),
-        error => console.log(error)
-      );
+      this.userService.login(data).subscribe(_ => this.router.navigate([this.returnUrl]));
+      this.snackbar.open('U bent ingelogd.');
     }
   }
 }

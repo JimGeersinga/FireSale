@@ -4,6 +4,7 @@ import com.FireSale.api.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,8 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .cors()
             .and()
                 .authorizeRequests()
-                    .antMatchers("/users/authenticate").permitAll()
-                    .antMatchers("/users/**").authenticated()
+                    .antMatchers("/users/**").permitAll()
             .and()
                 .httpBasic()
             .and()
@@ -64,14 +64,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    protected CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:4200"));
-//        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
 }

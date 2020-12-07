@@ -1,21 +1,23 @@
 package com.FireSale.api.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.persistence.*;
-import java.util.Set;
+import java.util.Collection;
+import java.util.Collections;
 
-@Getter
-@Setter
-@Entity
-public class Role extends BaseEntity {
-    @Column(nullable = false, unique = true)
-    private String name;
+public enum Role {
+    USER(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))),
+    ADMIN(Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private Set<Claim> claims;
+    private final Collection<GrantedAuthority> authorities;
 
+    Role(Collection<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
 
+    public Collection<GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
 
 }
