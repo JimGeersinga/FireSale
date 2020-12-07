@@ -18,7 +18,6 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @CrossOrigin("http://localhost:4200")
 @RequestMapping(path = "/auctions", produces = MediaType.APPLICATION_JSON_VALUE)
-
 public class AuctionController {
 
     private final AuctionService auctionService;
@@ -54,4 +53,3 @@ public class AuctionController {
         auctionService.deleteAuction(id);
     }
 }
-

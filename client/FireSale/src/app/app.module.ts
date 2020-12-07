@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuctionListComponent } from './auctions/auction-list/auction-list.component';
-import { AuctionDetailComponent } from './auctions/auction-detail/auction-detail.component';
+import { AuctionListComponent } from './auctions/components/auction-list/auction-list.component';
+import { AuctionDetailComponent } from './auctions/components/auction-detail/auction-detail.component';
 import { BidComponent } from './bids/bid/bid.component';
 import { BidHistoryComponent } from './bids/bid-history/bid-history.component';
 import { UserListComponent } from './users/components/user-list/user-list.component';
@@ -15,6 +15,8 @@ import { RegisterComponent } from './users/components/register/register.componen
 import { SharedModule } from './shared/shared.module';
 import { SideBarComponent } from './core/side-bar/side-bar.component';
 import { LoginComponent } from './users/components/login/login.component';
+import { LayoutComponent } from './core/layout/layout.component';
+import { AuctionListItemComponent } from './auctions/components/auction-list-item/auction-list-item.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
@@ -37,6 +39,8 @@ import { ProfileUpdateComponent } from './users/components/profile-update/profil
     RegisterComponent,
     SideBarComponent,
     LoginComponent,
+    LayoutComponent,
+    AuctionListItemComponent,
     NewAuctionComponent,
     ProfileComponent,
     ProfileUpdateComponent
@@ -54,6 +58,6 @@ import { ProfileUpdateComponent } from './users/components/profile-update/profil
   ],
   providers: [
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,53 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FireSale</title>
 </head>
-
 <body class="mat-typography">
-  <nav>
-
-  </nav>
   <main>
-    <app-header></app-header>
-    <mat-drawer-container class="page-container" autosize>
-      <mat-drawer opened #drawer class="sidenav" mode="side">
-        <p>Side bar</p>
-        <ul>
-          <li>
-            <a mat-button routerLink="/" routerLinkActive="mat-accent">Home</a>
-          </li>
-          <li>
-            <a mat-button routerLink="/register" routerLinkActive="mat-accent">Registeren</a>
-          </li>
-          <li>
-            <ng-container [ngSwitch]="(currentUser$ | async) != null">
-              <a mat-button *ngSwitchDefault [routerLink]="'/login'" routerLinkActive="mat-accent"> Login </a>
-              <a mat-button *ngSwitchCase="true" (click)="logout()"> Logout ({{(currentUser$ | async)?.email }}) </a>
-            </ng-container>
-          </li>
-
-        </ul>
-
-
-      </mat-drawer>
-
-      <mat-drawer-content>
-        <router-outlet></router-outlet>
-      </mat-drawer-content>
-
-    </mat-drawer-container>
-
-
-
-
+    <app-layout></app-layout>
   </main>
   <footer>
-
   </footer>
 </body>
-
 </html>
