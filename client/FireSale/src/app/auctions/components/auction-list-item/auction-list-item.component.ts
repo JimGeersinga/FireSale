@@ -8,10 +8,12 @@ import { AuctionDTO } from '../../models/auctionDTO';
   styleUrls: ['./auction-list-item.component.scss']
 })
 export class AuctionListItemComponent implements OnInit {
-  @Input() model: AuctionDTO;
+  @Input() public model: AuctionDTO;
+
   public timeLeft: number;
-  public lessThan2Minutes: boolean = false;
-  interval: any;
+  public lessThan2Minutes = false;
+  private interval: any;
+
   constructor(private router: Router) { }
 
   ngOnInit(): void {
@@ -20,25 +22,17 @@ export class AuctionListItemComponent implements OnInit {
     this.startTimer();
   }
 
-  openDetails()
-  {
-    console.log('navigate');
-    this.router.navigate(['/auctions/details'], { queryParams: { id:this.model.id} });
-  }
-
-  startTimer() {
+  private startTimer(): void {
     this.interval = setInterval(() => {
-      if(this.timeLeft > 0) {
+      if (this.timeLeft > 0) {
         this.timeLeft--;
       } else {
         clearInterval(this.interval);
       }
-    },1000)
-    
+    }, 1000);
   }
 
-
-  timeDifference(start: Date, end: Date): number {
+  private timeDifference(start: Date, end: Date): number {
     return Math.floor((new Date(end).getTime() - start.getTime()) / 1000);
   }
 }

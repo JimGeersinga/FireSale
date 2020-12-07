@@ -3,24 +3,26 @@
     <li>
         <a mat-button routerLink="/" routerLinkActive="mat-accent" [routerLinkActiveOptions]="{ exact: true }">Home</a>
     </li>
-    
+
         <ng-container [ngSwitch]="(currentUser$ | async) != null">
             <ng-container *ngSwitchDefault>
                 <li>
-                    <a mat-button  [routerLink]="'/login'" routerLinkActive="mat-accent"> Login </a>
+                    <a mat-button  [routerLink]="['/login']" routerLinkActive="mat-accent"> Login </a>
                 </li>
                 <li>
-                    <a mat-button routerLink="/register" routerLinkActive="mat-accent">Registeren</a>
+                    <a mat-button [routerLink]="['/register']" routerLinkActive="mat-accent">Registeren</a>
 
                 </li>
             </ng-container>
             <ng-container *ngSwitchCase="true" >
                 <li>
-                    <a mat-button routerLink="/auctions/create" routerLinkActive="mat-accent">Nieuwe veiling</a>
+                    <a mat-button [routerLink]="['/auctions/create']" routerLinkActive="mat-accent">Nieuwe veiling</a>
                 </li>
-
                 <li>
-                    <a mat-button (click)="logout()"> Logout ({{(currentUser$ | async)?.email }}) </a>
+                  <a mat-button [routerLink]="['/profile', (currentUser$ | async)?.id]" routerLinkActive="mat-accent"> Profiel </a>
+              </li>
+                <li>
+                    <a mat-button (click)="logout()" routerLinkActive="mat-accent"> Logout ({{(currentUser$ | async)?.displayName }}) </a>
                 </li>
             </ng-container>
 

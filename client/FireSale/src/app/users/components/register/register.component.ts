@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
         country: ['', Validators.required]
       }),
       shippingAddress: this.formBuilder.group({
-        supplyShippingAddress: [false, this.requiredIfValidator(() => this.registerForm.get('supplyShippingAddress')?.value)],
+        supplyShippingAddress: [false],
         street: ['', this.requiredIfValidator(() => this.registerForm.get('supplyShippingAddress')?.value)],
         houseNumber: ['', this.requiredIfValidator(() => this.registerForm.get('supplyShippingAddress')?.value)],
         postalCode: ['', [this.requiredIfValidator(() => this.registerForm.get('supplyShippingAddress')?.value), Validators.pattern(/^[0-9]{4}(\s?)[a-zA-Z]{2}$/)]],
