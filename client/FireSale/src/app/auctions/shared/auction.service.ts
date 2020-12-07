@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { AuctionDTO } from '../models/auctionDTO';
 
@@ -6,50 +7,25 @@ import { AuctionDTO } from '../models/auctionDTO';
   providedIn: 'root'
 })
 export class AuctionService {
-
   private baseUrl = 'auctions';
   constructor(private api: ApiService) {
   }
 
-  /**
-   * get
-   */
-  public get(): AuctionDTO[] {
-    let auctions: AuctionDTO[] = [];
-    var now = new Date();
-      for (let i = 0; i < 10; i++)
-      {
-        let adate = new Date(now.setMinutes(now.getMinutes() + i));
-        auctions.push({
-          id: i,
-          name: 'Auction ' + i.toString(),
-          description: 'Description ' + i.toString(),
-          startDate: now,
-          endDate: adate,
-          minimalBid: 100 - i
-        });
-      }
-    return auctions;
+  public get(): Observable<any> {
+    let response = this.api.get(`${this.baseUrl}`);
+    console.log(response);
+    return response;
   }
 
-  public getSingle(id:number): AuctionDTO {
-    var now = new Date();
-    let adate = new Date(now.setMinutes(now.getMinutes() + (id as number)));
-    return {
-          id: id,
-          name: 'Auction ' + id.toString(),
-          description: 'Desription ' + id.toString(),
-          startDate: now,
-          endDate: adate,
-          minimalBid: 100 - (id as number)
-        };
+  public getSingle(id: number): Observable<any>{
+    let response = this.api.get(`${this.baseUrl}/${id}`);
+    console.log(response);
+    return response;
   }
 
   public post(auction:AuctionDTO)
   {
-
-    console.log({posted: auction});
-
+    return this.api.post(`${this.baseUrl}`, auction);
   }
 
 }

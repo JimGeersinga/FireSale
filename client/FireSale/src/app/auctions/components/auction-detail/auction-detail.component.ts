@@ -16,7 +16,11 @@ export class AuctionDetailComponent implements OnInit {
     console.log('Called Constructor');
     this.route.queryParams.subscribe(params => {
         this.id = params['id'];
-        this.model = this.auctionService.getSingle(this.id);
+      this.auctionService.getSingle(this.id).subscribe({
+        next(response) {
+          this.model = response.data;
+        }
+      });
     });
 }
 
