@@ -17,7 +17,6 @@ export class AuctionListItemComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.model);
     this.timeLeft = this.timeDifference(new Date(), this.model.endDate);
-    
     this.startTimer();
   }
 

@@ -12,15 +12,12 @@ import { Observable } from 'rxjs';
 })
 export class AuctionDetailComponent implements OnInit {
   private id: number;
-  public model: AuctionDTO;
+  public model$: Observable<AuctionDTO>;
   constructor(private route: ActivatedRoute, private auctionService: AuctionService){
     console.log('Called Constructor');
     this.route.queryParams.subscribe(params => {
         this.id = params['id'];
-        this.auctionService.getSingle(this.id).subscribe(data => { 
-          this.model = data.data;
-
-      });
+        this.model$ = this.auctionService.getSingle(this.id);
     });
   }
 
