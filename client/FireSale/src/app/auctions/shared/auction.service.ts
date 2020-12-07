@@ -12,20 +12,16 @@ export class AuctionService {
   }
 
   public get(): Observable<any> {
-    let response = this.api.get(`${this.baseUrl}`);
-    console.log(response);
+    const response = this.api.get(`${this.baseUrl}`);
     return response;
   }
 
-  public getSingle(id: number): Observable<any>{
-    let response = this.api.get(`${this.baseUrl}/${id}`);
-    console.log(response);
+  public getSingle(id: number): Observable<any> {
+    const response = this.api.get(`${this.baseUrl}/${id}`);
     return response;
   }
 
-  public post(auction:AuctionDTO)
-  {
-    let result = this.api.post(`${this.baseUrl}`, auction);
+  public post(auction: AuctionDTO): Observable<any> {
+    return this.api.post(`${this.baseUrl}`, auction);
   }
-
 }
