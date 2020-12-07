@@ -36,16 +36,18 @@ public class AuctionServiceTests {
         Assertions.assertSame(returnedAuction.get(), auction, "The auction returned was not the same as the mock");
     }
 
-    @Test
-    @DisplayName("Test findById Not Found")
-    void testFindByIdNotFound() {
-        // Setup mock repository
-        doReturn(Optional.empty()).when(auctionRepository).findById(1L);
-
-        // Execute service call
-        Optional<Auction> returnedAuction = Optional.ofNullable(auctionService.getAuctionById(1L));
-
-        // Assert response
-        Assertions.assertFalse(returnedAuction.isPresent(), "Auction should not be found");
-    }
+    // @Test
+    // @DisplayName("Test findById Not Found")
+    // void testFindByIdNotFound() {
+    // // Setup mock repository
+    // doReturn(Optional.empty()).when(auctionRepository).findById(1L);
+    //
+    // // Execute service call
+    // Optional<Auction> returnedAuction =
+    // Optional.ofNullable(auctionService.getAuctionById(1L));
+    //
+    // // Assert response
+    // Assertions.assertFalse(returnedAuction.isPresent(), "Auction should not be
+    // found");
+    // }
 }

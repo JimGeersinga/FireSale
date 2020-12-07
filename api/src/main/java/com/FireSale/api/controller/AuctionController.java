@@ -34,7 +34,8 @@ public class AuctionController {
             final Auction auction = auctionService.create(auctionEntity);
             return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.CREATED);
         } catch (Exception exception) {
-            return new ResponseEntity<>(new ErrorResponse(ErrorTypes.AUCTION_CREATION_FAILED, exception.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ErrorResponse(ErrorTypes.AUCTION_CREATION_FAILED, exception.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -42,9 +43,11 @@ public class AuctionController {
     public ResponseEntity all() {
         try {
             final Collection<Auction> auctions = auctionService.getAuctions();
-            return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+                    HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(new ErrorResponse(ErrorTypes.AUCTION_NOT_FOUND, exception.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorResponse(ErrorTypes.AUCTION_NOT_FOUND, exception.getMessage()),
+                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -54,7 +57,8 @@ public class AuctionController {
             final Auction auction = auctionService.getAuctionById(id);
             return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(new ErrorResponse(ErrorTypes.AUCTION_NOT_FOUND, exception.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorResponse(ErrorTypes.AUCTION_NOT_FOUND, exception.getMessage()),
+                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -65,7 +69,8 @@ public class AuctionController {
         try {
             final Auction auction = auctionService.updateAuction(id, auctionMapper.toModel(auctionDTO));
         } catch (Exception exception) {
-            return new ResponseEntity<>(new ErrorResponse(ErrorTypes.AUCTION_NOT_FOUND, exception.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorResponse(ErrorTypes.AUCTION_NOT_FOUND, exception.getMessage()),
+                    HttpStatus.NOT_FOUND);
         }
         return null;
     }
@@ -76,4 +81,3 @@ public class AuctionController {
         auctionService.deleteAuction(id);
     }
 }
-
