@@ -11,4 +11,5 @@ export interface UserDto extends BaseDto {
     displayName: string;
     password: string;
     passwordVerify: string;
+    authData: string;
 }

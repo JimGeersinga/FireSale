@@ -5,9 +5,10 @@ export interface RegisterDto {
     gender: string;
     firstName: string;
     lastName: string;
-    address: AddressDto;
     dateOfBirth: Date;
     displayName: string;
     password: string;
     passwordVerify: string;
+    address: AddressDto;
+    shippingAddress: AddressDto;
 }

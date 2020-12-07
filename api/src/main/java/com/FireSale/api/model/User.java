@@ -2,9 +2,11 @@ package com.FireSale.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -17,7 +19,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String displayName;
 
     @Column(nullable = false)
@@ -42,7 +44,8 @@ public class User extends BaseEntity {
     @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = true)
     private Address shippingAddress;
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = false)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "receiver")
