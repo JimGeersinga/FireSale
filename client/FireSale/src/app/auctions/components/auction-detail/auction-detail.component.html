@@ -1,4 +1,4 @@
-<div style="padding: 10px" *ngIf="model != undefined">  <!--gridcontainer-->
+<div style="padding: 10px" *ngIf="model$ | async as model ">  <!--gridcontainer-->
   <mat-grid-list cols="6" gutterSize="10px">
     <mat-grid-tile colspan="4" rowspan="4">
       <mat-card class="example-card" style="height:95%; width:95%; box-sizing: border-box">
@@ -37,7 +37,6 @@
             <mat-chip>categorie 7</mat-chip>
             <mat-chip>categorie 8</mat-chip>
           </mat-chip-list>
-
           <mat-card-subtitle>Tags</mat-card-subtitle>
           <mat-chip-list>
             <mat-chip>tag 1</mat-chip>
