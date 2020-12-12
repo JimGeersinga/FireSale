@@ -1,6 +1,7 @@
 package com.FireSale.api.dto.auction;
 
 import com.FireSale.api.dto.BaseDTO;
+import com.FireSale.api.dto.category.CategoryDTO;
 import com.FireSale.api.model.*;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class AuctionDTO extends BaseDTO {
     private Bid finalBid;
     private Set<Bid> bids;
     private Set<Image> images;
-    private Set<Category> categories;
+    private Set<CategoryDTO> categories;
     private Set<Tag> tags;
+
 }
