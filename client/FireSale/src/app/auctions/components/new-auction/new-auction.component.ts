@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
 import { AuctionDTO } from '../../models/auctionDTO';
 import { AuctionService } from '../../shared/auction.service';
+import { CategoryDTO } from '../../../shared/models/categoryDto';
+import { CategoryService } from '../../../shared/services/category.service';
 
 @Component({
   selector: 'app-new-auction',
@@ -18,23 +20,28 @@ export class NewAuctionComponent implements OnInit {
       description: ['', Validators.required],
       minimalBid: ['', Validators.required],
       startDate: ['', Validators.required],
-      endDate: ['', Validators.required]
+      endDate: ['', Validators.required],
+      categories: ['', Validators.required]
     }
   );
 
   public minDate: Date = new Date();
+  public categories: CategoryDTO[];   
 
   constructor(
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private auctionService: AuctionService,
-    private router: Router
+    private router: Router,
+    private categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
+     this.categoryService.get().subscribe(response => this.categories = response.data);
   }
 
   public submitAuction(data: AuctionDTO): void {
+    console.log(data);
     if (data.endDate < data.startDate || new Date(data.startDate) < new Date()) {
       this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Start datum moet in de toekomst liggen en de eind datum moet daar voorbij liggen.' } });
     } else if (data.minimalBid < 1) {

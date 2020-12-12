@@ -2,6 +2,7 @@ package com.FireSale.api.controller;
 
 import com.FireSale.api.dto.ApiResponse;
 import com.FireSale.api.dto.auction.AuctionDTO;
+import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.model.Auction;
 import com.FireSale.api.service.AuctionService;
@@ -25,8 +26,8 @@ public class AuctionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity create(@Valid @RequestBody AuctionDTO auctionDTO) {
-        final Auction auction = auctionService.create(auctionMapper.toModel(auctionDTO));
+    public ResponseEntity create(@Valid @RequestBody CreateAuctionDTO createAuctionDTO) {
+        final Auction auction = auctionService.create(createAuctionDTO);
         return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.CREATED);
     }
 
@@ -52,4 +53,5 @@ public class AuctionController {
     public void delete(@PathVariable("id") final long id) {
         auctionService.deleteAuction(id);
     }
+
 }
