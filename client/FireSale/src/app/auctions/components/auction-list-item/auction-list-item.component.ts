@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WebSocketService } from 'src/app/core/services/websocket.service';
+import { Util } from 'src/app/shared/util';
 import { AuctionDTO } from '../../models/auctionDTO';
 import { BidDTO } from '../../models/bidDto';
 import { AuctionMessageResponseType } from '../../models/webSocketAuctionMessage';
@@ -14,6 +15,7 @@ export class AuctionListItemComponent implements OnInit {
 
   public timeLeft: number;
   public latestBid: number = null;
+  public util = Util;
 
   constructor(private webSocketService: WebSocketService) { }
 

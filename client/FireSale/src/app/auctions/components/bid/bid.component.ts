@@ -1,8 +1,10 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { WebSocketService } from 'src/app/core/services/websocket.service';
+import { Util } from 'src/app/shared/util';
 import { BidDTO } from '../../models/bidDto';
 import { AuctionMessageResponseType } from '../../models/webSocketAuctionMessage';
 import { AuctionService } from '../../shared/auction.service';
+
 
 @Component({
   selector: 'app-bid',
@@ -24,6 +26,7 @@ export class BidComponent implements OnInit {
     return  (this.timeLeft - Date.now()) <= 0;
   }
   public timeLeft: number;
+  public util = Util;
 
   constructor(
     private webSocketService: WebSocketService,
@@ -50,7 +53,7 @@ export class BidComponent implements OnInit {
   }
 
   public placeBid(bid: number): void {
-    this.auctionService.placeBid(this.auctionId, bid).subscribe(response => { 
+    this.auctionService.placeBid(this.auctionId, bid).subscribe(response => {
         console.log('bid placed');
       console.log(response);
       this.auctionError = "";
@@ -61,7 +64,7 @@ export class BidComponent implements OnInit {
         console.log(error);
         this.auctionError = "U bent overboden of de veiling is gesloten.";
       },
-      () => { 
+      () => {
         console.log('bid complete');
       });
   }
@@ -83,4 +86,6 @@ export class BidComponent implements OnInit {
       this.lastBidRef.nativeElement.classList.remove("highlight");
     },500);
   }
+
+
 }

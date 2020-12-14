@@ -1,4 +1,4 @@
-<countdown class="countdown" [config]="{ stopTime: timeLeft }"></countdown>
+<countdown class="countdown" [config]="{ stopTime: timeLeft, formatDate: util.formatDate}"></countdown>
 
 <div class="place-bid">
   <div class="custom-input">
@@ -6,7 +6,7 @@
     <input matInput class="right-align" type="number" [(ngModel)]="minimumValue" [disabled]="auctionClosed">
   </div>
   <button mat-flat-button color="primary" (click)="placeBid(minimumValue)" [disabled]="auctionClosed">Bieden</button>
-  
+
 </div>
 <div class="auction-error" *ngIf="auctionError.length > 0">
   {{ auctionError }}
@@ -39,7 +39,7 @@
     <div class="auction-closed" *ngIf="auctionClosed">
       De veiling is gesloten
     </div>
-    
+
   </div>
   <span class="footer">{{bids.length}} biedingen</span>
 

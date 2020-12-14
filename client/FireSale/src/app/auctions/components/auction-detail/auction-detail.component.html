@@ -11,7 +11,7 @@
 
   <section class="auction-display">
     <mat-card class="product-wrapper">
-      <app-image-viewer class="images"></app-image-viewer>
+      <app-image-viewer class="images" [images]="model.data.images"></app-image-viewer>
 
       <app-bid class="bid" [auctionId]="model.data.id" [endDate]="model.data.endDate"
         [minimumValue]="model.data.minimalBid">
@@ -50,8 +50,8 @@
       <mat-card-title>Verkoper</mat-card-title>
       <br />
       <mat-card-header>
-        <img mat-card-avatar class="avatar-image" src="https://i.pravatar.cc/75?img={{model.data.id}}" />
-        <mat-card-title>John Doe</mat-card-title>
+        <img mat-card-avatar class="avatar-image" [src]="model.data.user.avatar" />
+        <mat-card-title>{{model.data.user.displayName}}</mat-card-title>
         <mat-card-subtitle>subtitle placeholder</mat-card-subtitle>
       </mat-card-header>
     </mat-card>
