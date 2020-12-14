@@ -24,4 +24,13 @@ export class AuctionService {
   public post(auction: AuctionDTO): Observable<any> {
     return this.api.post(`${this.baseUrl}`, auction);
   }
+
+  public placeBid(auctionId: number, value: number): Observable<any> {
+    return this.api.post(`${this.baseUrl}/${auctionId}/bids`, {
+      value
+    });
+  }
+  public getBids(auctionId: number): Observable<any> {
+    return this.api.get(`${this.baseUrl}/${auctionId}/bids`);
+  }
 }

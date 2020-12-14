@@ -1,0 +1,46 @@
+<countdown class="countdown" [config]="{ stopTime: timeLeft }"></countdown>
+
+<div class="place-bid">
+  <div class="custom-input">
+    <span matPrefix>€&nbsp;</span>
+    <input matInput class="right-align" type="number" [(ngModel)]="minimumValue" [disabled]="auctionClosed">
+  </div>
+  <button mat-flat-button color="primary" (click)="placeBid(minimumValue)" [disabled]="auctionClosed">Bieden</button>
+  
+</div>
+<div class="auction-error" *ngIf="auctionError.length > 0">
+  {{ auctionError }}
+</div>
+
+<div class="bids">
+  <div #lastBidElement class="bid-record last-bid mat-elevation-z2">
+    <ng-container *ngIf="lastBid">
+      <span class="value">€{{lastBid.value || 0}}</span>
+      <span class="user">{{lastBid.userName}}</span>
+      <span class="timestamp" title="{{lastBid.created | date:'dd-MM-yyyy HH:mm'}}">{{lastBid.created |
+        date:'HH:mm:ss'}}</span>
+    </ng-container>
+    <ng-container *ngIf="bids.length === 0">
+      <span class="value">€0</span>
+      <span class="message">Nog geen biedingen</span>
+    </ng-container>
+  </div>
+  <div class="bid-history">
+    <mat-list>
+      <mat-list-item *ngFor="let bid of bids | slice:1">
+        <div class="bid-record">
+          <span class="value">€{{bid.value}}</span>
+          <span class="user">{{bid.userName}}</span>
+          <span class="timestamp" title="{{bid.created | date:'dd-MM-yyyy HH:mm'}}">{{bid.created |
+            date:'HH:mm:ss'}}</span>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <div class="auction-closed" *ngIf="auctionClosed">
+      De veiling is gesloten
+    </div>
+    
+  </div>
+  <span class="footer">{{bids.length}} biedingen</span>
+
+</div>

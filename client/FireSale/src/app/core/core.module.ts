@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicAuthInterceptor } from './interceptors/basic-auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { ConfigService } from './services/config.service';
+import { HomeComponent } from './components/home/home.component';
 
 const appInitializerFn = (appConfig: ConfigService) => {
   return () => {
@@ -14,7 +15,7 @@ const appInitializerFn = (appConfig: ConfigService) => {
 
 
 @NgModule({
-  declarations: [],
+  declarations: [HomeComponent],
   imports: [
     CommonModule
   ],
@@ -29,6 +30,9 @@ const appInitializerFn = (appConfig: ConfigService) => {
     },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
+  exports: [
+    HomeComponent
   ]
 })
 export class CoreModule { }

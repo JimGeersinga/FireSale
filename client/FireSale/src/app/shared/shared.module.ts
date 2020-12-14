@@ -27,15 +27,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
 import { OkDialogComponent } from './components/ok-dialog/ok-dialog.component';
+import { ImageViewerComponent } from './components/image-viewer/image-viewer.component';
 
 @NgModule({
-  declarations: [OkDialogComponent],
+  declarations: [ImageViewerComponent, OkDialogComponent],
   imports: [
     CommonModule,
     MatAutocompleteModule,
@@ -102,11 +103,14 @@ import { OkDialogComponent } from './components/ok-dialog/ok-dialog.component';
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    ImageViewerComponent,
+    OkDialogComponent
   ],
   providers: [
     DatePipe,
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } }
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
   ]
 })
 export class SharedModule { }

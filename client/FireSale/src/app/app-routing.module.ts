@@ -8,12 +8,14 @@ import { NewAuctionComponent } from './auctions/components/new-auction/new-aucti
 import { ProfileComponent } from './users/components/profile/profile.component';
 import { ProfileUpdateComponent } from './users/components/profile-update/profile-update.component';
 import { AuctionDetailComponent } from './auctions/components/auction-detail/auction-detail.component';
+import { HomeComponent } from './core/components/home/home.component';
 
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent},
   { path: 'login', component: LoginComponent},
-  { path: '', component: AuctionListComponent},
+  { path: '', component: HomeComponent},
+  { path: 'auctions', component: AuctionListComponent},
   { path: 'auctions/create', component: NewAuctionComponent, canActivate: [AuthGuard]  },
   { path: 'auctions/details', component: AuctionDetailComponent },
   { path: 'profile/:id', component: ProfileComponent },

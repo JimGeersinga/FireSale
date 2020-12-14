@@ -1,0 +1,74 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 100%;
+
+  .layout-toolbar {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+
+    .app-name {
+      margin-left: 8px;
+    }
+
+    .menu {
+      margin: 0 1rem;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .displayname {
+        flex: 1;
+        font-size: 1rem;
+      }
+
+      .profile-picture {
+        margin-left: 1rem;
+        border-radius: 50%;
+        max-width: 45px;
+        max-height: 45px;
+      }
+    }
+  }
+
+  .sidenav-container {
+    height: 100%;
+
+    mat-sidenav {
+      width: 200px;
+      top: 64px !important;
+
+    }
+
+    .content-container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 64px);
+      width: 100%;
+      margin-top: 64px;
+    }
+
+
+    @media (max-width: 599px) {
+      mat-sidenav {
+        top: 56px !important;
+
+      }
+
+      .content-container {
+        height: calc(100% - 56px);
+        margin-top: 56px;
+      }
+    }
+  }
+
+}

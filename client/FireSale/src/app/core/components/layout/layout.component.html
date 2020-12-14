@@ -1,0 +1,55 @@
+<div class="layout-container">
+  <mat-toolbar color="primary" class="layout-toolbar">
+    <button
+      mat-icon-button
+      (click)="sidenav.toggle()"
+      fxShow="true"
+      fxHide.gt-sm="true"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="app-name">Fire sale</h1>
+    <div class="menu" fxShow="true" fxHide.lt-md="true">
+      <a mat-button [routerLink]="['/']">
+        <span>Home</span>
+      </a>
+      <a mat-button [routerLink]="['/auctions']">
+        <span>Veilingen</span>
+      </a>
+    </div>
+    <span class="spacer"></span>
+
+    <div
+      class="profile"
+      [matMenuTriggerFor]="profileMenu"
+      *ngIf="currentUser$ | async as user"
+    >
+      <span class="displayname">{{ user.displayName }}</span>
+      <img
+        src="https://i.pravatar.cc/75?img={{ user.id }}"
+        class="profile-picture"
+      />
+      <mat-menu #profileMenu="matMenu">
+        <a mat-menu-item [routerLink]="['/profile', user.id]">Profiel</a>
+        <button mat-menu-item (click)="logout()">Uitloggen</button>
+      </mat-menu>
+    </div>
+    <a
+      mat-button
+      [routerLink]="['/login']"
+      *ngIf="(currentUser$ | async) == null"
+    >
+      <span>Login</span>
+    </a>
+  </mat-toolbar>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav [opened]="false" mode="over" fixedInViewport>
+      <app-side-bar></app-side-bar>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="content-container">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
