@@ -1,4 +1,5 @@
 package com.FireSale.api.dto;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -9,5 +10,6 @@ public class WebsocketAuctionMessage<T>{
     private ResponseType responseType;
     private T data;
     private long userId;
+    @JsonFormat(pattern = "dd-MM-yyyy'T'HH:mm:ss")
     private LocalDateTime messageTime;
 }

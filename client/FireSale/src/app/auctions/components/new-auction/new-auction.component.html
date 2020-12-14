@@ -34,7 +34,7 @@
       <div>
         <mat-label>Afbeelding(en)</mat-label>
         <br /><br />
-        <input type="file" multiple formControlName="images" (change)="selectFiles($event)">
+        <input type="file" multiple (change)="selectFiles($event)">
         <br /><br />
         <ul>
           <li *ngFor="let url of selectedFiles"><img [src]=url alt=file /></li>

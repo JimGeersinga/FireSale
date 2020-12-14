@@ -40,20 +40,20 @@ public class Auction extends BaseEntity {
     @JoinColumn(name = "final_bid_id")
     private Bid finalBid;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Bid> bids;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Image> images;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Tag> tags;
 }
 

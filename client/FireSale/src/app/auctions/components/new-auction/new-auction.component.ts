@@ -23,8 +23,7 @@ export class NewAuctionComponent implements OnInit {
     minimalBid: ['', Validators.required],
     startDate: ['', Validators.required],
     endDate: ['', Validators.required],
-    categories: ['', Validators.required],
-    images: this.formBuilder.array([]),
+    categories: ['', Validators.required]
   });
 
 
@@ -57,9 +56,9 @@ export class NewAuctionComponent implements OnInit {
   }
 
   public submitAuction(data: CreateAuctionDTO): void {
-    console.log(data);
-    if (data.endDate < data.startDate || new Date(data.startDate) < new Date()) {
-      this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Start datum moet in de toekomst liggen en de eind datum moet daar voorbij liggen.' } });
+
+    if (data.endDate < data.startDate) {
+      this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Eind datum moet voorbij de start datum liggen.' } });
     } else if (data.minimalBid < 1) {
       this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Wij nemen aan dat je wel een minimum bod wilt hebben dus vul hiervoor een bedrag in.' } });
     } else {
@@ -67,6 +66,7 @@ export class NewAuctionComponent implements OnInit {
         this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Gegevens voor een nieuwe veiling zijn niet correct ingevuld' } });
       }
       else {
+        data.images = [];
         this.selectedFiles.forEach((element) => {
           const encodedImage = element.split('base64,')[1];
           const fileExtension = "." + element.split(';')[0].split('/')[1];
@@ -76,8 +76,9 @@ export class NewAuctionComponent implements OnInit {
             sort: 0, // Moet nog aanpasbaar worden in UI
           });
         });
+        console.log(data);
         this.auctionService.post(data).subscribe(result => {
-          this.router.navigate(['/auctions/details', { queryParams: { id: result.data.id } }]);
+          this.router.navigate(['/auctions/details', result.data.id]);
         });
       }
     }

@@ -63,10 +63,16 @@ public class ImageService {
                 // todo: foutmelding gooien dat conversie niet is gelukt
             }
             try {
+                // Initialize a pointer
+                // in file using OutputStream
                 OutputStream os = new FileOutputStream(file);
+                // Starts writing the bytes in it
+                os.write(image.getImageB64());
+                // Close the file
                 os.close();
+
                 Image newImage = new Image();
-                newImage.setPath(filepath.substring(filepath.indexOf("public")).replace("\\","/"));
+                newImage.setPath(filepath.substring(filepath.indexOf("\\auctions")).replace("\\","/"));
                 newImage.setSort(image.getSort());
                 newImage.setType(image.getType());
                 images.add(newImage);
@@ -152,7 +158,7 @@ public class ImageService {
                 avatar = new Image();
                 user.setAvatar(avatar);
             }
-            avatar.setPath(filepath.substring(filepath.indexOf("public")).replace("\\","/"));
+            avatar.setPath(filepath.substring(filepath.indexOf("\\users")).replace("\\","/"));
             avatar.setType(imageDTO.getType());
             imageRepository.save(avatar);
             userRepository.save(user);

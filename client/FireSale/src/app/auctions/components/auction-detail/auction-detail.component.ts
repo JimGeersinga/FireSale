@@ -21,7 +21,7 @@ export class AuctionDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private auctionService: AuctionService
   ) {
-    this.route.queryParams.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.id = params.id;
       this.model$ = this.auctionService.getSingle(this.id);
     });

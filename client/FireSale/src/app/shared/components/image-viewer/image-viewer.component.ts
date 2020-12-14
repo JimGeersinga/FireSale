@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ImageDTO } from 'src/app/auctions/models/imageDTO';
 
 @Component({
   selector: 'app-image-viewer',
@@ -8,25 +9,13 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ImageViewerComponent implements OnInit {
 
   @Input() public enableHoverPreview = false;
-  @Input() public images: string[];
+  @Input() public images: ImageDTO[];
 
   public currentImageIndex = 0;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.images = [
-      'https://loremflickr.com/450/300?lock=1',
-      'https://loremflickr.com/450/300?lock=2',
-      'https://loremflickr.com/450/450?lock=3',
-      'https://loremflickr.com/300/450?lock=4',
-      'https://loremflickr.com/550/300?lock=5',
-      'https://loremflickr.com/450/300?lock=6',
-      'https://loremflickr.com/450/300?lock=7',
-      'https://loremflickr.com/450/300?lock=8',
-      'https://loremflickr.com/450/300?lock=9',
-      'https://loremflickr.com/450/300?lock=10'
-    ];
   }
 
   public showImage(index: number): void {
@@ -48,6 +37,6 @@ export class ImageViewerComponent implements OnInit {
   }
 
   private scrollIntoView(): void {
-    document.getElementById('image-' + this.currentImageIndex).scrollIntoView();
+    document.getElementById('image-' + this.currentImageIndex)?.scrollIntoView();
   }
 }
