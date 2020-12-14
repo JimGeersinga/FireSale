@@ -4,48 +4,48 @@
         <form [formGroup]="profileUpdateForm" *ngIf="profileUpdateForm" (ngSubmit)="submitProfileUpdate(id, profileUpdateForm.value)">
           <mat-form-field fullWidth>
             <mat-label>E-mailadres</mat-label>
-            <input matInput type="text" required formControlName="email">
+            <input matInput type="text" formControlName="email">
             <mat-error *ngIf="profileUpdateForm.hasError('email', 'email') || profileUpdateForm.hasError('required', 'email') ">
-              Vul een geldig email adres in
+              Vul een geldig e-mailadres in.
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Geslacht</mat-label>
-            <mat-select formControlName="gender" required>
+            <mat-select formControlName="gender">
               <mat-option value="FEMALE">Vrouw</mat-option>
               <mat-option value="MALE">Man</mat-option>
               <mat-option value="OTHER">Anders</mat-option>
             </mat-select>
             <mat-error *ngIf="profileUpdateForm.hasError('required', 'gender') ">
-              Vul je geslacht in
+              Vul je geslacht in.
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Voornaam</mat-label>
-            <input matInput type="text" required formControlName="firstName" />
+            <input matInput type="text" formControlName="firstName" />
             <mat-error *ngIf="profileUpdateForm.hasError('required', 'firstName') ">
-              Vul je voornaam in
+              Vul je voornaam in.
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Achternaam</mat-label>
-            <input matInput type="text" required formControlName="lastName" />
+            <input matInput type="text" formControlName="lastName" />
             <mat-error *ngIf="profileUpdateForm.hasError('required', 'lastName') ">
-              Vul je achternaam in
+              Vul je achternaam in.
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Geboortedatum</mat-label>
-            <input matInput type="date" required formControlName="dateOfBirth" />
+            <input matInput type="date" formControlName="dateOfBirth" />
             <mat-error *ngIf="profileUpdateForm.hasError('required', 'dateOfBirth') ">
-              Vul je geboortedatum in
+              Vul je geboortedatum in.
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Weergavenaam</mat-label>
-            <input matInput type="text" required formControlName="displayName" />
+            <input matInput type="text" formControlName="displayName" />
             <mat-error *ngIf="profileUpdateForm.hasError('required', 'displayName') ">
-              Vul een weergave naam in
+              Vul een weergavenaam in.
             </mat-error>
           </mat-form-field>
 
@@ -53,95 +53,92 @@
             <h4>Adres</h4>
             <mat-form-field>
               <mat-label>Straatnaam</mat-label>
-              <input matInput type="text" required formControlName="street" />
+              <input matInput type="text" formControlName="street" />
               <mat-error *ngIf="profileUpdateForm.hasError('required', 'street')">
-                Vul je straatnaam in
+                Vul je straatnaam in.
               </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Huisnummer</mat-label>
-              <input matInput type="text" required formControlName="houseNumber" />
+              <input matInput type="text" formControlName="houseNumber" />
               <mat-error *ngIf="profileUpdateForm.hasError('required', 'houseNumber')">
-                Vul je huisnummer in
+                Vul je huisnummer in.
               </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Postcode</mat-label>
-              <input matInput type="text" required pattern="[0-9]{4}(\s?)[a-zA-Z]{2}" formControlName="postalCode" />
+              <input matInput type="text" pattern="[0-9]{4}(\s?)[a-zA-Z]{2}" formControlName="postalCode" />
               <mat-error *ngIf="profileUpdateForm.hasError('required', 'postalCode') || profileUpdateForm.hasError('pattern', 'postalCode')">
-                De postcode moet bestaan uit vier cijfers en 2 letters
+                De postcode moet bestaan uit vier cijfers en twee letters.
               </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Plaats</mat-label>
-              <input matInput type="text" required formControlName="city" />
+              <input matInput type="text" formControlName="city" />
               <mat-error *ngIf="profileUpdateForm.hasError('required', 'city')">
-                Vul je plaatsnaam in
+                Vul je plaatsnaam in.
               </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Land</mat-label>
-              <input matInput type="text" required formControlName="country" />
+              <input matInput type="text" formControlName="country" />
               <mat-error *ngIf="profileUpdateForm.hasError('required', 'country')">
-                Vul je land in
+                Vul je land in.
               </mat-error>
             </mat-form-field>
           </mat-card>
-
           <mat-card formGroupName="shippingAddress" class="sub-form">
             <h4>Leveringsadres</h4>
-
             <ng-container>
               <mat-form-field>
                 <mat-label>Straatnaam</mat-label>
-                <input matInput type="text" required formControlName="street" />
+                <input matInput type="text" formControlName="street" />
                 <mat-error *ngIf="profileUpdateForm.hasError('required', 'street')">
-                  Vul je straatnaam in
+                  Vul je straatnaam in.
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Huisnummer</mat-label>
-                <input matInput type="text" required formControlName="houseNumber" />
+                <input matInput type="text" formControlName="houseNumber" />
                 <mat-error *ngIf="profileUpdateForm.hasError('required', 'houseNumber')">
-                  Vul je huisnummer in
+                  Vul je huisnummer in.
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Postcode</mat-label>
-                <input matInput type="text" required pattern="[0-9]{4}(\s?)[a-zA-Z]{2}" formControlName="postalCode" />
+                <input matInput type="text" pattern="[0-9]{4}(\s?)[a-zA-Z]{2}" formControlName="postalCode" />
                 <mat-error *ngIf="profileUpdateForm.hasError('required', 'postalCode') || profileUpdateForm.hasError('pattern', 'postalCode')">
-                  De postcode moet bestaan uit vier cijfers en 2 letters
+                  De postcode moet bestaan uit vier cijfers en twee letters.
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Plaats</mat-label>
-                <input matInput type="text" required formControlName="city" />
+                <input matInput type="text" formControlName="city" />
                 <mat-error *ngIf="profileUpdateForm.hasError('required', 'city')">
-                  Vul je plaatsnaam in
+                  Vul je plaatsnaam in.
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Land</mat-label>
-                <input matInput type="text" required formControlName="country" />
+                <input matInput type="text" formControlName="country" />
                 <mat-error *ngIf="profileUpdateForm.hasError('required', 'country')">
-                  Vul je land in
+                  Vul je land in.
                 </mat-error>
               </mat-form-field>
             </ng-container>
           </mat-card>
-
           <mat-form-field>
             <mat-label>Wachtwoord</mat-label>
-            <input matInput type="password" required formControlName="password" />
+            <input matInput type="password" formControlName="password" />
             <mat-error *ngIf="profileUpdateForm.hasError('pattern', 'password')">
-              Het wachtwoord moet bestaan minimaal acht characters, waarvan minimaal één letter, één nummer en één speciaal character
+              Het wachtwoord moet bestaan uit minimaal acht karakters, waarvan minimaal één letter, één cijfer en één speciaal karakter.
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Wachtwoord bevestigen</mat-label>
-            <input matInput type="password" required formControlName="passwordVerify" [errorStateMatcher]="matcher" />
+            <input matInput type="password" formControlName="passwordVerify" [errorStateMatcher]="matcher" />
             <mat-error *ngIf="profileUpdateForm.hasError('notSame')">
-              Wachtwoorden komen niet overeen
+              Wachtwoorden komen niet overeen.
             </mat-error>
           </mat-form-field>
             <button mat-raised-button color="primary" type="submit">Update gegevens</button>
