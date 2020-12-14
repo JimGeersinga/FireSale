@@ -1,0 +1,18 @@
+<div class="carousel">
+  <button mat-mini-fab (click)="prevImage()" class="navigation-buttons prev">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <img [src]="images[currentImageIndex]" />
+  <button mat-mini-fab (click)="nextImage()" class="navigation-buttons next">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>
+<div class="image-list">
+  <div id="image-{{i}}" class="image-preview" 
+    *ngFor="let image of images; let i = index"
+    [class.active]="currentImageIndex == i"
+    (mouseenter)="enableHoverPreview && showImage(i)"
+    (click)="showImage(i)">
+    <img [src]="image" />
+  </div>
+</div>

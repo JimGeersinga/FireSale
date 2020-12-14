@@ -9,4 +9,5 @@ export interface AuctionDTO {
   startDate: Date;
   endDate: Date;
   categories: CategoryDTO[];
+  tags: string[];
 }

@@ -33,7 +33,7 @@ export class ApiService {
     }
 
     const path = `${this.config.get().apiRoot}/${endpoint}`;
-    console.log('load', path);
+    console.log('[GET]', path);
     return this.http.get<TResponse>(path, reqOpts);
   }
 
@@ -44,7 +44,9 @@ export class ApiService {
   }
 
   public post<TResponse>(endpoint: string, body: any, reqOpts?: RequestOptions): Observable<TResponse> {
-    return this.http.post<TResponse>(`${this.config.get().apiRoot}/${endpoint}`, body, reqOpts);
+    const path = `${this.config.get().apiRoot}/${endpoint}`;
+    console.log('[POST]', path, body);
+    return this.http.post<TResponse>(path, body, reqOpts);
   }
 
   public postFile(endpoint: string, body: any): any {
@@ -54,14 +56,20 @@ export class ApiService {
   }
 
   public put<TResponse>(endpoint: string, body: any, reqOpts?: RequestOptions): Observable<TResponse> {
-    return this.http.put<TResponse>(`${this.config.get().apiRoot}/${endpoint}`, body, reqOpts);
+    const path = `${this.config.get().apiRoot}/${endpoint}`;
+    console.log('[PUT]', path, body);
+    return this.http.put<TResponse>(path, body, reqOpts);
   }
 
   public delete<TResponse>(endpoint: string, reqOpts?: RequestOptions): Observable<TResponse> {
-    return this.http.delete<TResponse>(`${this.config.get().apiRoot}/${endpoint}`, reqOpts);
+    const path = `${this.config.get().apiRoot}/${endpoint}`;
+    console.log('[DELETE]', path);
+    return this.http.delete<TResponse>(path, reqOpts);
   }
 
   public patch<TResponse>(endpoint: string, body: any, reqOpts?: RequestOptions): Observable<TResponse> {
-    return this.http.patch<TResponse>(`${this.config.get().apiRoot}/${endpoint}`, body, reqOpts);
+    const path = `${this.config.get().apiRoot}/${endpoint}`;
+    console.log('[PATCH]', path, body);
+    return this.http.patch<TResponse>(path, body, reqOpts);
   }
 }

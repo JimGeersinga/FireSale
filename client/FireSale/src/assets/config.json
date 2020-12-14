@@ -1,3 +1,4 @@
 {
-  "apiRoot": "http://localhost:8080"
+  "apiRoot": "http://localhost:8080",
+  "webSocketRoot":  "http://localhost:8080/ws"
 }

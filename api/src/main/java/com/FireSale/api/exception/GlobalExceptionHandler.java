@@ -60,4 +60,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse error = new ErrorResponse(ErrorTypes.UNKNOWN,"Registration Failed", details);
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(CreateBidException.class)
+    protected ResponseEntity<Object> handleCreateBidException(CreateBidException ex, WebRequest request) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse(ErrorTypes.VALIDATION_FAILED,"Bidding Failed", details);
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
 }

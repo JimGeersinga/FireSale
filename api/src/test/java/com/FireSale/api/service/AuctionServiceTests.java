@@ -29,7 +29,7 @@ public class AuctionServiceTests {
         doReturn(Optional.of(auction)).when(auctionRepository).findById(1L);
 
         // Execute service call
-        Optional<Auction> returnedAuction = Optional.ofNullable(auctionService.getAuctionById(1));
+        Optional<Auction> returnedAuction = Optional.ofNullable(auctionService.findAuctionById(1));
 
         // Assert response
         Assertions.assertTrue(returnedAuction.isPresent(), "Auction was not found");

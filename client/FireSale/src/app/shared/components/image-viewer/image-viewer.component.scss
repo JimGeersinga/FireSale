@@ -1,0 +1,72 @@
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.carousel {
+  width: 100%;
+  height: calc(100% - 75px - 1rem);
+  text-align: center;
+  background-color: #fafafafa;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+
+  .navigation-buttons {
+    position: absolute;
+
+    &.prev {
+      left: 1rem;
+    }
+    &.next {
+      right: 1rem;
+    }
+  }
+
+  img {
+    object-fit: contain;
+  }
+}
+
+.image-list {
+  display: flex;
+  flex-flow: row nowrap;
+  background-color: #fafafafa;
+  overflow-x: overlay;
+  overflow-y: hidden;
+  width: 100%;
+  margin: 0 auto;
+  gap: 0.5rem;
+
+  .image-preview {
+    width: 75px;
+    height: 75px;
+    flex: 0 0 75px;
+    cursor: pointer;
+    position: relative;
+    
+    &::after {
+      content:"";
+      position: absolute;
+      background-color: #ffffff;
+      opacity: 0.7;
+      width: 100%;
+      height: 100%;
+      top:0;
+      left:0;
+    }
+
+    &.active::after{
+      display: none;
+    }
+  }
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}

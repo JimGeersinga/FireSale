@@ -1,82 +1,58 @@
-.grid-container {
-  padding: 10px;
+section.wrapper {
+  padding: 50px;
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-.right-align {
-text-align: right;
-}
-
-.form-flex-container {
-display: flex;
-width: 100%;
-justify-content: flex-start;
-}
-
-.button-flex-container {
-display: flex;
-width: 100%;
-justify-content: flex-end;
-}
-
-.full-size-mat-card {
-width: calc(100% - 5px);
-height: calc(100% - 5px);
-box-sizing: border-box;
-}
-
-.items {
-max-width: 300px;
-height: 300px;
-background: #ECECEC;
-}
-
-#left, #right {
-margin: 30px;
-
-&:hover {
-  cursor: pointer;
-}
-}
-
-#container {
-  width: 100%;
-  margin: 5em auto;
-  padding: 0;
-  .ng2-carouselamos-container{
-      width: 70%;
-      margin: auto;
+.page-header {
+  h2 {
+    display: inline;
   }
-  .slide-items{
-      margin-right: 10px;
-      img{
-          width: 900px;
-          height: 400px;
-          object-fit: contain;
+  .auction-time {
+    float:right;
+  }
+}
+
+.auction-display {
+  >mat-card {
+    margin-top: 0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+
+  .product-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    .bid {
+      flex: 0 0 250px;
+      background-color: #fafafa;
+      padding: 1rem;
+    }
+
+    .images {
+      flex-grow: 1;
+      height: 410px;
+      width: 0px;
+    }
+  }
+
+}
+
+mat-card {
+  margin: 1rem 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .auction-display {
+    .product-wrapper {
+      flex-direction: column;
+
+      .images {
+        width: 100%;
       }
+    }
   }
-}
-
-.avatar-image {
-background-image: url('https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png');
-background-size: cover;
-&:hover {
-  cursor: pointer;
-}
-}
-
-.category-tag {
-&:hover {
-  cursor: pointer;
-}
-}
-
-.countdown-container {
-text-align: center;
-padding: 4.5em 0;
-}
-
-.countdown-timer {
-color: rebeccapurple;
-font-weight: bold;
-font-size: xxx-large;
 }

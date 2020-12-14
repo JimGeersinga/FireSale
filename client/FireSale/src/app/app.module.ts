@@ -6,16 +6,15 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuctionListComponent } from './auctions/components/auction-list/auction-list.component';
 import { AuctionDetailComponent } from './auctions/components/auction-detail/auction-detail.component';
-import { BidComponent } from './bids/bid/bid.component';
-import { BidHistoryComponent } from './bids/bid-history/bid-history.component';
+import { BidComponent } from './auctions/components/bid/bid.component';
 import { UserListComponent } from './users/components/user-list/user-list.component';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { RegisterComponent } from './users/components/register/register.component';
 import { SharedModule } from './shared/shared.module';
-import { SideBarComponent } from './core/side-bar/side-bar.component';
+import { SideBarComponent } from './core/components/side-bar/side-bar.component';
 import { LoginComponent } from './users/components/login/login.component';
-import { LayoutComponent } from './core/layout/layout.component';
+import { LayoutComponent } from './core/components/layout/layout.component';
 import { AuctionListItemComponent } from './auctions/components/auction-list-item/auction-list-item.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -25,7 +24,8 @@ import { NewAuctionComponent } from './auctions/components/new-auction/new-aucti
 import { ProfileComponent } from './users/components/profile/profile.component';
 import { ProfileUpdateComponent } from './users/components/profile-update/profile-update.component';
 import { CountdownModule } from 'ngx-countdown';
-import { Ng2CarouselamosModule } from 'ng2-carouselamos';
+import { SortByPipe } from './core/pipes/sort-by.pipe';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -34,7 +34,6 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
     AuctionListComponent,
     AuctionDetailComponent,
     BidComponent,
-    BidHistoryComponent,
     UserListComponent,
     HeaderComponent,
     FooterComponent,
@@ -45,7 +44,8 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
     AuctionListItemComponent,
     NewAuctionComponent,
     ProfileComponent,
-    ProfileUpdateComponent
+    ProfileUpdateComponent,
+    SortByPipe,
   ],
   imports: [
     BrowserModule,
@@ -58,7 +58,7 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
     CoreModule,
     RouterModule,
     CountdownModule,
-    Ng2CarouselamosModule
+    FlexLayoutModule
   ],
   providers: [
   ],

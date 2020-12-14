@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -50,14 +49,14 @@ public class AuctionService {
         return auctionRepository.findAll();
     }
 
-    public Auction getAuctionById(final long id) {
+    public Auction findAuctionById(final long id) {
         return auctionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("No auction exists for id: %d", id), Auction.class));
     }
 
     @Transactional(readOnly = false)
     public Auction updateAuction(Long id, Auction auction) {
-        final Auction existing = getAuctionById(id);
+        final Auction existing = findAuctionById(id);
 
         if(Guard.isSelf(existing.getUser().getId())) {
             throw new UnAuthorizedException("Cannot update the auction");
@@ -76,7 +75,7 @@ public class AuctionService {
 
     @Transactional(readOnly = false)
     public Auction deleteAuction(Long id) {
-        final Auction existing = getAuctionById(id);
+        final Auction existing = findAuctionById(id);
 
         if(Guard.isSelf(existing.getUser().getId())) {
             throw new UnAuthorizedException("Cannot delete the auction");

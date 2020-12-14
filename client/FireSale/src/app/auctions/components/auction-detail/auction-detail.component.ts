@@ -14,12 +14,13 @@ import { Observable } from 'rxjs';
 export class AuctionDetailComponent implements OnInit {
   private id: number;
   public model$: Observable<ApiResponse<AuctionDTO>>;
-
-  items: Array<any> = [{ name: 'assets/images/headphone1.jfif' }, { name: 'assets/images/headphone2.jfif' }, { name: 'assets/images/headphone3.jfif' }, { name: 'assets/images/headphone4.jfif' }]
+  items: Array<any> = [{ name: 'assets/images/headphone1.jfif' }, { name: 'assets/images/headphone2.jfif' }, { name: 'assets/images/headphone3.jfif' }, { name: 'assets/images/headphone4.jfif' }];
   timeLeft: number;
 
-  constructor(private route: ActivatedRoute, private auctionService: AuctionService) {
-    console.log('Called Constructor');
+  constructor(
+    private route: ActivatedRoute,
+    private auctionService: AuctionService
+  ) {
     this.route.queryParams.subscribe(params => {
       this.id = params.id;
       this.model$ = this.auctionService.getSingle(this.id);
@@ -27,8 +28,6 @@ export class AuctionDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.model$.subscribe(x => {
-      this.timeLeft = new Date(x.data.endDate).getTime();
-    });
+
   }
 }

@@ -1,108 +1,59 @@
-<div style="padding: 10px" *ngIf="model$ | async as model">
-  <mat-grid-list cols="6" rowHeight="2:1" gutterSize="10px">
+<section class="wrapper" *ngIf="model$ | async as model">
+  <mat-card class="page-header">
+    <h2 class="page-title">{{ model.data.name }}</h2>
+    <div class="auction-time">
+      <mat-chip-list>
+        <mat-chip><b>START: </b> {{model.data.startDate | date: 'dd-MM-yyyy HH:mm'}}</mat-chip>
+        <mat-chip><b>EIND: </b> {{model.data.endDate | date: 'dd-MM-yyyy HH:mm'}}</mat-chip>
+      </mat-chip-list>
+    </div>
+  </mat-card>
 
-    <mat-grid-tile colspan="4" rowspan="8">
+  <section class="auction-display">
+    <mat-card class="product-wrapper">
+      <app-image-viewer class="images"></app-image-viewer>
 
-      <mat-card class="full-size-mat-card">
+      <app-bid class="bid" [auctionId]="model.data.id" [endDate]="model.data.endDate"
+        [minimumValue]="model.data.minimalBid">
+      </app-bid>
+    </mat-card>
+  </section>
 
-        <div id="container">
-          <div ng2-carouselamos
-               class="slides-wrapper"
-               [items]="items"
-               [width]="900"
-               [$prev]="prev"
-               [$next]="next"
-               [$item]="item">
-          </div>
-
-          <ng-template #prev>
-            <img src="assets/images/left_arrow.png" id="left" />
-          </ng-template>
-          <ng-template #next>
-            <img src="assets/images/right_arrow.png" id="right" />
-          </ng-template>
-          <ng-template #item let-item let-i="index">
-            <div class="slide-items">
-              <img src="{{ item.name }}">
-            </div>
-          </ng-template>
-         </div>
-
-          <mat-card-title>{{model.data.name}}</mat-card-title>
-          <mat-card-content>
-            {{model.data.description}}
-          </mat-card-content>
-      </mat-card>
-
-    </mat-grid-tile>
-
-    <mat-grid-tile colspan="2" rowspan="4">
-      <mat-card class="full-size-mat-card">
-        <mat-card-content>
-          <div class="countdown-container">
-            <countdown class="countdown-timer" [config]="{ stopTime: timeLeft }"></countdown>
-          </div>
-
-          <mat-list>
-            <mat-list-item>€18 Carlo 12-08-2020</mat-list-item>
-            <mat-list-item>€15 Mike  12-09-2020</mat-list-item>
-            <mat-list-item>€8 Kamiel 12-011-2020</mat-list-item>
-          </mat-list>
-
-          <mat-form-field>
-            <mat-label>Mijn bod</mat-label>
-            <input matInput class="right-align" placeholder="{{model.data.minimalBid}}" value="{{model.data.minimalBid}}">
-            <span matPrefix>€&nbsp;</span>
-          </mat-form-field>
-        </mat-card-content>
-
-        <mat-card-actions>
-          <button mat-button color="primary">Bieden</button>
-        </mat-card-actions>
-      </mat-card>
-    </mat-grid-tile>
-
-
-    <mat-grid-tile colspan="2" rowspan="4">
-      <mat-card class="full-size-mat-card">
-        <mat-card-title>Veiling informatie (placeholder)</mat-card-title>
-        <br />
-        <mat-card-subtitle>Auction owner</mat-card-subtitle>
-        <mat-card-header>
-          <div mat-card-avatar class="avatar-image"></div>
-          <mat-card-title>John Doe</mat-card-title>
-          <mat-card-subtitle>subtitle placeholder</mat-card-subtitle>
-        </mat-card-header>
+  <section class="auction-description">
+    <mat-card>
+      <mat-card-title>Veiling informatie</mat-card-title>
+      <br />
+      <mat-card-content>
+        <mat-card-subtitle>Beschrijving</mat-card-subtitle>
+        <div>
+          {{ model.data.description }}
+        </div>
         <br />
         <mat-card-subtitle>Categorieën</mat-card-subtitle>
-        <mat-card-content>
-          <mat-chip-list>
-            <mat-chip class="category-tag">categorie 1</mat-chip>
-            <mat-chip class="category-tag">categorie 2</mat-chip>
-            <mat-chip class="category-tag">categorie 3</mat-chip>
-            <mat-chip class="category-tag">categorie 4</mat-chip>
-            <mat-chip class="category-tag">categorie 5</mat-chip>
-            <mat-chip class="category-tag">categorie 6</mat-chip>
-            <mat-chip class="category-tag">categorie 7</mat-chip>
-            <mat-chip class="category-tag">categorie 8</mat-chip>
-          </mat-chip-list>
-          <br />
+        <mat-chip-list>
+          <mat-chip class="category" *ngFor="let category of model.data.categories">{{category.name}}</mat-chip>
+        </mat-chip-list>
+        <div *ngIf="model.data.categories.length === 0">-</div>
+        <br />
+        <mat-card-subtitle>Tags</mat-card-subtitle>
+        <mat-chip-list>
+          <mat-chip class="tag" *ngFor="let tag of model.data.tags">{{tag}}</mat-chip>
+        </mat-chip-list>
+        <div *ngIf="model.data.tags.length === 0">-</div>
+      </mat-card-content>
+    </mat-card>
 
-          <mat-card-subtitle>Tags</mat-card-subtitle>
-          <mat-chip-list>
-            <mat-chip class="category-tag">tag 1</mat-chip>
-            <mat-chip class="category-tag">tag 2</mat-chip>
-            <mat-chip class="category-tag">tag 3</mat-chip>
-            <mat-chip class="category-tag">tag 4</mat-chip>
-            <mat-chip class="category-tag">tag 5</mat-chip>
-            <mat-chip class="category-tag">tag 6</mat-chip>
-            <mat-chip class="category-tag">tag 7</mat-chip>
-            <mat-chip class="category-tag">tag 8</mat-chip>
-            <mat-chip class="category-tag">tag 9</mat-chip>
-            <mat-chip class="category-tag">tag 10</mat-chip>
-          </mat-chip-list>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
-</div>
+  </section>
+
+  <section class="owner-info">
+    <mat-card>
+      <mat-card-title>Verkoper</mat-card-title>
+      <br />
+      <mat-card-header>
+        <img mat-card-avatar class="avatar-image" src="https://i.pravatar.cc/75?img={{model.data.id}}" />
+        <mat-card-title>John Doe</mat-card-title>
+        <mat-card-subtitle>subtitle placeholder</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </section>
+</section>

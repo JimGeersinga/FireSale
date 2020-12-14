@@ -1,24 +1,63 @@
 :host {
   display: block;
+  flex-direction: column;
   position: relative;
   height: 100%;
   width: 100%;
+
+  >section:first-child {
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+
+  >section {
+    padding: 25px 25px 25px 25px;
+  }
+
 }
 
+.featured-section {
+  background-color: gainsboro;
 
-.item-wrapper {
-  display: flex;
-  width: 100%;
-  overflow-x: scroll;
+  .auction-list {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1rem;
+    grid-template-rows: 280px;
+    grid-auto-flow: column;
+    grid-auto-columns: auto;
+    margin-left: -25px;
+    margin-right: -25px;
+    width: auto;
+    overflow-x: overlay;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    padding-bottom: 2rem;
+
+    .auction {
+      min-width: 475px;
+    }
+
+    &:before,
+    &:after {
+      content: '';
+      width: 50px;
+    }
+  }
 }
-h3 {
-  padding: 20px 20px 0px 20px;
-  margin-bottom: 0;
-}
 
+.other-section {
 
-.new-auction {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+  .auction-list {
+    display: grid;
+    grid-template-rows: 280px;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    grid-auto-flow: row dense;
+    gap: 2rem;
+
+    .auction {
+      width: auto;
+      height: 280px;
+    }
+  }
 }

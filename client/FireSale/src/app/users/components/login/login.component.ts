@@ -15,8 +15,8 @@ import { UserService } from '../../shared/user.service';
 })
 export class LoginComponent implements OnInit {
   loginForm = this.formBuilder.group({
-    email: ['', Validators.required],
-    password: ['', Validators.required],
+    email: ['admin@firesale.nl', Validators.required],
+    password: ['admin', Validators.required],
   });
 
   returnUrl: string;
