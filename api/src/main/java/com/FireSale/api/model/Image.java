@@ -10,7 +10,7 @@ import java.util.Set;
 @Setter
 @Entity
 public class Image extends BaseEntity {
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false, unique = true)
     private String path;
 
     @Column(nullable = false)
