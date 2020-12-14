@@ -1,4 +1,4 @@
-import { DateSelectionModelChange } from '@angular/material/datepicker';
+import { CreateImageDTO } from './createImageDto';
 
 export interface CreateAuctionDTO {
   id: number;
@@ -8,4 +8,5 @@ export interface CreateAuctionDTO {
   startDate: Date;
   endDate: Date;
   categories: number[];
+  images: CreateImageDTO[];
 }

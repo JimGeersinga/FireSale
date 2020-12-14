@@ -1,7 +1,7 @@
-<section>
+<section *ngIf="user$ | async as user">
   <div class="profile-header mat-elevation-z2">
-    <div class="avatar" style="background-image: url(https://i.pravatar.cc/75?img={{id}});"></div>
-    <div class="user-info" *ngIf="user$ | async as user">
+    <div class="avatar" style="background-image: url({{user.data.avatar}});"></div>
+    <div class="user-info" >
       <h2 class="display-name">{{user.data.displayName}}</h2>
       <span class="user-since">Actief sinds: {{user.data.created | date:'dd MMMM yyyy'}}</span>
     </div>

@@ -1,5 +1,6 @@
 package com.FireSale.api.service;
 
+import com.FireSale.api.dto.auction.CreateImageDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.exception.UnAuthorizedException;
@@ -27,6 +28,8 @@ public class AuctionService {
 
     private final AuctionRepository auctionRepository;
     private final UserRepository userRepository;
+    private final ImageService imageService;
+
     private final CategoryRepository categoryRepository;
     private final AuctionMapper auctionMapper;
 
@@ -40,6 +43,10 @@ public class AuctionService {
         auction.setIsDeleted(false);
         auction.setIsFeatured(false);
         auction.setStatus(AuctionStatus.Ready);
+//        Auction createdAuction = auctionRepository.save(auction);
+//        imageService.storeAuctionImages(images, createdAuction);
+////        return auctionRepository.save(auction);
+//        return createdAuction;
         auction.setCategories(categories);
 
         return auctionRepository.save(auction);
@@ -58,7 +65,7 @@ public class AuctionService {
     public Auction updateAuction(Long id, Auction auction) {
         final Auction existing = findAuctionById(id);
 
-        if(Guard.isSelf(existing.getUser().getId())) {
+        if (Guard.isSelf(existing.getUser().getId())) {
             throw new UnAuthorizedException("Cannot update the auction");
         }
 
@@ -77,7 +84,7 @@ public class AuctionService {
     public Auction deleteAuction(Long id) {
         final Auction existing = findAuctionById(id);
 
-        if(Guard.isSelf(existing.getUser().getId())) {
+        if (Guard.isSelf(existing.getUser().getId())) {
             throw new UnAuthorizedException("Cannot delete the auction");
         }
 
@@ -95,8 +102,6 @@ public class AuctionService {
     public Collection<Category> getAllCategories( ) {
         return categoryRepository.findAll();
     }
-
-
 }
 
 

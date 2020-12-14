@@ -2,6 +2,7 @@ package com.FireSale.api.dto.user;
 
 import com.FireSale.api.dto.BaseDTO;
 import com.FireSale.api.dto.address.AddressDTO;
+import com.FireSale.api.dto.auction.ImageDTO;
 import com.FireSale.api.model.Gender;
 import com.FireSale.api.model.Role;
 import lombok.Data;
@@ -19,4 +20,5 @@ public class UserDTO extends BaseDTO {
     private Role role;
     private AddressDTO address;
     private AddressDTO shippingAddress;
+    private String avatar;
 }

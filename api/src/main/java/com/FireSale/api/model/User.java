@@ -48,6 +48,9 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Role role;
 
+    @OneToOne()
+    private Image avatar;
+
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "receiver")
     private Set<Review> incomingReviews;
 

@@ -47,7 +47,7 @@ public class Auction extends BaseEntity {
     @OneToMany()
     private Set<Bid> bids;
 
-    @OneToMany()
+    @ManyToMany()
     private Set<Image> images;
 
     @ManyToMany()

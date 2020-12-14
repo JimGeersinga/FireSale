@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
 
+    @Mapping(target = "images", ignore = true)
     @Mapping(target="categories", ignore = true)
     Auction toModel(CreateAuctionDTO createAuctionDTO);
 

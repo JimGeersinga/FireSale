@@ -1,5 +1,16 @@
 section {
-
   padding: 50px;
   display: block;
+}
+
+ul {
+  list-style-type: none;
+
+  li {
+    display: inline;
+    img {
+      width: 100px;
+      margin-right: 30px;
+    }
+  }
 }

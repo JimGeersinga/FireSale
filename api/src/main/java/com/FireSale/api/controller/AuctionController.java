@@ -5,11 +5,13 @@ import com.FireSale.api.dto.auction.AuctionDTO;
 import com.FireSale.api.dto.bid.BidDTO;
 import com.FireSale.api.dto.bid.CreateBidDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
+import com.FireSale.api.dto.auction.CreateImageDTO;
 import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.mapper.BidMapper;
 import com.FireSale.api.model.Auction;
 import com.FireSale.api.model.Bid;
 import com.FireSale.api.service.AuctionService;
+import com.FireSale.api.service.ImageService;
 import com.FireSale.api.service.BidService;
 import com.FireSale.api.service.UserService;
 import com.FireSale.api.util.SecurityUtil;
@@ -20,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +36,7 @@ public class AuctionController {
     private final AuctionService auctionService;
     private final UserService userService;
     private final AuctionMapper auctionMapper;
+    private final ImageService imageService;
     private final RealTimeAuctionController bidController;
     final private BidService bidService;
     private final BidMapper bidMapper;
@@ -41,8 +45,17 @@ public class AuctionController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity create(@Valid @RequestBody CreateAuctionDTO createAuctionDTO) {
-        final Auction auction = auctionService.create(createAuctionDTO);
+        List<CreateImageDTO> images = createAuctionDTO.getImages();
+        Auction auction = auctionService.create(createAuctionDTO);
+        imageService.storeAuctionImages(images, auction);
+        auction = auctionService.findAuctionById(auction.getId()); // retrieves the auction after the images have been added
         return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.CREATED);
+    }
+    @PostMapping("/{id}/images")
+    public ResponseEntity uploadAuctionImages(@RequestBody List<CreateImageDTO> imageDTOs, @PathVariable Long id) throws IOException { // todo: IO exception review?
+        Auction auction = auctionService.findAuctionById(id);
+        imageService.storeAuctionImages(imageDTOs, auction);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/{auctionId}/bids")
