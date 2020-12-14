@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { AuctionDTO } from '../models/auctionDTO';
+import { CreateAuctionDTO } from '../models/createAuctionDto';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AuctionService {
     return response;
   }
 
-  public post(auction: AuctionDTO): Observable<any> {
+  public post(auction: CreateAuctionDTO): Observable<any> {
     return this.api.post(`${this.baseUrl}`, auction);
   }
 

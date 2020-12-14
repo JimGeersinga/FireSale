@@ -5,14 +5,17 @@ import com.FireSale.api.dto.ErrorResponse;
 import com.FireSale.api.dto.address.AddressDTO;
 import com.FireSale.api.dto.address.PatchAddressDTO;
 import com.FireSale.api.dto.address.UpdateAddressDTO;
+import com.FireSale.api.dto.auction.CreateImageDTO;
 import com.FireSale.api.dto.user.*;
 import com.FireSale.api.mapper.AddressMapper;
 import com.FireSale.api.mapper.UserMapper;
 import com.FireSale.api.model.Address;
+import com.FireSale.api.model.Auction;
 import com.FireSale.api.model.ErrorTypes;
 import com.FireSale.api.model.User;
 import com.FireSale.api.security.UserPrincipal;
 import com.FireSale.api.service.AddressService;
+import com.FireSale.api.service.ImageService;
 import com.FireSale.api.service.UserService;
 import com.FireSale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +24,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,9 +42,10 @@ public class UserController {
     private final AddressService addressService;
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
+    private final ImageService imageService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity authenticate(@Valid @RequestBody final LoginDTO loginRequest){
+    public ResponseEntity authenticate(@Valid @RequestBody final LoginDTO loginRequest) {
         final User user = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         if (user == null) {
             return new ResponseEntity<>(new ErrorResponse(ErrorTypes.LOGIN_FAILED, "Email or password is incorrect."), HttpStatus.UNAUTHORIZED);
@@ -57,13 +63,13 @@ public class UserController {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<UserDTO>> me(){
+    public ResponseEntity<ApiResponse<UserDTO>> me() {
         final UserPrincipal user = SecurityUtil.getSecurityContextUser();
         return new ResponseEntity<>(new ApiResponse<>(true, userMapper.toDTO(user.getUser())), HttpStatus.OK);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<UserProfileDTO>>> allUsers(){
+    public ResponseEntity<ApiResponse<List<UserProfileDTO>>> allUsers() {
         final List<User> users = userService.getAll();
         return new ResponseEntity<>(new ApiResponse<>(true, users.stream().map(userMapper::toProfile).collect(Collectors.toList())), HttpStatus.OK);
     }
@@ -107,4 +113,17 @@ public class UserController {
     public void patchAddress(@PathVariable("userId") final long userId, @PathVariable("addressId") final long addressId, @Valid @RequestBody PatchAddressDTO patchAddressDTO) {
         addressService.patchAddress(addressId, addressMapper.toModel(patchAddressDTO));
     }
+
+    @PostMapping(value = "/{userId}/avatar")
+    public ResponseEntity uploadAvatar(@RequestBody CreateImageDTO imageDTO, @PathVariable Long userId) throws IOException {
+        imageService.storeAvatar(imageDTO, userId);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+//    @GetMapping(value = "/{userId}/avatar")
+//    public ResponseEntity<Resource> getAvatar() throws IOException {
+//        // todo: Statische image-naam is niet de bedoeling. Iets op bedenken.
+//        Resource image = storageService.loadAsResource("image.jpg");
+//        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getFilename() + "\"").body(image);
+//    }
 }
