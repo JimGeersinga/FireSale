@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup, ValidationErrors, AbstractControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { CustomErrorStateMatcher } from 'src/app/core/providers/CustomErrorStateMatcher';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
 import { UserDto } from '../../models/userDto';
 import { UserService } from '../../shared/user.service';
@@ -14,6 +15,7 @@ import { UserService } from '../../shared/user.service';
 export class ProfileUpdateComponent implements OnInit {
   public profileUpdateForm: any;
   public id: number;
+  matcher = new CustomErrorStateMatcher();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,10 +49,30 @@ export class ProfileUpdateComponent implements OnInit {
             country: [user?.shippingAddress?.country]
           }),
           displayName: [user.displayName],
-          password: [''],
-          passwordVerify: ['']
-        });
+          password: ['',],
+          passwordVerify: ['', this.requiredIfValidator(() => this.profileUpdateForm.get(this.profileUpdateForm.password) != null)]
+        },
+        { validators: this.checkPasswords }
+        );
       });
+    });
+  }
+
+  private checkPasswords(group: FormGroup) : any {
+    const pass = group.get('password').value;
+    const confirmPass = group.get('passwordVerify').value;
+    return pass === confirmPass ? null : { notSame: true };
+  }
+
+  private requiredIfValidator(predicate: any) : ValidationErrors | null {
+    return ((formControl: AbstractControl) => {
+      if (!formControl.parent) {
+        return null;
+      }
+      if (predicate()) {
+        return Validators.required(formControl);
+      }
+      return null;
     });
   }
 
