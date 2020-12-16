@@ -1,5 +1,6 @@
 package com.FireSale.api.service;
 
+import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.model.Auction;
 import com.FireSale.api.repository.AuctionRepository;
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest
@@ -36,18 +39,18 @@ public class AuctionServiceTests {
         Assertions.assertSame(returnedAuction.get(), auction, "The auction returned was not the same as the mock");
     }
 
-    // @Test
-    // @DisplayName("Test findById Not Found")
-    // void testFindByIdNotFound() {
-    // // Setup mock repository
-    // doReturn(Optional.empty()).when(auctionRepository).findById(1L);
-    //
-    // // Execute service call
-    // Optional<Auction> returnedAuction =
-    // Optional.ofNullable(auctionService.getAuctionById(1L));
-    //
-    // // Assert response
-    // Assertions.assertFalse(returnedAuction.isPresent(), "Auction should not be
-    // found");
-    // }
+    @Test
+    @DisplayName("Test findById Not Found")
+    void testFindByIdNotFound() {
+        // Setup mock repository
+        doReturn(Optional.empty()).when(auctionRepository).findById(1L);
+
+        // Execute service call
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
+            auctionService.findAuctionById(1l);
+        });
+
+        // Assert response
+        assertThat(exception.getMessage()).isEqualTo("Resource of type [Auction] was not found: [No auction exists for id: 1]");
+    }
 }
