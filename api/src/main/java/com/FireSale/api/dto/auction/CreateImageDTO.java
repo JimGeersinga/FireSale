@@ -6,8 +6,7 @@ import lombok.Data;
 import java.util.Base64;
 
 @Data
-public class CreateImageDTO {
-
+public class CreateImageDTO extends BaseDTO {
     private byte[] imageB64;
     private String type;
     private Integer sort;
