@@ -90,9 +90,9 @@ public class ImageService {
     @Transactional(readOnly = false)
     public void storeAuctionImages(List<CreateImageDTO> imageDTOs, Auction auction) throws IOException {
         Set<Image> images = new HashSet<>();
+        String subFolder = Paths.get("auctions", auction.getId().toString(), "images").toString();
         for (CreateImageDTO image : imageDTOs) {
             String outputFileName = UUID.randomUUID().toString() + image.getType();
-            String subFolder = Paths.get("auctions", auction.getId().toString(), "images").toString();
             Path filepath = Paths.get(this.rootLocation.toString(), subFolder, outputFileName);
             var newImage = saveImage(image, filepath);
             if(newImage != null)
