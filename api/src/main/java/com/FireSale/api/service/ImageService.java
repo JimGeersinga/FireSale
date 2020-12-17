@@ -44,8 +44,6 @@ public class ImageService {
         if (!uploadFolder.exists()) uploadFolder.mkdir();
     }
 
-
-
     public byte[] getFileBytes(long id) throws IOException {
         var image = this.imageRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(String.format("Image should be in the database but it is not"),Image.class));
@@ -128,7 +126,7 @@ public class ImageService {
     @Transactional(readOnly = false)
     public void storeAvatar(CreateImageDTO imageDTO, Long userId) throws IOException {
         String outputFileName = "avatar" + imageDTO.getType();
-        String subFolder = Paths.get("users", userId.toString(), "avatar").toString();
+        String subFolder = Paths.get("users", userId.toString()).toString();
         Path filepath = Paths.get(this.rootLocation.toString(), subFolder, outputFileName);
         var avatar = saveImage(imageDTO, filepath);
         if(avatar != null)
