@@ -2,6 +2,7 @@ package com.FireSale.api.service;
 
 import com.FireSale.api.config.StorageProperties;
 import com.FireSale.api.dto.auction.CreateImageDTO;
+import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.exception.StorageException;
 import com.FireSale.api.model.Auction;
 import com.FireSale.api.model.Image;
@@ -10,6 +11,7 @@ import com.FireSale.api.repository.AuctionRepository;
 import com.FireSale.api.repository.ImageRepository;
 import com.FireSale.api.repository.UserRepository;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -17,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.util.*;
@@ -36,7 +35,6 @@ public class ImageService {
 
     @Autowired
     public ImageService(StorageProperties properties, ImageRepository imageRepository, UserRepository userRepository, AuctionRepository auctionRepository, UserService userService) {
-        // TODO: Controleren of dit echt nodig is want iets soortgelijks gebeurd ook onderaan in de init
         this.rootLocation = Paths.get(properties.getLocation());
         this.imageRepository = imageRepository;
         this.userRepository = userRepository;
@@ -46,66 +44,64 @@ public class ImageService {
         if (!uploadFolder.exists()) uploadFolder.mkdir();
     }
 
+
+
+    public byte[] getFileBytes(long id) throws IOException {
+        var image = this.imageRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException(String.format("Image should be in the database but it is not"),Image.class));
+        String filePath =  Paths.get(this.rootLocation.toString(), image.getPath()).toString();
+        return FileUtils.readFileToByteArray(new File(filePath));
+    }
+
+
+    public Image saveImage(CreateImageDTO imageDTO, Path storePath) throws IOException
+    {
+        Image newImage = new Image();
+        if(imageDTO.getId() != null)
+        {
+            newImage = this.imageRepository.findById(imageDTO.getId()).orElseThrow(() ->
+            new ResourceNotFoundException(String.format("Image should be in the database but it is not"),Image.class));
+            Files.deleteIfExists(Paths.get(this.rootLocation.toString(), newImage.getPath()));
+        }
+        File file = new File(storePath.toString());
+        try {
+            FileUtils.writeByteArrayToFile(file, imageDTO.getImageB64());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            // actual file
+            OutputStream os = new FileOutputStream(file);
+            os.write(imageDTO.getImageB64());
+            os.close();
+            // new image
+            newImage.setPath(this.rootLocation.relativize(storePath).toString());
+            newImage.setSort(imageDTO.getSort());
+            newImage.setType(imageDTO.getType());
+            this.imageRepository.save(newImage);
+            return newImage;
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
+        return null;
+    }
+
+
     @Transactional(readOnly = false)
-    public void storeAuctionImages(List<CreateImageDTO> imageDTOs, Auction auction) {
-        // TODO: Security toevoegen
+    public void storeAuctionImages(List<CreateImageDTO> imageDTOs, Auction auction) throws IOException {
         Set<Image> images = new HashSet<>();
         for (CreateImageDTO image : imageDTOs) {
             String outputFileName = UUID.randomUUID().toString() + image.getType();
             String subFolder = Paths.get("auctions", auction.getId().toString(), "images").toString();
-            String filepath = Paths.get(this.rootLocation.toString(), subFolder, outputFileName).toString();
-            File file = new File(filepath);
-
-            try {
-                FileUtils.writeByteArrayToFile(file, image.getImageB64());
-            } catch (IOException e) {
-                e.printStackTrace();
-                // todo: foutmelding gooien dat conversie niet is gelukt
-            }
-            try {
-                // Initialize a pointer
-                // in file using OutputStream
-                OutputStream os = new FileOutputStream(file);
-                // Starts writing the bytes in it
-                os.write(image.getImageB64());
-                // Close the file
-                os.close();
-
-                Image newImage = new Image();
-                newImage.setPath(filepath.substring(filepath.indexOf("\\auctions")).replace("\\","/"));
-                newImage.setSort(image.getSort());
-                newImage.setType(image.getType());
+            Path filepath = Paths.get(this.rootLocation.toString(), subFolder, outputFileName);
+            var newImage = saveImage(image, filepath);
+            if(newImage != null)
+            {
                 images.add(newImage);
-                this.imageRepository.save(newImage);
-
-            } catch (Exception e) {
-                System.out.println("Exception: " + e);
             }
-            auction.setImages((Set<Image>) images);
-            this.auctionRepository.save(auction);
-
-//            try {
-//                if (imagesDTO.isEmpty()) {
-//                    throw new StorageException("Storing empty image failed.");
-//                }
-//                Path destinationFile = this.rootLocation.resolve(
-//                        Paths.get(imagesDTO.getOriginalFilename()))
-//                        .normalize().toAbsolutePath();
-//                if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
-//                    // TODO: Navragen wanneer dit voorkomt
-//                    throw new StorageException("Storing an image outside of the directory is not permitted.");
-//                }
-//                try (InputStream inputStream = imagesDTO.getInputStream()) {
-//                    Files.copy(inputStream, destinationFile,
-//                            StandardCopyOption.REPLACE_EXISTING);
-//                    // TODO: Filename zelf genereren (GUID)
-//                }
-//                // TODO: Wegschrijven naar database
-//            } catch (IOException e) {
-//                throw new StorageException("Storing of image failed.", e);
-//            }
         }
-
+        auction.setImages((Set<Image>) images);
+        this.auctionRepository.save(auction);
     }
 
     @Transactional(readOnly = true)
@@ -131,44 +127,15 @@ public class ImageService {
     }
     @Transactional(readOnly = false)
     public void storeAvatar(CreateImageDTO imageDTO, Long userId) throws IOException {
-        // TODO: Security toevoegen
-        String outputFileName = "avatar." + imageDTO.getType();
+        String outputFileName = "avatar" + imageDTO.getType();
         String subFolder = Paths.get("users", userId.toString(), "avatar").toString();
-        Files.deleteIfExists(Paths.get(this.rootLocation.toString(), subFolder, outputFileName));
-        String filepath = Paths.get(this.rootLocation.toString(), subFolder, outputFileName).toString();
-        File file = new File(filepath); //TODO: in de try?
-        try {
-            FileUtils.writeByteArrayToFile(file, imageDTO.getImageB64());
-        } catch (IOException e) {
-            e.printStackTrace();
-            // todo: foutmelding gooien dat conversie niet is gelukt
-        }
-        try {
-            // Initialize a pointer
-            // in file using OutputStream
-            OutputStream os = new FileOutputStream(file);
-            // Starts writing the bytes in it
-            os.write(imageDTO.getImageB64());
-            // Close the file
-            os.close();
-
-            User user = userService.findUserById(userId);
-            Image avatar = user.getAvatar();
-            if(avatar == null) {
-                avatar = new Image();
-                user.setAvatar(avatar);
-            }
-            avatar.setPath(filepath.substring(filepath.indexOf("\\users")).replace("\\","/"));
-            avatar.setType(imageDTO.getType());
-            imageRepository.save(avatar);
-            userRepository.save(user);
-        }
-        catch(RuntimeException e)
+        Path filepath = Paths.get(this.rootLocation.toString(), subFolder, outputFileName);
+        var avatar = saveImage(imageDTO, filepath);
+        if(avatar != null)
         {
-            System.out.println("Exception: " + e);
-        }
-        catch (Exception e) {
-            System.out.println("Exception: " + e);
+            User user = userService.findUserById(userId);
+            user.setAvatar(avatar);
+            userRepository.save(user);
         }
     }
 

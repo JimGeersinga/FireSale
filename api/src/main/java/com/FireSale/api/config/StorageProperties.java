@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 @ConfigurationProperties("storage")
 public class StorageProperties {
 
-    private String location = Paths.get("src", "main", "resources", "public").toString();
+    private String location = Paths.get("..","public").toString();
 
     public String getLocation() {
         return location;
