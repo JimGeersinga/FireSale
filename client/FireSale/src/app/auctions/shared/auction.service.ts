@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { AuctionDTO } from '../models/auctionDTO';
 import { CreateAuctionDTO } from '../models/createAuctionDto';
 
 @Injectable({

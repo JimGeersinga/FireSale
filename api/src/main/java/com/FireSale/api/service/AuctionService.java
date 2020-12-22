@@ -1,25 +1,24 @@
 package com.FireSale.api.service;
 
-import com.FireSale.api.dto.auction.CreateImageDTO;
+import com.FireSale.api.dto.TagDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.exception.UnAuthorizedException;
 import com.FireSale.api.mapper.AuctionMapper;
-import com.FireSale.api.model.Auction;
-import com.FireSale.api.model.AuctionStatus;
-import com.FireSale.api.model.Category;
-import com.FireSale.api.model.User;
+import com.FireSale.api.mapper.TagMapper;
+import com.FireSale.api.model.*;
 import com.FireSale.api.repository.AuctionRepository;
 import com.FireSale.api.repository.CategoryRepository;
 import com.FireSale.api.repository.UserRepository;
 import com.FireSale.api.security.Guard;
 import com.FireSale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.mockito.internal.util.collections.Sets;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class AuctionService {
 
     private final AuctionRepository auctionRepository;
     private final UserRepository userRepository;
-    private final ImageService imageService;
+    private final TagService tagService;
 
     private final CategoryRepository categoryRepository;
     private final AuctionMapper auctionMapper;
@@ -43,12 +42,22 @@ public class AuctionService {
         auction.setIsDeleted(false);
         auction.setIsFeatured(false);
         auction.setStatus(AuctionStatus.Ready);
-//        Auction createdAuction = auctionRepository.save(auction);
-//        imageService.storeAuctionImages(images, createdAuction);
-////        return auctionRepository.save(auction);
-//        return createdAuction;
         auction.setCategories(categories);
 
+        //Nog niet bestaande tags wegschrijven naar de database
+        List<Tag> tags = new ArrayList<>();
+        createAuctionDTO.getTags().stream().forEach(tag -> {
+            var t = tagService.getTagByName(tag.getName());
+            if(t == null) {
+                tags.add(tagService.createTag(tag.getName()));
+            }else{
+                tags.add(t);
+            }
+        });
+
+        //Alle tags voor auction ophalen en setten bij de auction
+        auction.setTags( tags);
+        var t = auction.getTags();
         return auctionRepository.save(auction);
     }
 

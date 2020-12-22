@@ -1,6 +1,7 @@
 package com.FireSale.api.dto.auction;
 
 import com.FireSale.api.dto.BaseDTO;
+import com.FireSale.api.dto.TagDTO;
 import com.FireSale.api.dto.bid.BidDTO;
 import com.FireSale.api.dto.category.CategoryDTO;
 import com.FireSale.api.dto.user.UserProfileDTO;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -27,6 +29,6 @@ public class AuctionDTO extends BaseDTO {
     private Set<BidDTO> bids;
     private Set<ImageDTO> images;
     private Set<CategoryDTO> categories;
-    private Set<Tag> tags;
+    private List<TagDTO> tags;
 
 }

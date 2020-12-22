@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
@@ -7,6 +7,13 @@ import { AuctionService } from '../../shared/auction.service';
 import { CategoryDTO } from '../../../shared/models/categoryDto';
 import { CategoryService } from '../../../shared/services/category.service';
 import { CreateAuctionDTO } from '../../models/createAuctionDto';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { map, switchMap } from 'rxjs/operators';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER, TAB } from '@angular/cdk/keycodes';
+import { TagService } from 'src/app/shared/services/tag.service';
+import { TagDto } from '../../../shared/models/tagDto';
 
 @Component({
   selector: 'app-new-auction',
@@ -16,6 +23,19 @@ import { CreateAuctionDTO } from '../../models/createAuctionDto';
 export class NewAuctionComponent implements OnInit {
 
   public selectedFiles = [];
+  visible = true;
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA, TAB];
+  tagsControl = new FormControl();
+  tags: TagDto[] = [];
+  currentTags: string[] = [];
+
+  public searchBehaviourSubject$ = new BehaviorSubject("");
+  public allTags$: Observable<string[]>;
+
+  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   public newAuctionForm = this.formBuilder.group({
     name: ['', Validators.required],
@@ -23,9 +43,9 @@ export class NewAuctionComponent implements OnInit {
     minimalBid: ['', Validators.required],
     startDate: ['', Validators.required],
     endDate: ['', Validators.required],
-    categories: ['', Validators.required]
+    categories: ['', Validators.required],
+    tags: [[]]
   });
-
 
   public minDate: Date = new Date();
   public categories: CategoryDTO[];
@@ -36,10 +56,56 @@ export class NewAuctionComponent implements OnInit {
     private auctionService: AuctionService,
     private router: Router,
     private categoryService: CategoryService,
-    ) {}
+    private tagService: TagService,
+  ) { }
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add tag
+    if ((value || '').trim()) {
+      this.currentTags.push(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+
+    this.tagsControl.setValue(null);
+  }
+
+  remove(tag: string): void {
+    const index = this.currentTags.indexOf(tag);
+
+    if (index >= 0) {
+      this.currentTags.splice(index, 1);
+    }
+  }
+
+  autocomplete(event) {
+    const searchTerm = event.target.value;
+    this.searchBehaviourSubject$.next(searchTerm);
+  };
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.currentTags.push(event.option.viewValue);
+    console.log(event);
+    this.tagInput.nativeElement.value = '';
+    this.tagsControl.setValue(null);
+  }
 
   ngOnInit(): void {
-     this.categoryService.get().subscribe(response => this.categories = response.data);
+    this.categoryService.get().subscribe(response => this.categories = response.data);
+    this.allTags$ = this.searchBehaviourSubject$.pipe(
+      switchMap(searchTerm => {
+        return this.tagService.searchTagsByName(searchTerm)
+      }),
+      map(data => {
+        return data;
+      })
+    );
   }
 
   public selectFiles(event) {
@@ -56,11 +122,12 @@ export class NewAuctionComponent implements OnInit {
   }
 
   public submitAuction(data: CreateAuctionDTO): void {
-
-    if (data.endDate < data.startDate) {
-      this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Eind datum moet voorbij de start datum liggen.' } });
+    data.tags = [];
+    this.currentTags.map(tag => {data.tags.push({name:tag})});
+      if (data.endDate < data.startDate) {
+      this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Einddatum moet voorbij de startdatum liggen.' } });
     } else if (data.minimalBid < 1) {
-      this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Wij nemen aan dat je wel een minimum bod wilt hebben dus vul hiervoor een bedrag in.' } });
+      this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Wij nemen aan dat je wel een minimumbod wil hebben, dus vul hiervoor een bedrag in.' } });
     } else {
       if (!this.newAuctionForm.valid) {
         this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Gegevens voor een nieuwe veiling zijn niet correct ingevuld' } });

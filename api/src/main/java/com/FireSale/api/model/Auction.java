@@ -1,10 +1,12 @@
 package com.FireSale.api.model;
 
+import com.FireSale.api.dto.TagDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -54,6 +56,6 @@ public class Auction extends BaseEntity {
     private Set<Category> categories;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Tag> tags;
+    private List<Tag> tags;
 }
 

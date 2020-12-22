@@ -1,3 +1,4 @@
+import { TagDto } from 'src/app/shared/models/tagDto';
 import { CreateImageDTO } from './createImageDto';
 
 export interface CreateAuctionDTO {
@@ -9,4 +10,5 @@ export interface CreateAuctionDTO {
   endDate: Date;
   categories: number[];
   images: CreateImageDTO[];
+  tags: TagDto[];
 }
