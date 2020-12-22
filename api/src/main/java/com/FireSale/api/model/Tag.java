@@ -12,6 +12,7 @@ import java.util.Set;
 @Setter
 @Entity
 public class Tag extends BaseEntity {
+
     @Column(nullable = false, unique = true)
     private String name;
 

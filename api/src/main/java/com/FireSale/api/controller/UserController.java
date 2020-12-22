@@ -119,11 +119,4 @@ public class UserController {
         imageService.storeAvatar(imageDTO, userId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
-
-//    @GetMapping(value = "/{userId}/avatar")
-//    public ResponseEntity<Resource> getAvatar() throws IOException {
-//        // todo: Statische image-naam is niet de bedoeling. Iets op bedenken.
-//        Resource image = storageService.loadAsResource("image.jpg");
-//        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getFilename() + "\"").body(image);
-//    }
 }

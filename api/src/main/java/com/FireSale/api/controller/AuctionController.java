@@ -41,7 +41,6 @@ public class AuctionController {
     final private BidService bidService;
     private final BidMapper bidMapper;
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity create(@Valid @RequestBody CreateAuctionDTO createAuctionDTO) throws IOException{
@@ -51,6 +50,7 @@ public class AuctionController {
         auction = auctionService.findAuctionById(auction.getId()); // retrieves the auction after the images have been added
         return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.CREATED);
     }
+
     @PostMapping("/{id}/images")
     public ResponseEntity uploadAuctionImages(@RequestBody List<CreateImageDTO> imageDTOs, @PathVariable Long id) throws IOException { // todo: IO exception review?
         Auction auction = auctionService.findAuctionById(id);
@@ -100,5 +100,4 @@ public class AuctionController {
     public void delete(@PathVariable("id") final long id) {
         auctionService.deleteAuction(id);
     }
-
 }
