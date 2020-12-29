@@ -70,6 +70,10 @@ public class AuctionService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("No auction exists for id: %d", id), Auction.class));
     }
 
+    public Collection<Auction> getAuctionsByUserId(final long userId) {
+        return auctionRepository.findByUserId(userId);
+    }
+
     @Transactional(readOnly = false)
     public Auction updateAuction(Long id, Auction auction) {
         final Auction existing = findAuctionById(id);
