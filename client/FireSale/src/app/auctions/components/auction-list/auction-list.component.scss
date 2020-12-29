@@ -5,15 +5,14 @@
   height: 100%;
   width: 100%;
 
-  >section:first-child {
+  > section:first-child {
     padding-top: 25px;
     padding-bottom: 25px;
   }
 
-  >section {
+  > section {
     padding: 25px 25px 25px 25px;
   }
-
 }
 
 .featured-section {
@@ -40,13 +39,17 @@
 
     &:before,
     &:after {
-      content: '';
+      content: "";
       width: 50px;
     }
   }
 }
 
 .other-section {
+  .category-list {
+    float: left;
+    margin-right: 25px;
+  }
 
   .auction-list {
     display: grid;

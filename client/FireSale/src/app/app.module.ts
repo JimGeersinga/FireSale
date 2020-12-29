@@ -26,7 +26,7 @@ import { ProfileUpdateComponent } from './users/components/profile-update/profil
 import { CountdownModule } from 'ngx-countdown';
 import { SortByPipe } from './core/pipes/sort-by.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { CategoryListComponent } from './auctions/components/category-list/category-list.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +46,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ProfileComponent,
     ProfileUpdateComponent,
     SortByPipe,
+    CategoryListComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,10 +59,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CoreModule,
     RouterModule,
     CountdownModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
