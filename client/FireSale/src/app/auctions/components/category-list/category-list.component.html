@@ -1,0 +1,6 @@
+<h2>Categorieën</h2>
+<button mat-raised-button routerLink="/auctions" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}"
+    (click)="filterItemsByCategory()">Alle categorieën</button>
+<button mat-raised-button *ngFor="let category of categories" [value]="category.id"
+    (click)="filterItemsByCategory(category.id)" routerLink="/auctions" routerLinkActive="active-link"
+    [queryParams]="{categoryId: category.id}">{{category.name}}</button>

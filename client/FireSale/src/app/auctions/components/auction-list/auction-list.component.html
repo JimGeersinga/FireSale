@@ -7,12 +7,15 @@
 <section class="featured-section">
   <h2>Aanbevolen</h2>
   <div class="auction-list">
-      <app-auction-list-item class="auction" *ngFor="let auction of this.auctions" [model]="auction"></app-auction-list-item>
-  </div>  
+    <app-auction-list-item class="auction" *ngFor="let auction of allAuctions" [model]="auction">
+    </app-auction-list-item>
+  </div>
 </section>
 <section class="other-section">
-  <h2>Alle veilingen</h2>
+  <app-category-list class="category-list"></app-category-list>
+  <h2>{{categoryName}}</h2>
   <div class="auction-list">
-    <app-auction-list-item class="auction" *ngFor="let auction of this.auctions" [model]="auction"></app-auction-list-item>
+    <app-auction-list-item class="auction" *ngFor="let auction of filteredAuctions" [model]="auction">
+    </app-auction-list-item>
   </div>
 </section>
