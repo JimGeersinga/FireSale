@@ -8,6 +8,7 @@ import com.FireSale.api.dto.address.UpdateAddressDTO;
 import com.FireSale.api.dto.auction.CreateImageDTO;
 import com.FireSale.api.dto.user.*;
 import com.FireSale.api.mapper.AddressMapper;
+import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.mapper.UserMapper;
 import com.FireSale.api.model.Address;
 import com.FireSale.api.model.Auction;
@@ -15,6 +16,7 @@ import com.FireSale.api.model.ErrorTypes;
 import com.FireSale.api.model.User;
 import com.FireSale.api.security.UserPrincipal;
 import com.FireSale.api.service.AddressService;
+import com.FireSale.api.service.AuctionService;
 import com.FireSale.api.service.ImageService;
 import com.FireSale.api.service.UserService;
 import com.FireSale.api.util.SecurityUtil;
@@ -28,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +46,8 @@ public class UserController {
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
     private final ImageService imageService;
+    private final AuctionService auctionService;
+    private final AuctionMapper auctionMapper;
 
     @PostMapping("/authenticate")
     public ResponseEntity authenticate(@Valid @RequestBody final LoginDTO loginRequest) {
@@ -118,5 +123,11 @@ public class UserController {
     public ResponseEntity uploadAvatar(@RequestBody CreateImageDTO imageDTO, @PathVariable Long userId) throws IOException {
         imageService.storeAvatar(imageDTO, userId);
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{userId}/auctions")
+    public ResponseEntity getAuctionsByUserId(@PathVariable("userId") final long userId) {
+        final Collection<Auction> auctions = auctionService.getAuctionsByUserId(userId);
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)), HttpStatus.OK);
     }
 }
