@@ -7,10 +7,11 @@ export class Util {
   }
 
   public static formatDate(value: { date: number; }): string {
-    const hours = Math.floor((value.date / (1000 * 60 * 60)));
+    const days = Math.floor(((value.date / (1000 * 60 * 60)))/24);
+    const hours = Math.floor((value.date / (1000 * 60 * 60 * 24)));
     const minutes = Math.floor((value.date % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((value.date % (1000 * 60)) / 1000);
 
-    return `${Util.pad(hours,2)}:${Util.pad(minutes,2)}:${Util.pad(seconds,2)}`;
+    return `${Util.pad(days,1)}d ${Util.pad(hours,1)}:${Util.pad(minutes,2)}:${Util.pad(seconds,2)}`;
   }
 }
