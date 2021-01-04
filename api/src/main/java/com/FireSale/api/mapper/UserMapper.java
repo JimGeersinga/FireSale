@@ -20,15 +20,15 @@ public interface UserMapper extends ModelToDTOMapper<User, UserDTO> {
     User toModel(PatchUserDTO patch);
     User toModel(UpdateUserDTO update);
 
-    @Mapping(target= "avatar", source = "avatar.path", qualifiedByName = "avatarWithBaseUrl")
+    @Mapping(target= "avatar", source = "avatar", qualifiedByName = "avatarWithBaseUrl")
     UserProfileDTO toProfile(User user);
 
     @Override
-    @Mapping(target= "avatar", source = "avatar.path", qualifiedByName = "avatarWithBaseUrl")
+    @Mapping(target= "avatar", source = "avatar", qualifiedByName = "avatarWithBaseUrl")
     UserDTO toDTO(User user);
 
     @Named("avatarWithBaseUrl")
-    public static String avatarWithBaseUrl(String path) {
-        return UrlUtil.getBaseUrl() + path;
+    public static String avatarWithBaseUrl(Image avatar) {
+        return UrlUtil.getBaseUrl() + "file/image/" + avatar.getId();
     }
 }
