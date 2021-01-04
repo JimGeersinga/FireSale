@@ -5,6 +5,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class UrlUtil {
 
     public static String getBaseUrl() {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        var uri =  ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        return uri.endsWith("/") ? uri : uri + "/";
     }
 }

@@ -23,10 +23,10 @@ import com.FireSale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -95,7 +95,11 @@ public class UserController {
     @PatchMapping(value = "/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("isAuthenticated() and (@guard.isAdmin() or @guard.isSelf(#userId))")
-    public void patchUser(@PathVariable("userId") final long userId, @Valid @RequestBody PatchUserDTO patchUserDTO) {
+    public void patchUser(@PathVariable("userId") final long userId, @Valid @RequestBody PatchUserDTO patchUserDTO) throws IOException {
+        CreateImageDTO avatar = patchUserDTO.getAvatar();
+        if(avatar != null && avatar.getImageB64().length > 0){
+            imageService.storeAvatar(avatar, userId);
+        }
         userService.patchUser(userId, userMapper.toModel(patchUserDTO));
     }
 

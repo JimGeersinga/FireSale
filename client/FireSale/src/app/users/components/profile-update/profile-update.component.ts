@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { CustomErrorStateMatcher } from 'src/app/core/providers/CustomErrorStateMatcher';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
-import { UserDto } from '../../models/userDto';
+import { UpdateUserDto } from '../../models/updateUserDto';
 import { UserService } from '../../shared/user.service';
 
 @Component({
@@ -16,6 +16,7 @@ export class ProfileUpdateComponent implements OnInit {
   public profileUpdateForm: any;
   public id: number;
   matcher = new CustomErrorStateMatcher();
+  public selectedFile: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,8 +50,8 @@ export class ProfileUpdateComponent implements OnInit {
             country: [user?.shippingAddress?.country]
           }),
           displayName: [user.displayName],
-          password: ['',],
-          passwordVerify: ['', this.requiredIfValidator(() => this.profileUpdateForm.get(this.profileUpdateForm.password) != null)]
+          password: [null,],
+          passwordVerify: [null,]
         },
         { validators: this.checkPasswords }
         );
@@ -61,7 +62,7 @@ export class ProfileUpdateComponent implements OnInit {
   private checkPasswords(group: FormGroup) : any {
     const pass = group.get('password').value;
     const confirmPass = group.get('passwordVerify').value;
-    return pass === confirmPass ? null : { notSame: true };
+    return !pass || pass == confirmPass ? null : { notSame: true };
   }
 
   private requiredIfValidator(predicate: any) : ValidationErrors | null {
@@ -76,12 +77,35 @@ export class ProfileUpdateComponent implements OnInit {
     });
   }
 
-  submitProfileUpdate(id: number, data: UserDto): void {
+  public selectFile(event) {
+        var reader = new FileReader();
+        reader.onload = (e: any) => {
+      this.selectedFile = e.target.result; // voorbeeld weergeven op pagina
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+ 
+  submitProfileUpdate(id: number, data: UpdateUserDto): void {
     if (!this.profileUpdateForm.valid) {
       this.dialog.open(OkDialogComponent, { data: { title: 'Wijzigen gegevens', message: 'Formulier is niet correct ingevuld' } });
     }
     else {
-      this.userService.updateProfile(id, data);
+      if (this.selectedFile) {
+        const encodedImage = this.selectedFile.split('base64,')[1];
+        const fileExtension = "." + this.selectedFile.split(';')[0].split('/')[1];
+        data.avatar = {
+          imageB64: encodedImage,
+          type: fileExtension,
+          sort: 0
+        }
+      }
+      console.log(data);
+      if (!data.password) {
+        
+        data.password = null;
+      }
+      console.log(data);
+      this.userService.updateProfile(id, data).subscribe(_=>{console.log('test')});
 
       this.dialog.open(OkDialogComponent, { data: { title: 'Wijzigen gegevens', message: 'Gegevens zijn gewijzigd' } });
     }

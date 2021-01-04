@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/services/api.service';
 import { LoginDto } from '../models/loginDto';
 import { RegisterDto } from '../models/registerDto';
+import { UpdateUserDto } from '../models/updateUserDto';
 import { UserDto } from '../models/userDto';
 
 @Injectable({
@@ -48,8 +49,9 @@ export class UserService {
     this.currentUser$.next(null);
   }
 
-  public updateProfile(id: number, userDto: UserDto): Observable<any> {
-    return this.api.patch(`${this.baseUrl}/${id}`, userDto);
+  public updateProfile(id: number, updateUserDto: UpdateUserDto): Observable<any> {
+    console.log(updateUserDto);
+    return this.api.patch(`${this.baseUrl}/${id}`, updateUserDto);
   }
 
   public getUserProfile(id: number): Observable<any> {

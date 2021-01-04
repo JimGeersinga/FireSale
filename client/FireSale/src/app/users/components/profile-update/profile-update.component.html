@@ -129,18 +129,25 @@
           </mat-card>
           <mat-form-field>
             <mat-label>Wachtwoord</mat-label>
-            <input matInput type="password" formControlName="password" />
+            <input  matInput autocomplete="off" type="password" formControlName="password" />
             <mat-error *ngIf="profileUpdateForm.hasError('pattern', 'password')">
               Het wachtwoord moet bestaan uit minimaal acht karakters, waarvan minimaal één letter, één cijfer en één speciaal karakter.
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Wachtwoord bevestigen</mat-label>
-            <input matInput type="password" formControlName="passwordVerify" [errorStateMatcher]="matcher" />
+            <input matInput autocomplete="off" type="password" formControlName="passwordVerify" [errorStateMatcher]="matcher" />
             <mat-error *ngIf="profileUpdateForm.hasError('notSame')">
               Wachtwoorden komen niet overeen.
             </mat-error>
           </mat-form-field>
+          <div>
+            <mat-label>Avatar</mat-label>
+            <br /><br />
+            <input type="file" (change)="selectFile($event)">
+            <br /><br />
+              <img [src]=selectedFile/>
+          </div>
             <button mat-raised-button color="primary" type="submit">Update gegevens</button>
         </form>
     </mat-card>
