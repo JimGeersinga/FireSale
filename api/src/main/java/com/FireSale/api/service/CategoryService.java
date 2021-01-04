@@ -51,10 +51,10 @@ public class CategoryService {
     }
 
     public Collection<Category> getAvailableCategories() {
-        return categoryRepository.findByArchivedFalse();
+        return categoryRepository.findByArchived(false);
     }
 
     public Collection<Category> getArchivedCategories() {
-        return categoryRepository.findByArchivedTrue();
+        return categoryRepository.findByArchived(true);
     }
 }
