@@ -3,7 +3,6 @@ import { AuctionDTO } from '../../models/auctionDTO';
 import { AuctionService } from '../../shared/auction.service';
 import { ActivatedRoute } from '@angular/router';
 import { CategoryService } from 'src/app/shared/services/category.service';
-import { CategoryDTO } from 'src/app/shared/models/categoryDto';
 
 @Component({
   selector: 'app-auction-list',
