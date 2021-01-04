@@ -1,30 +1,75 @@
-<mat-card class="auction-box">
-  <div class="auction-image">
-    <img [src]="model.images[0]?.path || 'https://via.placeholder.com/150'" />
-  </div>
+<ng-container *ngIf="model as model; else skeleton">
+  <ng-container [ngSwitch]="displayType">
+    <mat-card class="auction-box display-grid" *ngSwitchCase="displayTypeEnum.GRID">
+      <div class="auction-image">
+        <img [src]="model.images[0]?.path" />
+      </div>
+      <div class="auction-info">
+        <h3 class="title">{{ model.name }}</h3>
+        <div class="bidding">
+          <a class="auction-button" mat-flat-button fullWidth color="primary"
+            [routerLink]="['/auctions/details', model.id]" queryParamsHandling="merge">BIEDEN</a>
+          <div class="spacer"></div>
+          <countdown class="countdown-timer" [config]="{ stopTime: timeLeft, formatDate: util.formatDate }"></countdown>
+        </div>
+      </div>
+      <mat-chip-list class="latest-bid">
+        <mat-chip>€ {{ latestBid }}</mat-chip>
+      </mat-chip-list>
+    </mat-card>
 
-  <div class="auction-info">
-    <h3 class="title">{{ model.name }}</h3>
-    <div class="description">
-      {{ model.description }}
-    </div>
-    <div class="bidding">
-      <countdown
-        class="countdown-timer"
-        [config]="{ stopTime: timeLeft, formatDate: util.formatDate }"
-      ></countdown>
+    <mat-card class="auction-box display-list" *ngSwitchDefault>
+      <div class="auction-image">
+        <img [src]="model.images[0]?.path" />
+      </div>
+      <div class="auction-info">
+        <h3 class="title">{{ model.name }}</h3>
+        <div class="description">
+          {{ model.description }}
+        </div>
+        <div class="bidding">
+          <a class="auction-button" mat-flat-button fullWidth color="primary"
+            [routerLink]="['/auctions/details', model.id]" queryParamsHandling="merge">BIEDEN</a>
+          <div class="spacer"></div>
+          <countdown class="countdown-timer" [config]="{ stopTime: timeLeft, formatDate: util.formatDate }"></countdown>
+        </div>
+      </div>
+      <mat-chip-list class="latest-bid">
+        <mat-chip>€ {{ latestBid }}</mat-chip>
+      </mat-chip-list>
+    </mat-card>
+  </ng-container>
+</ng-container>
 
-      <a
-        class="auction-button"
-        mat-flat-button
-        fullWidth
-        color="primary"
-        [routerLink]="['/auctions/details', model.id]"
-        queryParamsHandling="merge"
-      >
-        <span class="latest-bid">€ {{ latestBid }}</span>
-        MEE BIEDEN
-      </a>
-    </div>
-  </div>
-</mat-card>
+<ng-template #skeleton>
+  <ng-container [ngSwitch]="displayType">
+    <mat-card class="auction-box display-grid ssc" *ngSwitchCase="displayTypeEnum.GRID">
+      <div class="auction-image ssc-square"></div>
+      <div class="auction-info">
+        <h3 class="ssc-line w-60 mbs"></h3>
+        <div class="bidding">
+          <div class="auction-button ssc-button"></div>
+          <div class="spacer"></div>
+          <div class="ssc-button w-50"></div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="auction-box display-list ssc" *ngSwitchDefault>
+      <div class="auction-image ssc-square"></div>
+      <div class="auction-info">
+        <h3 class="title ssc-head-line w-30"></h3>
+        <div class="description">
+          <span class="ssc-line"></span>
+          <span class="ssc-line"></span>
+          <span class="ssc-line"></span>
+        </div>
+        <div class="bidding">
+          <div class="auction-button ssc-button"></div>
+          <div class="spacer"></div>
+          <div class="ssc-button w-30"></div>
+        </div>
+      </div>
+    </mat-card>
+  </ng-container>
+</ng-template>
