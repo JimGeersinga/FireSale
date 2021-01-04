@@ -15,5 +15,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 //    @Query("SELECT c FROM Category c WHERE c.id in :ids")
     Set<Category> findByIdIn(List<Long> ids);
-    Set<Category> findByArchived(Boolean archived);
+    Set<Category> findByArchivedTrue();
+    Set<Category> findByArchivedFalse();
 }

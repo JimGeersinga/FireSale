@@ -4,7 +4,7 @@ import { CategoryDTO } from 'src/app/shared/models/categoryDto';
 import { CategoryService } from 'src/app/shared/services/category.service';
 
 @Component({
-  selector: 'app-category-list',
+  selector: 'app-auction-category-list',
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.scss'],
 })

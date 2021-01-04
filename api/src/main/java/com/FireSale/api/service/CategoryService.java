@@ -34,7 +34,9 @@ public class CategoryService {
     public Category updateCategory(Long id, Category category) {
         final Category existing = getCategoryById(id);
         existing.setName(category.getName());
-        return categoryRepository.save(existing);
+        existing.setArchived(category.getArchived());
+        Category c = categoryRepository.save(existing);
+        return c;
     }
 
     @Transactional(readOnly = false)
@@ -49,10 +51,10 @@ public class CategoryService {
     }
 
     public Collection<Category> getAvailableCategories() {
-        return categoryRepository.findByArchived(false);
+        return categoryRepository.findByArchivedFalse();
     }
 
     public Collection<Category> getArchivedCategories() {
-        return categoryRepository.findByArchived(true);
+        return categoryRepository.findByArchivedTrue();
     }
 }

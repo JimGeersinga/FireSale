@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -12,13 +12,18 @@ import { UserService } from 'src/app/users/shared/user.service';
 })
 export class LayoutComponent implements OnDestroy, AfterViewInit, OnInit {
   public currentUser$: Observable<UserDto>;
-
+  public isAdmin: boolean = false;
 
   constructor(
     private userService: UserService,
     private router: Router,
-    private snackbar: MatSnackBar) {
+    private snackbar: MatSnackBar,
+  private cdr: ChangeDetectorRef) {
     this.currentUser$ = this.userService.currentUser$;
+    this.currentUser$.subscribe(item => {
+      console.log(item);
+      this.isAdmin = item && item.role === 'ADMIN';
+    });
   }
 
   ngOnDestroy(): void {

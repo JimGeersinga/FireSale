@@ -1,0 +1,10 @@
+<h2>Categoriën</h2>
+<section>
+    <a mat-flat-button color="accent" class="new-category" [routerLink]="['/categories/create']" href="">
+        <mat-icon>add</mat-icon>
+        Categorie toevoegen
+    </a>
+</section>
+<mat-list>
+        <app-category-list-item *ngFor="let category of categories" [model]="category"></app-category-list-item>
+</mat-list>
