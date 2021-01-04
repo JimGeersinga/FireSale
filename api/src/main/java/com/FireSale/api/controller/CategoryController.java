@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,13 +25,21 @@ public class CategoryController {
     private final CategoryMapper categoryMapper;
 
     @GetMapping
-    public ResponseEntity all() {
-        final Collection<Category> auctions = categoryService.getCategories();
+    public ResponseEntity available() {
+        final Collection<Category> auctions = categoryService.getAvailableCategories();
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(categoryMapper::toDTO)), HttpStatus.OK);
+    }
+
+    @GetMapping("archived")
+    @PreAuthorize("isAuthenticated() and @guard.isAdmin()")
+    public ResponseEntity archived() {
+        final Collection<Category> auctions = categoryService.getArchivedCategories();
         return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(categoryMapper::toDTO)), HttpStatus.OK);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("isAuthenticated() and @guard.isAdmin()")
     public ResponseEntity create(@Valid @RequestBody UpsertCategoryDTO upsertCategoryDTO) {
         final Category category = categoryService.create(categoryMapper.toModel(upsertCategoryDTO));
         return new ResponseEntity<>(new ApiResponse<>(true, categoryMapper.toDTO(category)), HttpStatus.CREATED);
@@ -38,16 +47,15 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("isAuthenticated() and @guard.isAdmin()")
     public void update(@PathVariable("id") final long id, @Valid @RequestBody final UpsertCategoryDTO upsertCategoryDTO) {
         categoryService.updateCategory(id, categoryMapper.toModel(upsertCategoryDTO));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated() and @guard.isAdmin()")
     public void delete(@PathVariable("id") final long id) {
         categoryService.deleteCategory(id);
     }
 
-    // todo: delete category by name?
-
-    // todo: getAuctions by categoryId
 }
