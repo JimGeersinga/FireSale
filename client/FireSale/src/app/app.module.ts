@@ -26,7 +26,11 @@ import { ProfileUpdateComponent } from './users/components/profile-update/profil
 import { CountdownModule } from 'ngx-countdown';
 import { SortByPipe } from './core/pipes/sort-by.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { CategoryListComponent } from './auctions/components/category-list/category-list.component';
+import { CategoryListComponent as AuctionCategories } from './auctions/components/category-list/category-list.component';
+import { CategoryListComponent } from './categories/components/category-list/category-list.component';
+import { CategoryListItemComponent } from './categories/components/category-list-item/category-list-item.component';
+import { CategoryDetailComponent } from './categories/components/category-detail/category-detail.component';
+import { CategoryCreateComponent } from './categories/components/category-create/category-create.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +50,11 @@ import { CategoryListComponent } from './auctions/components/category-list/categ
     ProfileComponent,
     ProfileUpdateComponent,
     SortByPipe,
+    AuctionCategories,
     CategoryListComponent,
+    CategoryListItemComponent,
+    CategoryDetailComponent,
+    CategoryCreateComponent,
   ],
   imports: [
     BrowserModule,

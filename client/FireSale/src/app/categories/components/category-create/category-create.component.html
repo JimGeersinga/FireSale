@@ -1,0 +1,14 @@
+<section class="wrapper">
+
+    <h2 class="page-title">Maak een nieuwe categorie aan</h2>
+    <mat-card class="login-card">
+        <form [formGroup]="newCategory" (ngSubmit)="submitCategory(newCategory.value)">
+            <mat-form-field fullWidth>
+                <mat-label>Naam van de categorie</mat-label>
+                <input matInput type="text" required formControlName="name">
+            </mat-form-field>
+            
+            <button mat-raised-button color="primary" type="submit" [disabled]="!newCategory.valid">Opslaan</button>
+        </form>
+    </mat-card>
+</section>
