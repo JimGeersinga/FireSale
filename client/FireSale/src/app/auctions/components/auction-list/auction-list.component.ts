@@ -3,6 +3,8 @@ import { AuctionDTO } from '../../models/auctionDTO';
 import { AuctionService } from '../../shared/auction.service';
 import { ActivatedRoute } from '@angular/router';
 import { CategoryService } from 'src/app/shared/services/category.service';
+import { CategoryDTO } from 'src/app/shared/models/categoryDto';
+import { DisplayType } from '../../shared/display-type.enum';
 
 @Component({
   selector: 'app-auction-list',
@@ -12,7 +14,11 @@ import { CategoryService } from 'src/app/shared/services/category.service';
 export class AuctionListComponent implements OnInit {
   public allAuctions: AuctionDTO[];
   public filteredAuctions: AuctionDTO[] = [];
-  public categoryName: string = 'Alle veilingen';
+  public categoryName = 'Alle veilingen';
+  public displayTypeEnum = DisplayType;
+  public displayType: DisplayType = DisplayType.LIST;
+  public loadingCategoryAuctions = true;
+  public loadingFeaturedAuctions = true;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -39,11 +45,15 @@ export class AuctionListComponent implements OnInit {
   }
 
   listAuctions(categoryId?: number): void {
+    this.loadingFeaturedAuctions = true;
+    this.loadingCategoryAuctions = true;
     this.auctionService.get().subscribe((response) => {
+      this.loadingCategoryAuctions = false;
+      this.loadingFeaturedAuctions = false;
       this.allAuctions = response.data;
       if (categoryId) {
         this.filteredAuctions = response.data.filter((auction) =>
-          auction.categories.some((category) => category.id == categoryId)
+          auction.categories.some((category) => category.id === categoryId)
         );
       } else {
         this.filteredAuctions = response.data;
