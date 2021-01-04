@@ -6,5 +6,5 @@ import lombok.Data;
 public class UpsertCategoryDTO {
 
     private String name;
-
+    private Boolean archived;
 }

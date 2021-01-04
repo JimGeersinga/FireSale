@@ -16,6 +16,10 @@
       <a mat-button [routerLink]="['/auctions']">
         <span>Veilingen</span>
       </a>
+
+      <a mat-button [routerLink]="['/categories']" *ngIf="isAdmin">
+        <span>Categoriën</span>
+      </a>
     </div>
     <span class="spacer"></span>
 

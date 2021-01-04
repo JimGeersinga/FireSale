@@ -1,11 +1,8 @@
 package com.FireSale.api.service;
 
 import com.FireSale.api.exception.ResourceNotFoundException;
-import com.FireSale.api.exception.UnAuthorizedException;
-import com.FireSale.api.model.Auction;
 import com.FireSale.api.model.Category;
 import com.FireSale.api.repository.CategoryRepository;
-import com.FireSale.api.security.Guard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,16 +34,27 @@ public class CategoryService {
     public Category updateCategory(Long id, Category category) {
         final Category existing = getCategoryById(id);
         existing.setName(category.getName());
-        return categoryRepository.save(existing);
+        existing.setArchived(category.getArchived());
+        Category c = categoryRepository.save(existing);
+        return c;
     }
 
     @Transactional(readOnly = false)
     public void deleteCategory(Long id) {
         final Category existing = getCategoryById(id);
         if (existing.getAuctions().size() != 0) {
-            // todo: checken of er auctions aan hangen, als dit zo is, dan mag deze niet verwijderd worden (resourceHasChildException)
+            existing.setArchived(true);
+            categoryRepository.save(existing);
+        }else{
+            categoryRepository.delete(existing);
         }
-        categoryRepository.delete(existing);
     }
 
+    public Collection<Category> getAvailableCategories() {
+        return categoryRepository.findByArchived(false);
+    }
+
+    public Collection<Category> getArchivedCategories() {
+        return categoryRepository.findByArchived(true);
+    }
 }

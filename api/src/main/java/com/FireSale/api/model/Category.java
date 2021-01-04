@@ -15,6 +15,8 @@ public class Category extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
+    private Boolean archived;
+
     @ManyToMany
     private Set<Auction> auctions;
 }
