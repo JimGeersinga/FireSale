@@ -17,7 +17,7 @@ export class CategoryCreateComponent implements OnInit {
     private router: Router) { }
   
   public newCategory = this.formBuilder.group({
-    name: ['test', Validators.required]
+    name: ['', Validators.required]
   });
   ngOnInit(): void {
   }
