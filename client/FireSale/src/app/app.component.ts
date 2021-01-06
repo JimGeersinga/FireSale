@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserDto } from './users/models/userDto';
-import { UserService } from './users/shared/user.service';
+import { UserDto } from './shared/models/userDto';
+import { UserService } from './shared/services/user.service';
 
 @Component({
   selector: 'app-root',

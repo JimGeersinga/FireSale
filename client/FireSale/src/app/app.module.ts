@@ -4,33 +4,34 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuctionListComponent } from './auctions/components/auction-list/auction-list.component';
-import { AuctionDetailComponent } from './auctions/components/auction-detail/auction-detail.component';
-import { BidComponent } from './auctions/components/bid/bid.component';
-import { UserListComponent } from './users/components/user-list/user-list.component';
-import { HeaderComponent } from './core/header/header.component';
-import { FooterComponent } from './core/footer/footer.component';
-import { RegisterComponent } from './users/components/register/register.component';
+import { HeaderComponent } from './core/components/header/header.component';
+import { FooterComponent } from './core/components/footer/footer.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { SharedModule } from './shared/shared.module';
 import { SideBarComponent } from './core/components/side-bar/side-bar.component';
-import { LoginComponent } from './users/components/login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { LayoutComponent } from './core/components/layout/layout.component';
-import { AuctionListItemComponent } from './auctions/components/auction-list-item/auction-list-item.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { RouterModule } from '@angular/router';
-import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
-import { ProfileComponent } from './users/components/profile/profile.component';
-import { ProfileUpdateComponent } from './users/components/profile-update/profile-update.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 import { CountdownModule } from 'ngx-countdown';
 import { SortByPipe } from './core/pipes/sort-by.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { CategoryListComponent as AuctionCategories } from './auctions/components/category-list/category-list.component';
-import { CategoryListComponent } from './categories/components/category-list/category-list.component';
-import { CategoryListItemComponent } from './categories/components/category-list-item/category-list-item.component';
-import { CategoryDetailComponent } from './categories/components/category-detail/category-detail.component';
-import { CategoryCreateComponent } from './categories/components/category-create/category-create.component';
+import { CategoryNavigationListComponent } from './components/categories/category-navigation-list/category-navigation-list.component';
+import { CategoryListItemComponent } from './components/categories/category-list-item/category-list-item.component';
+import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
+import { AuctionsComponent } from './pages/auctions/auctions.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
+import { AuctionsSearchComponent } from './pages/auctions-search/auctions-search.component';
+import { AuctionDetailComponent } from './pages/auction-detail/auction-detail.component';
+import { AuctionListItemComponent } from './components/auctions/auction-list-item/auction-list-item.component';
+import { AuctionListComponent } from './components/auctions/auction-list/auction-list.component';
+import { BidComponent } from './components/auctions/bid/bid.component';
+import { AuctionEditComponent } from './pages/auction-edit/auction-edit.component';
+import { CategoryEditComponent } from './pages/category-edit/category-edit.component';
+import { ProfileEditComponent } from './pages/profile-edit/profile-edit.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,6 @@ import { CategoryCreateComponent } from './categories/components/category-create
     AuctionListComponent,
     AuctionDetailComponent,
     BidComponent,
-    UserListComponent,
     HeaderComponent,
     FooterComponent,
     RegisterComponent,
@@ -46,15 +46,18 @@ import { CategoryCreateComponent } from './categories/components/category-create
     LoginComponent,
     LayoutComponent,
     AuctionListItemComponent,
-    NewAuctionComponent,
     ProfileComponent,
-    ProfileUpdateComponent,
+    ProfileEditComponent,
     SortByPipe,
-    AuctionCategories,
-    CategoryListComponent,
+    CategoryNavigationListComponent,
+    CategoriesComponent,
     CategoryListItemComponent,
     CategoryDetailComponent,
-    CategoryCreateComponent,
+    CategoryEditComponent,
+    AuctionsComponent,
+    AuctionEditComponent,
+    CategoriesComponent,
+    AuctionsSearchComponent,
   ],
   imports: [
     BrowserModule,

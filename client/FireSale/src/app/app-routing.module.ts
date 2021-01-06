@@ -1,34 +1,35 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RegisterComponent } from './users/components/register/register.component';
-import { AuctionListComponent } from './auctions/components/auction-list/auction-list.component';
-import { LoginComponent } from './users/components/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
-import { NewAuctionComponent } from './auctions/components/new-auction/new-auction.component';
-import { ProfileComponent } from './users/components/profile/profile.component';
-import { ProfileUpdateComponent } from './users/components/profile-update/profile-update.component';
-import { AuctionDetailComponent } from './auctions/components/auction-detail/auction-detail.component';
-import { HomeComponent } from './core/components/home/home.component';
-import { CategoryDetailComponent } from './categories/components/category-detail/category-detail.component';
-import { CategoryCreateComponent } from './categories/components/category-create/category-create.component';
-import { CategoryListComponent } from './categories/components/category-list/category-list.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { HomeComponent } from './pages/home/home.component';
+import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
+import { CategoryEditComponent } from './pages/category-edit/category-edit.component';
 import { AdminGuard } from './core/guards/admin.guard';
+import { AuctionsComponent } from './pages/auctions/auctions.component';
+import { AuctionEditComponent } from './pages/auction-edit/auction-edit.component';
+import { AuctionDetailComponent } from './pages/auction-detail/auction-detail.component';
+import { ProfileEditComponent } from './pages/profile-edit/profile-edit.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
 
 
 const routes: Routes = [
-  { path: 'register', component: RegisterComponent},
-  { path: 'login', component: LoginComponent},
   { path: '', component: HomeComponent},
-  { path: 'auctions', component: AuctionListComponent},
-  { path: 'auctions/create', component: NewAuctionComponent, canActivate: [AuthGuard]  },
+  { path: 'login', component: LoginComponent},
+  { path: 'register', component: RegisterComponent},
+
+  { path: 'auctions', component: AuctionsComponent},
+  { path: 'auctions/edit', component: AuctionEditComponent, canActivate: [AuthGuard]  },
   { path: 'auctions/details/:id', component: AuctionDetailComponent },
 
-  { path: 'categories', component: CategoryListComponent,canActivate: [AdminGuard]},
-  { path: 'categories/create', component: CategoryCreateComponent, canActivate: [AdminGuard]  },
-  { path: 'categories/details/:id', component: CategoryDetailComponent,canActivate: [AdminGuard] },
+  { path: 'categories', component: CategoriesComponent, canActivate: [AdminGuard]},
+  { path: 'categories/edit', component: CategoryEditComponent, canActivate: [AdminGuard]  },
+  { path: 'categories/details/:id', component: CategoryDetailComponent, canActivate: [AdminGuard] },
 
   { path: 'profile/:id', component: ProfileComponent },
-  { path: 'profile/:id/update', component: ProfileUpdateComponent }
+  { path: 'profile/:id/edit', component: ProfileEditComponent }
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ImageDTO } from 'src/app/auctions/models/imageDTO';
+import { ImageDTO } from 'src/app/shared/models/imageDTO';
 
 @Component({
   selector: 'app-image-viewer',

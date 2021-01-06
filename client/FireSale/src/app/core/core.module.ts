@@ -5,7 +5,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicAuthInterceptor } from './interceptors/basic-auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { ConfigService } from './services/config.service';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from '../pages/home/home.component';
 
 const appInitializerFn = (appConfig: ConfigService) => {
   return () => {

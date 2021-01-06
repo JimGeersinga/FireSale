@@ -1,0 +1,37 @@
+.auctions-view {
+  width: 100%;
+
+  .auction-list {
+    display: grid;
+    grid-auto-flow: row dense;
+    gap: 2rem;
+
+    &.display-list {
+      grid-template-rows: 175px;
+      grid-template-columns: auto;
+
+      .auction {
+        height: 175px;
+      }
+    }
+
+    &.display-grid {
+      grid-template-rows: 275px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+      .auction {
+        height: 275px;
+      }
+    }
+  }
+
+  .auction-list-header {
+    display: flex;
+    margin-bottom: 1rem;
+
+    h2 {
+      flex: 1;
+      margin-right: 2rem;
+    }
+  }
+}
