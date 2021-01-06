@@ -1,8 +1,8 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserDto } from 'src/app/users/models/userDto';
-import { UserService } from 'src/app/users/shared/user.service';
+import { UserDto } from 'src/app/shared/models/userDto';
+import { UserService } from 'src/app/shared/services/user.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 

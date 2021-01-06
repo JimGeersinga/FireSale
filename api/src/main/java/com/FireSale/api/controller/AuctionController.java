@@ -41,6 +41,7 @@ public class AuctionController {
     final private BidService bidService;
     private final BidMapper bidMapper;
 
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity create(@Valid @RequestBody CreateAuctionDTO createAuctionDTO) throws IOException{
@@ -100,4 +101,5 @@ public class AuctionController {
     public void delete(@PathVariable("id") final long id) {
         auctionService.deleteAuction(id);
     }
+
 }

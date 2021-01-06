@@ -1,0 +1,32 @@
+  <div class="auctions-view">
+    <div class="auction-list-header">
+      <h2>{{title}}</h2>
+      <mat-button-toggle-group class="display-selection" [(ngModel)]="displayType">
+        <mat-button-toggle [value]="displayTypeEnum.LIST">
+          <mat-icon>list</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle [value]="displayTypeEnum.GRID">
+          <mat-icon>view_module</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="auction-list" [ngClass]="'display-'+displayTypeEnum[displayType].toLowerCase()">
+
+      <ng-container *ngIf="!auctions">
+        <app-auction-list-item class="auction" *ngFor="let i of [1,2,3,4,5,6,7,8,9]" [model]="null"
+          [displayType]="displayType" [showInCard]="showInCard">
+        </app-auction-list-item>
+      </ng-container>
+
+      <ng-container *ngIf="auctions">
+        <app-auction-list-item class="auction" *ngFor="let auction of auctions" [model]="auction"
+          [displayType]="displayType" [showInCard]="showInCard">
+        </app-auction-list-item>
+      </ng-container>
+
+      <div class="empty-list" *ngIf="auctions?.length === 0">
+        Geen veiligen
+      </div>
+    </div>
+  </div>

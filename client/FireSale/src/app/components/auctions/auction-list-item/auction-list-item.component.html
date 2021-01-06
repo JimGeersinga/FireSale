@@ -1,0 +1,103 @@
+<ng-template #auctionSkeletonGrid>
+  <div class="auction-image ssc-square"></div>
+  <div class="auction-info">
+    <h3 class="ssc-line w-60 mbs"></h3>
+    <div class="bidding">
+      <div class="auction-button ssc-button"></div>
+      <div class="spacer"></div>
+      <div class="ssc-button w-50"></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #auctionSkeletonList>
+  <div class="auction-image ssc-square"></div>
+  <div class="auction-info">
+    <h3 class="title ssc-head-line w-30"></h3>
+    <div class="description">
+      <span class="ssc-line"></span>
+      <span class="ssc-line"></span>
+      <span class="ssc-line"></span>
+    </div>
+    <div class="bidding">
+      <div class="auction-button ssc-button"></div>
+      <div class="spacer"></div>
+      <div class="ssc-button w-30"></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #auctionBoxGrid>
+  <ng-container *ngIf="model; else auctionSkeletonGrid">
+    <div class="auction-image">
+      <img [src]="model.images[0]?.path" />
+    </div>
+    <div class="auction-info">
+      <h3 class="title">{{ model.name }}</h3>
+      <div class="bidding">
+        <a class="auction-button" mat-flat-button fullWidth color="primary"
+          [routerLink]="['/auctions/details', model.id]" queryParamsHandling="merge">BIEDEN</a>
+        <div class="spacer"></div>
+        <countdown class="countdown-timer" [config]="{ stopTime: timeLeft, formatDate: util.formatDate }"></countdown>
+      </div>
+    </div>
+    <mat-chip-list class="latest-bid">
+      <mat-chip color="accent" selected >€ {{ latestBid }}</mat-chip>
+    </mat-chip-list>
+  </ng-container>
+</ng-template>
+
+<ng-template #auctionBoxList>
+  <ng-container *ngIf="model; else auctionSkeletonList">
+    <div class="auction-image">
+      <img [src]="model.images[0]?.path" />
+    </div>
+    <div class="auction-info">
+      <h3 class="title">{{ model.name }}</h3>
+      <div class="description">
+        {{ model.description }}
+      </div>
+      <div class="bidding">
+        <a class="auction-button" mat-flat-button fullWidth color="primary"
+          [routerLink]="['/auctions/details', model.id]" queryParamsHandling="merge">BIEDEN</a>
+        <div class="spacer"></div>
+        <countdown class="countdown-timer" [config]="{ stopTime: timeLeft, formatDate: util.formatDate }"></countdown>
+      </div>
+    </div>
+    <mat-chip-list class="latest-bid">
+      <mat-chip color="accent" selected >€ {{ latestBid }}</mat-chip>
+    </mat-chip-list>
+  </ng-container>
+</ng-template>
+
+<ng-container [ngSwitch]="displayType">
+
+  <ng-container *ngSwitchCase="displayTypeEnum.GRID" [ngSwitch]="showInCard">
+
+    <ng-container *ngSwitchCase="false">
+      <div class="auction-box display-grid" [class.ssc]="!model">
+        <ng-container *ngTemplateOutlet="auctionBoxGrid"></ng-container>
+      </div>
+    </ng-container>
+
+    <mat-card class="auction-box display-grid" [class.ssc]="!model" *ngSwitchDefault>
+      <ng-container *ngTemplateOutlet="auctionBoxGrid"></ng-container>
+    </mat-card>
+
+  </ng-container>
+
+  <ng-container *ngSwitchDefault [ngSwitch]="showInCard">
+
+    <ng-container *ngSwitchCase="false">
+      <div class="auction-box display-list" [class.ssc]="!model">
+        <ng-container *ngTemplateOutlet="auctionBoxList"></ng-container>
+      </div>
+    </ng-container>
+
+    <mat-card class="auction-box display-list" [class.ssc]="!model" *ngSwitchDefault>
+      <ng-container *ngTemplateOutlet="auctionBoxList"></ng-container>
+    </mat-card>
+
+  </ng-container>
+
+</ng-container>
