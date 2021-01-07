@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +15,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 
 //    @Query("SELECT c FROM Category c WHERE c.id in :ids")
-    Set<Category> findByIdIn(List<Long> ids);
-    Set<Category> findByArchived(Boolean archived);
+    Collection<Category> findByIdIn(Collection<Long> ids);
+    Collection<Category> findByArchived(Boolean archived);
 }

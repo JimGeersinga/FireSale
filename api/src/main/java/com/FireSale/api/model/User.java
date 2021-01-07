@@ -3,9 +3,12 @@ package com.FireSale.api.model;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -51,15 +54,19 @@ public class User extends BaseEntity {
     @OneToOne()
     private Image avatar;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "receiver")
-    private Set<Review> incomingReviews;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "receiver")
+    private Collection<Review> incomingReviews;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "reviewer")
-    private Set<Review> outgoingReviews;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "reviewer")
+    private Collection<Review> outgoingReviews;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "user")
-    private Set<Auction> auctions;
+    private Collection<Auction> auctions;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "user")
-    private Set<Bid> bids;
+    private Collection<Bid> bids;
 }

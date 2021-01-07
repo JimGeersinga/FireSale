@@ -45,7 +45,7 @@ public class AuctionController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity create(@Valid @RequestBody CreateAuctionDTO createAuctionDTO) throws IOException{
-        List<CreateImageDTO> images = createAuctionDTO.getImages();
+        Collection<CreateImageDTO> images = createAuctionDTO.getImages();
         Auction auction = auctionService.create(createAuctionDTO);
         imageService.storeAuctionImages(images, auction);
         auction = auctionService.findAuctionById(auction.getId()); // retrieves the auction after the images have been added

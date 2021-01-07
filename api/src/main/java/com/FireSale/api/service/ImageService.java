@@ -86,7 +86,7 @@ public class ImageService {
 
 
     @Transactional(readOnly = false)
-    public void storeAuctionImages(List<CreateImageDTO> imageDTOs, Auction auction) throws IOException {
+    public void storeAuctionImages(Collection<CreateImageDTO> imageDTOs, Auction auction) throws IOException {
         Set<Image> images = new HashSet<>();
         String subFolder = Paths.get("auctions", auction.getId().toString(), "images").toString();
         for (CreateImageDTO image : imageDTOs) {
@@ -98,7 +98,7 @@ public class ImageService {
                 images.add(newImage);
             }
         }
-        auction.setImages((Set<Image>) images);
+        auction.setImages(images);
         this.auctionRepository.save(auction);
     }
 

@@ -17,6 +17,7 @@ import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,7 @@ public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
     }
 
     @Named("imagesWithBaseUrl")
-    public static Set<ImageDTO> imagesWithBaseUrl(Set<Image> images) {
+    public static Collection<ImageDTO> imagesWithBaseUrl(Collection<Image> images) {
         if (images == null) return  null;
         return images.stream().map(image -> {
             final ImageDTO dto = new ImageDTO();

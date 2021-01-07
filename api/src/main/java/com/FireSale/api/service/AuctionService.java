@@ -35,7 +35,7 @@ public class AuctionService {
     @Transactional(readOnly = false)
     public Auction create(CreateAuctionDTO createAuctionDTO) {
         final User user = userRepository.getOne(SecurityUtil.getSecurityContextUser().getUser().getId());
-        final Set<Category> categories = categoryRepository.findByIdIn(createAuctionDTO.getCategories());
+        final Collection<Category> categories = categoryRepository.findByIdIn(createAuctionDTO.getCategories());
         final Auction auction = auctionMapper.toModel(createAuctionDTO);
 
         auction.setUser(user);
