@@ -3,9 +3,12 @@ package com.FireSale.api.model;
 import com.FireSale.api.dto.TagDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -46,16 +49,20 @@ public class Auction extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Bid> bids;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany
+    private Collection<Bid> bids;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Image> images;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany
+    private Collection<Image> images;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Category> categories;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany
+    private Collection<Category> categories;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Tag> tags;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany
+    private Collection<Tag> tags;
 }
 

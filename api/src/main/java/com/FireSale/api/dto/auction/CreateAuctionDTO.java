@@ -4,6 +4,7 @@ import com.FireSale.api.dto.BaseDTO;
 import com.FireSale.api.dto.TagDTO;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -13,7 +14,7 @@ public class CreateAuctionDTO extends BaseDTO {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Double minimalBid;
-    private List<CreateImageDTO> images;
-    private List<Long> categories;
-    private List<TagDTO> tags;
+    private Collection<CreateImageDTO> images;
+    private Collection<Long> categories;
+    private Collection<TagDTO> tags;
 }
