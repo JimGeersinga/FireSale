@@ -41,10 +41,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Boolean isLocked;
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = false)
+    @OneToOne(cascade = CascadeType.REMOVE, optional = false)
     private Address address;
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = true)
+    @OneToOne(cascade = CascadeType.REMOVE, optional = true)
     private Address shippingAddress;
 
     @Enumerated(EnumType.STRING)
@@ -54,19 +54,15 @@ public class User extends BaseEntity {
     @OneToOne()
     private Image avatar;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "receiver")
     private Collection<Review> incomingReviews;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "reviewer")
     private Collection<Review> outgoingReviews;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "user")
     private Collection<Auction> auctions;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "user")
     private Collection<Bid> bids;
 }
