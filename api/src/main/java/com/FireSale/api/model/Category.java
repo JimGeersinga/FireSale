@@ -20,7 +20,6 @@ public class Category extends BaseEntity {
 
     private Boolean archived;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     private Collection<Auction> auctions;
 }

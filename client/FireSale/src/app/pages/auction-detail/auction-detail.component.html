@@ -37,7 +37,7 @@
         <br />
         <mat-card-subtitle>Tags</mat-card-subtitle>
         <mat-chip-list>
-          <mat-chip class="tag" *ngFor="let tag of model.data.tags">{{tag}}</mat-chip>
+          <mat-chip class="tag" *ngFor="let tag of model.data.tags">{{tag.name}}</mat-chip>
         </mat-chip-list>
         <div *ngIf="model.data.tags.length === 0">-</div>
       </mat-card-content>

@@ -48,7 +48,11 @@ public class ImageService {
         var image = this.imageRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(String.format("Image should be in the database but it is not"),Image.class));
         String filePath =  Paths.get(this.rootLocation.toString(), image.getPath()).toString();
-        return FileUtils.readFileToByteArray(new File(filePath));
+        File file = new File(filePath);
+        if(!file.exists()){
+            file = new File(Paths.get(this.rootLocation.toString(), "placeholder.png").toString());
+        }
+        return FileUtils.readFileToByteArray(file);
     }
 
 

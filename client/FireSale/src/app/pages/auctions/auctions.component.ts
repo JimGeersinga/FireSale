@@ -39,7 +39,7 @@ export class AuctionsComponent implements OnInit {
       } else {
         this.categoryName = 'Alle veilingen';
       }
-      this.listAuctions(queryParams?.categoryId);
+      this.listAuctions(+queryParams?.categoryId);
     });
   }
 
