@@ -77,13 +77,14 @@
 
 mat-card {
   .latest-bid {
-    margin: 1rem;
+    margin: 0.75rem;
   }
 }
 
 .latest-bid {
   position: absolute;
   font-size: 1rem;
+  margin: 0.25rem;
   top: 0;
   right: 0;
 }

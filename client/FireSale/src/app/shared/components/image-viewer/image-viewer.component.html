@@ -2,7 +2,7 @@
   <button mat-mini-fab (click)="prevImage()" class="navigation-buttons prev">
     <mat-icon>chevron_left</mat-icon>
   </button>
-  <img [src]="images[currentImageIndex]?.path || 'https://via.placeholder.com/150'" />
+  <img [src]="images[currentImageIndex]?.path || 'assets/images/NoImage.png'" />
   <button mat-mini-fab (click)="nextImage()" class="navigation-buttons next">
     <mat-icon>chevron_right</mat-icon>
   </button>

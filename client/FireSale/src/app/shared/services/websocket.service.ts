@@ -40,23 +40,25 @@ export class WebSocketService {
     const ws = new SockJS(this.webSocketRoot);
     this.stompClient = Stomp.over(ws);
     this.stompClient.debug = null;
-    ws.onclose = () => this.connect(1);
-    this.connect(1);
+    this.stompClient.reconnect_delay = 5000;
+    this.connect();
   }
 
-  private connect(tryCount: number): void {
-    this.stompClient.connect(
-      {},
-      () => {
-        console.log('WebSocketService -> connected');
-        this.isConnected$.next(true);
-      } ,
-      (message: any) => {
-        this.isConnected$.next(false);
-        console.log('WebSocketService -> reconnect, try ' + tryCount, message);
-        setTimeout(() => {
-          this.connect(++tryCount);
-        }, 1000);
-      });
+  private connect(): void {
+    console.log('WebSocketService -> connecting');
+    try {
+      this.stompClient.connect(
+        {},
+        () => {
+          console.log('WebSocketService -> connected');
+          this.isConnected$.next(true);
+        },
+        (message: any) => {
+          this.isConnected$.next(false);
+          console.log('WebSocketService -> reconnect', message);
+        });
+    } catch (error) {
+      console.log('WebSocketService -> error ', error);
+    }
   }
 }

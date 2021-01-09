@@ -41,7 +41,7 @@ public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
     @Named("avatarWithBaseUrl")
     public static String avatarWithBaseUrl(Image image) {
         if (image == null) return  null;
-        return UrlUtil.getBaseUrl() + image.getPath();
+        return UrlUtil.getBaseUrl() + "file/image/" + image.getId();
     }
 
     @Named("imagesWithBaseUrl")
@@ -49,7 +49,7 @@ public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
         if (images == null) return  null;
         return images.stream().map(image -> {
             final ImageDTO dto = new ImageDTO();
-            dto.setPath(UrlUtil.getBaseUrl() + image.getPath());
+            dto.setPath(UrlUtil.getBaseUrl() + "file/image/" + image.getId());
             dto.setType(image.getType());
             dto.setSort(image.getSort());
             return dto;
