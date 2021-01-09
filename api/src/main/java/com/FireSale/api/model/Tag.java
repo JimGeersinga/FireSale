@@ -19,7 +19,6 @@ public class Tag extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     private Collection<Auction> auctions;
 }

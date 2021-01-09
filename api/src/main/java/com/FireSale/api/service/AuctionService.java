@@ -41,7 +41,7 @@ public class AuctionService {
         auction.setUser(user);
         auction.setIsDeleted(false);
         auction.setIsFeatured(false);
-        auction.setStatus(AuctionStatus.Ready);
+        auction.setStatus(AuctionStatus.READY);
         auction.setCategories(categories);
 
         //Nog niet bestaande tags wegschrijven naar de database

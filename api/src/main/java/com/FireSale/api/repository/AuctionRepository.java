@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
-    @Query("SELECT a FROM Auction a WHERE a.status = 'Ready' AND a.endDate > current_timestamp AND a.user.id = :id")
+    @Query("SELECT a FROM Auction a WHERE a.status = 'READY' AND a.endDate > current_timestamp AND a.user.id = :id")
     List<Auction> findActiveAuctionsByUserId(@Param("id")long userId);
     List<Auction> findByUserId(long userId);
 }
