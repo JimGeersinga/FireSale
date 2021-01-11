@@ -6,6 +6,7 @@ export interface CreateAuctionDTO {
   name: string;
   description: string;
   minimalBid: number;
+  status: string;
   startDate: Date;
   endDate: Date;
   categories: number[];

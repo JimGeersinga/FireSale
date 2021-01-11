@@ -10,6 +10,7 @@ export interface AuctionDTO {
   minimalBid: number;
   startDate: Date;
   endDate: Date;
+  status: string;
   user: ProfileDto;
   categories: CategoryDTO[];
   images: ImageDTO[];

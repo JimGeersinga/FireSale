@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
+import { AuctionDTO } from '../models/auctionDto';
 import { CreateAuctionDTO } from '../models/createAuctionDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuctionService {
+
   private baseUrl = 'auctions';
+ 
   constructor(private api: ApiService) {
   }
 
@@ -23,6 +26,10 @@ export class AuctionService {
 
   public post(auction: CreateAuctionDTO): Observable<any> {
     return this.api.post(`${this.baseUrl}`, auction);
+  }
+
+  public patch(auctionId: number, auction: CreateAuctionDTO): Observable<any> {
+    return this.api.patch(`${this.baseUrl}/${auctionId}`, auction);
   }
 
   public placeBid(auctionId: number, value: number): Observable<any> {

@@ -94,6 +94,25 @@ public class AuctionService {
     }
 
     @Transactional(readOnly = false)
+    public Auction patchAuction(Long id, Auction auction) {
+        final Auction existing = findAuctionById(id);
+
+        if (!Guard.isSelf(existing.getUser().getId()) && !Guard.isAdmin()) {
+            throw new UnAuthorizedException("You are not allowed to cancel this auction");
+        }
+
+       if (auction.getName() != null) existing.setName(auction.getName());
+       if (auction.getDescription() != null) existing.setDescription(auction.getDescription());
+       if (auction.getStartDate() != null) existing.setStartDate(auction.getStartDate());
+       if (auction.getEndDate() != null) existing.setEndDate(auction.getEndDate());
+       if (auction.getMinimalBid() != null) existing.setMinimalBid(auction.getMinimalBid());
+       if (auction.getIsFeatured() !=null) existing.setIsFeatured(auction.getIsFeatured());
+       if (auction.getStatus() != null) existing.setStatus(auction.getStatus());
+       if (auction.getIsDeleted() != null) existing.setIsDeleted(auction.getIsDeleted());
+       return auctionRepository.save(existing);
+    }
+
+    @Transactional(readOnly = false)
     public Auction deleteAuction(Long id) {
         final Auction existing = findAuctionById(id);
 
