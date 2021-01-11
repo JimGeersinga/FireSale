@@ -17,6 +17,8 @@
 
 .featured-section {
   background-color: gainsboro;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 
   .auction-list {
     display: grid;
@@ -31,7 +33,8 @@
     overflow-x: overlay;
     overflow-y: hidden;
     scroll-snap-type: x proximity;
-    padding-bottom: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 
     &:before,
     &:after {

@@ -10,3 +10,8 @@ button {
 table {
   width: 100%;
 }
+:host {
+  position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}

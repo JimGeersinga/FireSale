@@ -1,0 +1,14 @@
+:host {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+
+.close {
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+  z-index: 2;
+  background: white;
+}

@@ -30,20 +30,17 @@
 <ng-template #auctionBoxGrid>
   <ng-container *ngIf="model; else auctionSkeletonGrid">
     <div class="auction-image">
-      <img [src]="model.images[0]?.path" />
+      <img [src]="model.images[0]?.path  || 'assets/images/NoImage.png'" />
     </div>
     <div class="auction-info">
       <h3 class="title">{{ model.name }}</h3>
       <div class="bidding">
-        <a class="auction-button" mat-flat-button fullWidth color="primary"
-          [routerLink]="['/auctions/details', model.id]" queryParamsHandling="merge">BIEDEN</a>
+        <a class="auction-button" mat-flat-button fullWidth color="primary">€ {{ latestBid }}</a>
         <div class="spacer"></div>
         <countdown class="countdown-timer" [config]="{ stopTime: timeLeft, formatDate: util.formatDate }"></countdown>
       </div>
     </div>
-    <mat-chip-list class="latest-bid">
-      <mat-chip color="accent" selected >€ {{ latestBid }}</mat-chip>
-    </mat-chip-list>
+    <span class="featured" *ngIf="model.isFeatured"><mat-icon>star</mat-icon></span>
   </ng-container>
 </ng-template>
 
@@ -59,45 +56,40 @@
       </div>
       <div class="bidding">
         <a class="auction-button" mat-flat-button fullWidth color="primary"
-          [routerLink]="['/auctions/details', model.id]" queryParamsHandling="merge">BIEDEN</a>
+          [routerLink]="['/auctions/details', model.id]" queryParamsHandling="merge">€ {{ latestBid }}</a>
         <div class="spacer"></div>
         <countdown class="countdown-timer" [config]="{ stopTime: timeLeft, formatDate: util.formatDate }"></countdown>
       </div>
     </div>
-    <mat-chip-list class="latest-bid">
-      <mat-chip color="accent" selected >€ {{ latestBid }}</mat-chip>
-    </mat-chip-list>
+    <span class="featured" *ngIf="model.isFeatured"><mat-icon>star</mat-icon></span>
   </ng-container>
 </ng-template>
 
 <ng-container [ngSwitch]="displayType">
-
   <ng-container *ngSwitchCase="displayTypeEnum.GRID" [ngSwitch]="showInCard">
-
     <ng-container *ngSwitchCase="false">
-      <div class="auction-box display-grid" [class.ssc]="!model">
+      <div class="auction-box display-grid" [class.ssc]="!model" [routerLink]="['/auctions/details', model?.id]"
+        queryParamsHandling="merge">
         <ng-container *ngTemplateOutlet="auctionBoxGrid"></ng-container>
       </div>
     </ng-container>
 
-    <mat-card class="auction-box display-grid" [class.ssc]="!model" *ngSwitchDefault>
+    <mat-card class="auction-box display-grid" [class.ssc]="!model" *ngSwitchDefault
+      [routerLink]="['/auctions/details', model?.id]" queryParamsHandling="merge">
       <ng-container *ngTemplateOutlet="auctionBoxGrid"></ng-container>
     </mat-card>
-
   </ng-container>
-
   <ng-container *ngSwitchDefault [ngSwitch]="showInCard">
-
     <ng-container *ngSwitchCase="false">
-      <div class="auction-box display-list" [class.ssc]="!model">
+      <div class="auction-box display-list" [class.ssc]="!model" [routerLink]="['/auctions/details', model?.id]"
+        queryParamsHandling="merge">
         <ng-container *ngTemplateOutlet="auctionBoxList"></ng-container>
       </div>
     </ng-container>
-
-    <mat-card class="auction-box display-list" [class.ssc]="!model" *ngSwitchDefault>
+    <mat-card class="auction-box display-list" [class.ssc]="!model" *ngSwitchDefault
+      [routerLink]="['/auctions/details', model?.id]" queryParamsHandling="merge">
       <ng-container *ngTemplateOutlet="auctionBoxList"></ng-container>
     </mat-card>
-
   </ng-container>
 
 </ng-container>

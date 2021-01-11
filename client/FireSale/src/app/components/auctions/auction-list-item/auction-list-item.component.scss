@@ -6,6 +6,8 @@
   gap: 1rem;
   height: 100%;
   width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
 
   .auction-image {
     width: 220px;
@@ -76,17 +78,26 @@
 }
 
 mat-card {
-  .latest-bid {
+  .featured {
     margin: 0.75rem;
   }
 }
 
-.latest-bid {
+
+.featured {
   position: absolute;
-  font-size: 1rem;
-  margin: 0.25rem;
   top: 0;
   right: 0;
+  font-size: 1rem;
+  margin: 0.25rem;
+  width: 24px;
+  height: 24px;
+  z-index: 3;
+  padding: 4px;
+  text-align: center;
+  background-color: #ffd740;
+  color: rgba(0, 0, 0, .87);
+  border-radius: 100px;
 }
 
 
@@ -97,4 +108,28 @@ mat-card {
   display: block;
   padding: 0.5rem;
   white-space: nowrap;
+}
+
+
+div.auction-box {
+  gap: 0;
+  background-color: #ececec;
+
+  &.display-grid .auction-image {
+    height: calc(100% - 95px);
+
+    img {
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+  }
+
+  &.display-list .auction-image img {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .auction-info {
+    padding: 1rem;
+  }
 }

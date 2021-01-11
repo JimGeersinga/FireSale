@@ -54,6 +54,7 @@ $skeleton-square-height: 100% !default;
 
 /** Main class */
 .ssc {
+  pointer-events: none;
   cursor: progress;
   user-select: none;
 }
