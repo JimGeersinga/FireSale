@@ -29,6 +29,7 @@ public interface UserMapper extends ModelToDTOMapper<User, UserDTO> {
 
     @Named("avatarWithBaseUrl")
     public static String avatarWithBaseUrl(Image avatar) {
+        if(avatar == null) return null;
         return UrlUtil.getBaseUrl() + "file/image/" + avatar.getId();
     }
 }
