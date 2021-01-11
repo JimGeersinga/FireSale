@@ -6,6 +6,7 @@ import com.FireSale.api.dto.bid.BidDTO;
 import com.FireSale.api.dto.bid.CreateBidDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.dto.auction.CreateImageDTO;
+import com.FireSale.api.dto.user.PatchUserDTO;
 import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.mapper.BidMapper;
 import com.FireSale.api.model.Auction;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,7 +42,6 @@ public class AuctionController {
     private final RealTimeAuctionController bidController;
     final private BidService bidService;
     private final BidMapper bidMapper;
-
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -102,4 +103,10 @@ public class AuctionController {
         auctionService.deleteAuction(id);
     }
 
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("isAuthenticated() and (@guard.isAdmin() or @guard.isSelf(#userId))")
+    public void patch(@PathVariable("id") final long id, @Valid @RequestBody final AuctionDTO auctionDTO) {
+        auctionService.patchAuction(id, auctionMapper.toModel(auctionDTO));
+    }
 }

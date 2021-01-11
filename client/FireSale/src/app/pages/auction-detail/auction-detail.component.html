@@ -1,6 +1,9 @@
 <section class="wrapper" *ngIf="model$ | async as model">
   <mat-card class="page-header">
     <h2 class="page-title">{{ model.data.name }}</h2>
+    <div class="cancel-button">
+      <button (click)="cancelAuction(model.data)" mat-raised-button color="accent" [disabled]="disableCancelButton$ | async"><b>ANNULEER</b></button>
+    </div>
     <div class="auction-time">
       <mat-chip-list>
         <mat-chip><b>START: </b> {{model.data.startDate | date: 'dd-MM-yyyy HH:mm'}}</mat-chip>
