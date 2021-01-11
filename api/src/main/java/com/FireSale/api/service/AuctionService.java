@@ -1,6 +1,7 @@
 package com.FireSale.api.service;
 
 import com.FireSale.api.dto.TagDTO;
+import com.FireSale.api.dto.auction.AuctionFilterDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.exception.UnAuthorizedException;
@@ -14,9 +15,12 @@ import com.FireSale.api.security.Guard;
 import com.FireSale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.mockito.internal.util.collections.Sets;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -63,6 +67,37 @@ public class AuctionService {
 
     public Collection<Auction> getAuctions() {
         return auctionRepository.findAll();
+    }
+
+    public Collection<Auction> getActiveAuctions(Pageable pageable) {
+        return auctionRepository.findActiveAuctions(pageable).getContent();
+    }
+
+
+
+    public Collection<Auction> getFeatured() {
+        var featured = auctionRepository.findActiveAuctionsByIsFeaturedTrue();
+
+        var count = featured.stream().count();
+        if( count < 10)
+        {
+            var get = 10 - (int)count;
+            var remainder = PageRequest.of(0, get);
+            var r = auctionRepository.findActiveAuctionsByIsFeaturedFalse(remainder);
+            featured.addAll(r.getContent());
+        }
+        return featured;
+    }
+
+    public Collection<Auction> filterAuctions(AuctionFilterDTO dto) {
+        if(dto.getCategories() != null && dto.getName() != null && dto.getTags() != null) return auctionRepository.findAuctionsByTagsLikeAndCategoriesANDNameLike(dto.getTags(), dto.getCategories(), dto.getName());
+        if(dto.getCategories() != null && dto.getName() != null) return auctionRepository.findAuctionsByCategoriesLikeAndNameLike(dto.getCategories(), dto.getName());
+        if(dto.getCategories() != null && dto.getTags() != null) return auctionRepository.findAuctionsByTagsLikeAndCategoriesLike(dto.getCategories(), dto.getTags());
+        if(dto.getTags() != null && dto.getName() != null) return auctionRepository.findAuctionsByTagsLikeAndNameLike(dto.getTags(), dto.getName());
+        if(dto.getCategories() != null) return auctionRepository.findAuctionsByCategories(dto.getCategories());
+        if(dto.getName() != null) return auctionRepository.findAuctionsByNameLike(dto.getName());
+        if(dto.getTags() != null) return auctionRepository.findAuctionsByTags(dto.getTags());
+        return auctionRepository.findActiveAuctions(PageRequest.of(0,20)).getContent();
     }
 
     public Auction findAuctionById(final long id) {
