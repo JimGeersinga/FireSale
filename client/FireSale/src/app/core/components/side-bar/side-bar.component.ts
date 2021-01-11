@@ -13,12 +13,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SideBarComponent implements OnInit {
   public currentUser$: Observable<UserDto>;
+  public isAdmin = false;
 
   constructor(
     private userService: UserService,
     private router: Router,
     private snackbar: MatSnackBar) {
     this.currentUser$ = this.userService.currentUser$;
+    this.currentUser$.subscribe(item => {
+      this.isAdmin = item && item.role === 'ADMIN';
+    });
   }
 
   ngOnInit(): void {

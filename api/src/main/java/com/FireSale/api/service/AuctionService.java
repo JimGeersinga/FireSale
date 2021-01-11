@@ -90,14 +90,30 @@ public class AuctionService {
     }
 
     public Collection<Auction> filterAuctions(AuctionFilterDTO dto) {
-        if(dto.getCategories() != null && dto.getName() != null && dto.getTags() != null) return auctionRepository.findAuctionsByTagsLikeAndCategoriesANDNameLike(dto.getTags(), dto.getCategories(), dto.getName());
-        if(dto.getCategories() != null && dto.getName() != null) return auctionRepository.findAuctionsByCategoriesLikeAndNameLike(dto.getCategories(), dto.getName());
-        if(dto.getCategories() != null && dto.getTags() != null) return auctionRepository.findAuctionsByTagsLikeAndCategoriesLike(dto.getCategories(), dto.getTags());
-        if(dto.getTags() != null && dto.getName() != null) return auctionRepository.findAuctionsByTagsLikeAndNameLike(dto.getTags(), dto.getName());
-        if(dto.getCategories() != null) return auctionRepository.findAuctionsByCategories(dto.getCategories());
-        if(dto.getName() != null) return auctionRepository.findAuctionsByNameLike(dto.getName());
-        if(dto.getTags() != null) return auctionRepository.findAuctionsByTags(dto.getTags());
-        return auctionRepository.findActiveAuctions(PageRequest.of(0,20)).getContent();
+        if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getTags() != null && dto.getTags().length > 0 && dto.getName() != null ) {
+            return auctionRepository.findAuctionsByTagsLikeAndCategoriesANDNameLike(dto.getTags(), dto.getCategories(), dto.getName());
+        }
+        else if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getTags() != null && dto.getTags().length > 0 ) {
+            return auctionRepository.findAuctionsByTagsLikeAndCategoriesLike(dto.getCategories(), dto.getTags());
+        }
+        else if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getName() != null) {
+            return auctionRepository.findAuctionsByCategoriesLikeAndNameLike(dto.getCategories(), dto.getName());
+        }
+        else if (dto.getTags() != null && dto.getTags().length > 0 && dto.getName() != null) {
+            return auctionRepository.findAuctionsByTagsLikeAndNameLike(dto.getTags(), dto.getName());
+        }
+        else if (dto.getCategories() != null && dto.getCategories().length > 0) {
+            return auctionRepository.findAuctionsByCategories(dto.getCategories());
+        }
+        else if (dto.getTags() != null && dto.getTags().length > 0) {
+            return auctionRepository.findAuctionsByTags(dto.getTags());
+        }
+        else if (dto.getName() != null) {
+            return auctionRepository.findAuctionsByNameLike(dto.getName());
+        }
+        else {
+            return auctionRepository.findActiveAuctions(PageRequest.of(0, 20)).getContent();
+        }
     }
 
     public Auction findAuctionById(final long id) {
@@ -106,7 +122,7 @@ public class AuctionService {
     }
 
     public Collection<Auction> getAuctionsByUserId(final long userId) {
-        return auctionRepository.findByUserId(userId);
+        return auctionRepository.findByUserIdOrderByEndDateDesc(userId);
     }
 
     @Transactional(readOnly = false)

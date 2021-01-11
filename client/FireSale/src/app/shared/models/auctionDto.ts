@@ -1,7 +1,7 @@
 import { CategoryDTO } from 'src/app/shared/models/categoryDto';
 import { TagDto } from 'src/app/shared/models/tagDto';
 import { ProfileDto } from 'src/app/shared/models/profileDto';
-import { ImageDTO } from './imageDTO';
+import { ImageDTO } from './imageDto';
 
 export interface AuctionDTO {
   id: number;
