@@ -102,7 +102,7 @@ public class AuctionController {
         return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)), HttpStatus.OK);
     }
 
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public ResponseEntity filter(@RequestBody AuctionFilterDTO filter) {
         final Collection<Auction> auctions = auctionService.filterAuctions(filter);
         return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)), HttpStatus.OK);

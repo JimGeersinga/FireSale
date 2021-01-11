@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ImageDTO } from 'src/app/shared/models/imageDTO';
+import { ImageDTO } from 'src/app/shared/models/imageDto';
 import { ImageViewerDialogComponent } from '../image-viewer-dialog/image-viewer-dialog.component';
 
 @Component({

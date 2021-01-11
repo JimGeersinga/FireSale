@@ -2,7 +2,8 @@
   <mat-card class="page-header">
     <h2 class="page-title">{{ model.data.name }}</h2>
     <div class="cancel-button">
-      <button (click)="cancelAuction(model.data)" mat-raised-button color="accent" [disabled]="disableCancelButton$ | async"><b>ANNULEER</b></button>
+      <button (click)="cancelAuction(model.data)" mat-raised-button color="accent"
+        [disabled]="disableCancelButton$ | async"><b>ANNULEER</b></button>
     </div>
     <div class="auction-time">
       <mat-chip-list>
@@ -34,7 +35,9 @@
         <br />
         <mat-card-subtitle>Categorieën</mat-card-subtitle>
         <mat-chip-list>
-          <mat-chip class="category" *ngFor="let category of model.data.categories">{{category.name}}</mat-chip>
+          <mat-chip class="category" *ngFor="let category of model.data.categories"
+            routerLink="/auctions"
+            [queryParams]="{categoryId: category.id}"> {{category.name}}</mat-chip>
         </mat-chip-list>
         <div *ngIf="model.data.categories.length === 0">-</div>
         <br />
@@ -52,9 +55,9 @@
     <mat-card>
       <mat-card-title>Verkoper</mat-card-title>
       <br />
-      <mat-card-header>
+      <mat-card-header [routerLink]="['/profile', model.data.user.id]">
         <img mat-card-avatar class="avatar-image" [src]="model.data.user.avatar" />
-        <mat-card-title>{{model.data.user.displayName}}</mat-card-title>
+        <mat-card-title >{{model.data.user.displayName}}</mat-card-title>
         <mat-card-subtitle>subtitle placeholder</mat-card-subtitle>
       </mat-card-header>
     </mat-card>

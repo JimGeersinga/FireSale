@@ -16,7 +16,7 @@ import { CategoriesComponent } from './pages/categories/categories.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', redirectTo: '/auctions', pathMatch: 'full'},
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
 

@@ -6,16 +6,16 @@
 </section>
 <section class="featured-section">
   <h2>Aanbevolen</h2>
-  <ng-container *ngIf="!loadingFeaturedAuctions; else featuredAuctionsSkeleton">
+  <ng-container *ngIf="featuredAuctions; else featuredAuctionsSkeleton">
     <div class="auction-list">
-      <app-auction-list-item class="auction" *ngFor="let auction of allAuctions" [model]="auction">
+      <app-auction-list-item class="auction" *ngFor="let auction of featuredAuctions" [model]="auction">
       </app-auction-list-item>
     </div>
   </ng-container>
 </section>
 <section class="other-section">
   <div class="left-side">
-    <app-category-navigation-list class="category-list"></app-category-navigation-list>
+    <app-category-navigation-list class="category-list" [categories]="categories"></app-category-navigation-list>
   </div>
   <app-auction-list class="auction-list" [auctions]="filteredAuctions" [title]="categoryName"></app-auction-list>
 </section>

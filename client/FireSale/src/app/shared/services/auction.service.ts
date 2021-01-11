@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { AuctionDTO } from '../models/auctionDto';
 import { CreateAuctionDTO } from '../models/createAuctionDto';
+import { FilterDTO } from '../models/filterDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,29 @@ import { CreateAuctionDTO } from '../models/createAuctionDto';
 export class AuctionService {
 
   private baseUrl = 'auctions';
- 
+
   constructor(private api: ApiService) {
   }
 
-  public get(): Observable<any> {
-    const response = this.api.get(`${this.baseUrl}`);
+  public getActive(pageIndex: number, pageSize: number): Observable<any> {
+    let url = `${this.baseUrl}/started?`;
+
+    const params: string[] = [];
+    if (pageIndex) { params.push(`pageIndex=${pageIndex}`); }
+    if (pageSize) { params.push(`pageSize=${pageSize}`); }
+    url += params.join('&');
+
+    const response = this.api.get(url);
+    return response;
+  }
+
+  public getFeatured(): Observable<any> {
+    const response = this.api.get(`${this.baseUrl}/featured`);
+    return response;
+  }
+
+  public getFiltered(filter: FilterDTO): Observable<any> {
+    const response = this.api.post(`${this.baseUrl}/filter`, filter);
     return response;
   }
 

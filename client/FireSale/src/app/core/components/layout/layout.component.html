@@ -8,11 +8,8 @@
     >
       <mat-icon>menu</mat-icon>
     </button>
-    <h1 class="app-name">FireSale</h1>
+    <h1 class="app-name"  [routerLink]="['']">FireSale</h1>
     <div class="menu" fxShow="true" fxHide.lt-md="true">
-      <a mat-button [routerLink]="['/']">
-        <span>Home</span>
-      </a>
       <a mat-button [routerLink]="['/auctions']">
         <span>Veilingen</span>
       </a>
