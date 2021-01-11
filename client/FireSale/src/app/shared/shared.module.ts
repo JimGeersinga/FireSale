@@ -34,9 +34,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
 import { OkDialogComponent } from './components/ok-dialog/ok-dialog.component';
 import { ImageViewerComponent } from './components/image-viewer/image-viewer.component';
+import { ImageViewerDialogComponent } from './components/image-viewer-dialog/image-viewer-dialog.component';
 
 @NgModule({
-  declarations: [ImageViewerComponent, OkDialogComponent],
+  declarations: [ImageViewerComponent, OkDialogComponent, ImageViewerDialogComponent],
   imports: [
     CommonModule,
     MatAutocompleteModule,

@@ -24,13 +24,13 @@ export class AuctionDetailComponent implements OnInit {
   private isCancelled$: Observable<boolean>;
   public currentAuction;
   public model$: Observable<ApiResponse<AuctionDTO>>;
-  items: Array<any> = [{ name: 'assets/images/headphone1.jfif' }, { name: 'assets/images/headphone2.jfif' }, { name: 'assets/images/headphone3.jfif' }, { name: 'assets/images/headphone4.jfif' }];
-  timeLeft: number;
+
   public user$: Observable<ApiResponse<ProfileDto>>;
   public canCancelAuction = false;
   public canCancelAuction$: Observable<boolean>;
   public disableCancelButton$ : Observable<boolean>;
   public cancelButtonClicked$ = new BehaviorSubject<boolean>(false); 
+
 
   constructor(
     private route: ActivatedRoute,
