@@ -1,10 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
 import { map, switchMap } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER, TAB } from '@angular/cdk/keycodes';
@@ -14,6 +17,10 @@ import { CategoryDTO } from 'src/app/shared/models/categoryDto';
 import { CreateAuctionDTO } from 'src/app/shared/models/createAuctionDto';
 import { AuctionService } from 'src/app/shared/services/auction.service';
 import { CategoryService } from 'src/app/shared/services/category.service';
+import { ApiResponse } from 'src/app/core/services/apiResponse';
+import { AuctionDTO } from 'src/app/shared/models/auctionDto';
+import { CreateImageDTO } from 'src/app/shared/models/createImageDto';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-auction-edit',
@@ -21,8 +28,15 @@ import { CategoryService } from 'src/app/shared/services/category.service';
   styleUrls: ['./auction-edit.component.scss'],
 })
 export class AuctionEditComponent implements OnInit {
+  private id: number;
+  public model$: Observable<ApiResponse<AuctionDTO>>;
+  edit = false;
+  selectedCategories: number[];
+  pagetitle = 'Maak een nieuwe veiling aan';
+  submitbuttontext = 'Start veiling';
+  auctionIsRunning = true;
 
-  selectedFiles = [];
+  selectedFiles: CreateImageDTO[] = [];
   visible = true;
   selectable = true;
   removable = true;
@@ -44,7 +58,7 @@ export class AuctionEditComponent implements OnInit {
     startDate: ['', Validators.required],
     endDate: ['', Validators.required],
     categories: ['', Validators.required],
-    tags: [[]]
+    tags: [[]],
   });
 
   public minDate: Date = new Date();
@@ -57,33 +71,75 @@ export class AuctionEditComponent implements OnInit {
     private router: Router,
     private categoryService: CategoryService,
     private tagService: TagService,
-  ) { }
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer
+  ) {
+    this.route.params.subscribe((params) => {
+      if (params.id) {
+        this.id = params.id;
+        this.model$ = this.auctionService.getSingle(this.id);
+        this.edit = true;
+        this.submitbuttontext = 'Wijzigingen opslaan';
+      }
+    });
+  }
+
+  private buildForm(auction?: AuctionDTO): void {
+    this.auctionEditForm = this.formBuilder.group({
+      name: [auction?.name],
+      description: [auction?.description],
+      categories: [auction?.categories.map((x) => x.id)],
+      tags: [auction?.tags.map((x) => x.name)],
+      minimalBid: [auction?.minimalBid],
+      startDate: [auction?.startDate],
+      endDate: [auction?.endDate],
+      images: [auction?.images],
+    });
+    if (this.edit) {
+      this.pagetitle = `Wijzig veiling ${auction.name}`;
+    }
+    this.currentTags = auction?.tags.map((x) => x.name);
+    this.selectedFiles = auction?.images;
+    if (Date.parse(auction?.startDate.toString()) > Date.now()) {
+      this.auctionIsRunning = false;
+    }
+  }
 
   ngOnInit(): void {
-    this.categoryService.get().subscribe(response => this.categories = response.data);
+    this.categoryService
+      .get()
+      .subscribe((response) => (this.categories = response.data));
+
     this.allTags$ = this.searchBehaviourSubject$.pipe(
-      switchMap(searchTerm => {
+      switchMap((searchTerm) => {
         return this.tagService.searchTagsByName(searchTerm);
       }),
-      map(data => {
+      map((data) => {
         return data;
       })
     );
+
+    this.route.params.subscribe((params) => {
+      this.id = params?.id;
+      if (this.id) {
+        this.auctionService.getSingle(this.id).subscribe((auction) => {
+          this.buildForm(auction.data);
+        });
+      } else {
+        this.buildForm();
+      }
+    });
   }
 
   public addTag(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
 
-    // Add tag
     if ((value || '').trim()) {
       this.currentTags.push(value.trim());
     }
 
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
+    input.value = '';
 
     this.tagsControl.setValue(null);
   }
@@ -109,40 +165,62 @@ export class AuctionEditComponent implements OnInit {
   }
 
   public selectFiles(event): void {
-    if (event.target.files && event.target.files[0]) {
-      const filesAmount = event.target.files.length;
-      for (let i = 0; i < filesAmount; i++) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.selectedFiles.push(e.target.result); // voorbeeld weergevan op pagina
-        };
-        reader.readAsDataURL(event.target.files[i]);
-      }
+    for (const file of event.target.files) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const encodedImage = e.target.result.split('base64,')[1];
+        const fileExtension = '.' + e.target.result.split(';')[0].split('/')[1];
+        this.selectedFiles.push({
+          id: null,
+          path: encodedImage,
+          type: fileExtension,
+          sort: 0,
+        }); // voorbeeld weergevan op pagina
+      };
+
+      reader.readAsDataURL(file);
     }
+  }
+
+  public removeFile(index): void {
+    this.selectedFiles.splice(index, 1);
+  }
+
+  sanitize(url: string): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
   public submitAuction(data: CreateAuctionDTO): void {
     if (!this.auctionEditForm.valid) {
-      this.dialog.open(OkDialogComponent, { data: { title: 'Nieuwe veiling', message: 'Gegevens voor een nieuwe veiling zijn niet correct ingevuld' } });
-    }
-    else {
+      this.dialog.open(
+        OkDialogComponent, {
+        data: this.edit
+          ? {
+            title: 'Wijzig veiling',
+            message: 'Gegevens voor het wijzigen van de veiling zijn niet correct ingevuld',
+          }
+          : {
+            title: 'Nieuwe veiling',
+            message: 'Gegevens voor een nieuwe veiling zijn niet correct ingevuld',
+          }
+      });
+    } else {
       data.tags = [];
-      this.currentTags.map(tag => { data.tags.push({ name: tag }); });
+      this.currentTags.map((tag) => {
+        data.tags.push({ name: tag });
+      });
 
-      data.images = [];
-      this.selectedFiles.forEach((element) => {
-        const encodedImage = element.split('base64,')[1];
-        const fileExtension = '.' + element.split(';')[0].split('/')[1];
-        data.images.push({
-          imageB64: encodedImage,
-          type: fileExtension,
-          sort: 0, // Moet nog aanpasbaar worden in UI
+      data.images = this.selectedFiles;
+
+      if (this.edit) {
+        this.auctionService.put(this.id, data).subscribe((result) => {
+          this.router.navigate(['/auctions/details', this.id]);
         });
-      });
-
-      this.auctionService.post(data).subscribe(result => {
-        this.router.navigate(['/auctions/details', result.data.id]);
-      });
+      } else {
+        this.auctionService.post(data).subscribe((result) => {
+          this.router.navigate(['/auctions/details', result.data.id]);
+        });
+      }
     }
   }
 }

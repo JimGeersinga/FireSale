@@ -3,6 +3,7 @@ package com.FireSale.api.mapper;
 import com.FireSale.api.dto.auction.AuctionDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.dto.auction.ImageDTO;
+import com.FireSale.api.dto.category.CategoryDTO;
 import com.FireSale.api.dto.user.PatchUserDTO;
 import com.FireSale.api.dto.user.RegisterDTO;
 import com.FireSale.api.dto.user.UpdateUserDTO;
@@ -32,29 +33,4 @@ public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
     @Override
     @Mapping(target = "user", ignore = true)
     Auction toModel(AuctionDTO auction);
-
-    @Override
-    @Mapping(target = "user.avatar", source = "user.avatar", qualifiedByName = "avatarWithBaseUrl")
-    @Mapping(target = "images", source = "images", qualifiedByName = "imagesWithBaseUrl")
-    AuctionDTO toDTO(Auction model);
-
-    @Named("avatarWithBaseUrl")
-    public static String avatarWithBaseUrl(Image image) {
-        if (image == null) return  null;
-        return UrlUtil.getBaseUrl() + "file/image/" + image.getId();
-    }
-
-    @Named("imagesWithBaseUrl")
-    public static Collection<ImageDTO> imagesWithBaseUrl(Collection<Image> images) {
-        if (images == null) return  null;
-        return images.stream().map(image -> {
-            final ImageDTO dto = new ImageDTO();
-            dto.setPath(UrlUtil.getBaseUrl() + "file/image/" + image.getId());
-            dto.setType(image.getType());
-            dto.setSort(image.getSort());
-            return dto;
-        }).collect(Collectors.toSet());
-    }
-
-
 }

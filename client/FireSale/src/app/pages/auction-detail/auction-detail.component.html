@@ -55,8 +55,8 @@
       <mat-card-title>Verkoper</mat-card-title>
       <br />
       <mat-card-header [routerLink]="['/profile', model.data.user.id]">
-        <img mat-card-avatar class="avatar-image" [src]="model.data.user.avatar" />
-        <mat-card-title >{{model.data.user.displayName}}</mat-card-title>
+        <img mat-card-avatar class="avatar-image" [src]="model.data.user.avatar | blobToImage" />
+        <mat-card-title>{{model.data.user.displayName}}</mat-card-title>
         <mat-card-subtitle>subtitle placeholder</mat-card-subtitle>
       </mat-card-header>
     </mat-card>

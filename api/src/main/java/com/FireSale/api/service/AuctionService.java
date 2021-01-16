@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDateTime;
 import org.springframework.data.domain.Pageable;
 import java.util.*;
 
@@ -119,22 +120,36 @@ public class AuctionService {
     }
 
     @Transactional(readOnly = false)
-    public Auction updateAuction(Long id, Auction auction) {
+    public Auction updateAuction(Long id, CreateAuctionDTO createAuctionDTO) {
         final Auction existing = findAuctionById(id);
+        final Collection<Category> categories = categoryRepository.findByIdIn(createAuctionDTO.getCategories());
 
-        if (Guard.isSelf(existing.getUser().getId())) {
-            throw new UnAuthorizedException("Cannot update the auction");
-        }
+//        if (Guard.isSelf(existing.getUser().getId())) {
+//            throw new UnAuthorizedException("Cannot update the auction");
+//        }
 
-        existing.setName(auction.getName());
-        existing.setDescription(auction.getDescription());
-        existing.setStartDate(auction.getStartDate());
-        existing.setEndDate(auction.getEndDate());
-        existing.setMinimalBid(auction.getMinimalBid());
-        existing.setIsFeatured(auction.getIsFeatured());
-        existing.setStatus(auction.getStatus());
-        existing.setIsDeleted(auction.getIsDeleted());
-        return auctionRepository.save(auction);
+        if (existing.getStartDate().isBefore(LocalDateTime.now())) throw new UnAuthorizedException("Cannot change a running auction");
+        existing.setName(createAuctionDTO.getName());
+        existing.setDescription(createAuctionDTO.getDescription());
+        existing.setStartDate(createAuctionDTO.getStartDate());
+        existing.setEndDate(createAuctionDTO.getEndDate());
+        existing.setMinimalBid(createAuctionDTO.getMinimalBid());
+        existing.setCategories(categories);
+        //existing.setTags(createAuctionDTO.getTags());
+        //Nog niet bestaande tags wegschrijven naar de database
+        List<Tag> tags = new ArrayList<>();
+        createAuctionDTO.getTags().stream().forEach(tag -> {
+            var t = tagService.getTagByName(tag.getName());
+            if(t == null) {
+                tags.add(tagService.createTag(tag.getName()));
+            }else{
+                tags.add(t);
+            }
+        });
+
+        //Alle tags voor auction ophalen en setten bij de auction
+        existing.setTags( tags);
+        return auctionRepository.save(existing);
     }
 
     @Transactional(readOnly = false)

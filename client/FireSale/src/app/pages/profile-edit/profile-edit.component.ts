@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { CustomErrorStateMatcher } from 'src/app/core/providers/CustomErrorStateMatcher';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
+import { CreateImageDTO } from 'src/app/shared/models/createImageDto';
 import { UpdateUserDto } from 'src/app/shared/models/updateUserDto';
 import { UserService } from 'src/app/shared/services/user.service';
 
@@ -16,7 +17,7 @@ export class ProfileEditComponent implements OnInit {
   public profileUpdateForm: any;
   public id: number;
   matcher = new CustomErrorStateMatcher();
-  public selectedFile: any;
+  public selectedFile: CreateImageDTO;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,7 +54,7 @@ export class ProfileEditComponent implements OnInit {
           password: [null, ],
           passwordVerify: [null, ]
         },
-        { validators: this.checkPasswords }
+          { validators: this.checkPasswords }
         );
       });
     });
@@ -77,12 +78,19 @@ export class ProfileEditComponent implements OnInit {
     });
   }
 
-  public selectFile(event) {
-        let reader = new FileReader();
-        reader.onload = (e: any) => {
-      this.selectedFile = e.target.result; // voorbeeld weergeven op pagina
+  public selectFile(event): void {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const encodedImage = e.target.result.split('base64,')[1];
+      const fileExtension = '.' + e.target.result.split(';')[0].split('/')[1];
+      this.selectedFile = {
+        id: null,
+        path: encodedImage,
+        type: fileExtension,
+        sort: 0,
+      }; // voorbeeld weergevan op pagina
     };
-        reader.readAsDataURL(event.target.files[0]);
+    reader.readAsDataURL(event.target.files[0]);
   }
 
   submitProfileUpdate(id: number, data: UpdateUserDto): void {
@@ -91,21 +99,15 @@ export class ProfileEditComponent implements OnInit {
     }
     else {
       if (this.selectedFile) {
-        const encodedImage = this.selectedFile.split('base64,')[1];
-        const fileExtension = '.' + this.selectedFile.split(';')[0].split('/')[1];
-        data.avatar = {
-          imageB64: encodedImage,
-          type: fileExtension,
-          sort: 0
-        };
+        data.avatar = this.selectedFile;
       }
-      console.log(data);
+
       if (!data.password) {
 
         data.password = null;
       }
-      console.log(data);
-      this.userService.updateProfile(id, data).subscribe(_ => {console.log('test');});
+
+      this.userService.updateProfile(id, data).subscribe(_ => { console.log('test'); });
 
       this.dialog.open(OkDialogComponent, { data: { title: 'Wijzigen gegevens', message: 'Gegevens zijn gewijzigd' } });
     }

@@ -1,5 +1,6 @@
 export interface CreateImageDTO {
-  imageB64: string;
+  id: number;
+  path: string;
   type: string;
   sort: number;
 }
