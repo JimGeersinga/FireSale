@@ -18,8 +18,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class BidService {
     private final BidRepository bidRepository;
-    private final AuctionRepository auctionRepository;
-    private final UserRepository userRepository;
 
     @Transactional(readOnly = false)
     public Bid create(Bid bid) {
@@ -49,5 +47,4 @@ public class BidService {
     public List<Bid> getForUser(long user) {
         return bidRepository.findByUserId(user);
     }
-
 }

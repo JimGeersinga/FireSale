@@ -1,12 +1,10 @@
 package com.FireSale.api.service;
 
-import com.FireSale.api.dto.TagDTO;
 import com.FireSale.api.dto.auction.AuctionFilterDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.exception.UnAuthorizedException;
 import com.FireSale.api.mapper.AuctionMapper;
-import com.FireSale.api.mapper.TagMapper;
 import com.FireSale.api.model.*;
 import com.FireSale.api.repository.AuctionRepository;
 import com.FireSale.api.repository.CategoryRepository;
@@ -14,15 +12,12 @@ import com.FireSale.api.repository.UserRepository;
 import com.FireSale.api.security.Guard;
 import com.FireSale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.mockito.internal.util.collections.Sets;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.data.domain.Pageable;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -72,8 +67,6 @@ public class AuctionService {
     public Collection<Auction> getActiveAuctions(Pageable pageable) {
         return auctionRepository.findActiveAuctions(pageable).getContent();
     }
-
-
 
     public Collection<Auction> getFeatured() {
         var featured = auctionRepository.findActiveAuctionsByIsFeaturedTrue();

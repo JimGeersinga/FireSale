@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { AuctionDTO } from 'src/app/shared/models/auctionDto';
 import { CategoryDTO } from 'src/app/shared/models/categoryDto';
 import { DisplayType } from 'src/app/shared/models/display-type.enum';
@@ -21,7 +20,7 @@ export class AuctionsComponent implements OnInit {
   public categoryName = 'Alle veilingen';
   public displayTypeEnum = DisplayType;
   public displayType: DisplayType = DisplayType.LIST;
-
+     
   constructor(
     private activeRoute: ActivatedRoute,
     private categoryService: CategoryService,

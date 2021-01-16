@@ -16,7 +16,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     @Query("SELECT a FROM Auction a WHERE a.status = 'READY' AND a.endDate > current_timestamp AND a.user.id = :id order by a.endDate asc")
     List<Auction> findActiveAuctionsByUserId(@Param("id")long userId);
 
-    @Query("SELECT a FROM Auction a WHERE a.status = 'READY' AND a.startDate <= current_timestamp AND a.endDate > current_timestamp  order by a.endDate asc")
+    @Query(value = "SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.startDate <= current_timestamp AND a.endDate > current_timestamp  order by a.endDate asc",
+            countQuery = "SELECT COUNT(a) FROM Auction a WHERE a.status = 'READY' AND a.startDate <= current_timestamp AND a.endDate > current_timestamp")
     Page<Auction> findActiveAuctions(Pageable pageable);
 
     @Query("SELECT a FROM Auction a WHERE a.status = 'READY' AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND a.isFeatured = false order by a.endDate asc")
