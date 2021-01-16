@@ -2,8 +2,7 @@
   <mat-card class="page-header">
     <h2 class="page-title">{{ model.data.name }}</h2>
     <div class="cancel-button">
-      <button (click)="cancelAuction(model.data)" mat-raised-button color="accent"
-        [disabled]="disableCancelButton$ | async"><b>ANNULEER</b></button>
+      <button (click)="cancelAuction(model.data)" mat-raised-button color="accent" *ngIf="canCancelAuction"><b>ANNULEER</b></button>
     </div>
     <div class="auction-time">
       <mat-chip-list>
