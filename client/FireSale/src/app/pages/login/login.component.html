@@ -3,17 +3,17 @@
   <mat-card class="login-card">
     <form [formGroup]="loginForm" (ngSubmit)="submitLogin(loginForm.value)">
       <mat-form-field>
-        <mat-label>Email</mat-label>
+        <mat-label>E-mailadres</mat-label>
         <input matInput type="text" required formControlName="email" />
         <mat-error *ngIf="loginForm.hasError('email', 'email') || loginForm.hasError('required', 'email') ">
-          Vul een geldig email adres in
+          Vul een geldig e-mailadres in.
         </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Wachtwoord</mat-label>
         <input matInput type="password" required formControlName="password" />
         <mat-error *ngIf="loginForm.hasError('required', 'password') ">
-          Vul het wachtwoord in
+          Vul het wachtwoord in.
         </mat-error>
       </mat-form-field>
 
