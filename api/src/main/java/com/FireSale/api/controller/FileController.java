@@ -20,7 +20,7 @@ public class FileController {
             value = "/image/{id}",
             produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public @ResponseBody byte[] getImageBytes(@PathVariable Long id) throws IOException {
+    public @ResponseBody byte[] getImageBytes(@PathVariable Long id) {
         return imageService.getFileBytes(id);
     }
 

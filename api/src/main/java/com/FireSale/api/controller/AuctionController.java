@@ -13,8 +13,8 @@ import com.FireSale.api.mapper.BidMapper;
 import com.FireSale.api.model.Auction;
 import com.FireSale.api.model.Bid;
 import com.FireSale.api.service.AuctionService;
-import com.FireSale.api.service.ImageService;
 import com.FireSale.api.service.BidService;
+import com.FireSale.api.service.ImageService;
 import com.FireSale.api.service.UserService;
 import com.FireSale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +47,7 @@ public class AuctionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity create(@Valid @RequestBody CreateAuctionDTO createAuctionDTO) throws IOException{
+    public ResponseEntity<?> create(@Valid @RequestBody CreateAuctionDTO createAuctionDTO) {
         Collection<CreateImageDTO> images = createAuctionDTO.getImages();
         Auction auction = auctionService.create(createAuctionDTO);
         imageService.storeAuctionImages(images, auction);
@@ -57,7 +56,7 @@ public class AuctionController {
     }
 
     @PostMapping("/{id}/images")
-    public ResponseEntity uploadAuctionImages(@RequestBody List<CreateImageDTO> imageDTOs, @PathVariable Long id) throws IOException { // todo: IO exception review?
+    public ResponseEntity<?> uploadAuctionImages(@RequestBody List<CreateImageDTO> imageDTOs, @PathVariable Long id) {
         Auction auction = auctionService.findAuctionById(id);
         imageService.storeAuctionImages(imageDTOs, auction);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -65,7 +64,7 @@ public class AuctionController {
 
     @PostMapping("/{auctionId}/bids")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity placeBid(@PathVariable("auctionId") final long auctionId, @Valid @RequestBody CreateBidDTO createBidDTO) {
+    public ResponseEntity<?> placeBid(@PathVariable("auctionId") final long auctionId, @Valid @RequestBody CreateBidDTO createBidDTO) {
         Bid bid = bidMapper.toModel(createBidDTO);
         bid.setAuction(auctionService.findAuctionById(auctionId));
         bid.setUser(userService.findUserById(SecurityUtil.getSecurityContextUser().getUser().getId()));
@@ -76,13 +75,13 @@ public class AuctionController {
     }
 
     @GetMapping("/{auctionId}/bids")
-    public ResponseEntity getBids(@PathVariable("auctionId") final long auctionId) {
+    public ResponseEntity<?> getBids(@PathVariable("auctionId") final long auctionId) {
         final List<Bid> bids = bidService.getForAuction(auctionId);
         return new ResponseEntity<>(new ApiResponse<>(true, bids.stream().map(bidMapper::toDTO).collect(Collectors.toList())), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity all() {
+    public ResponseEntity<?> all() {
         final Collection<Auction> auctions = auctionService.getAuctions();
         return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)), HttpStatus.OK);
     }
@@ -107,15 +106,9 @@ public class AuctionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") final long id) {
+    public ResponseEntity<?> get(@PathVariable("id") final long id) {
         final Auction auction = auctionService.findAuctionById(id);
         return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable("id") final long id, @Valid @RequestBody final AuctionDTO auctionDTO) {
-        auctionService.updateAuction(id, auctionMapper.toModel(auctionDTO));
     }
 
     @DeleteMapping("/{id}")
@@ -123,6 +116,14 @@ public class AuctionController {
         auctionService.deleteAuction(id);
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable("id") final long id, @Valid @RequestBody final CreateAuctionDTO createAuctionDTO) {
+        Collection<CreateImageDTO> images = createAuctionDTO.getImages();
+        Auction auction =  auctionService.updateAuction(id, createAuctionDTO);
+        imageService.storeAuctionImages(images, auction);
+    }
+    
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("isAuthenticated() and (@guard.isAdmin() or @guard.isSelf(#userId))")

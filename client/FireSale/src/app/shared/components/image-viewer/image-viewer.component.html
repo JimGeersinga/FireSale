@@ -2,7 +2,7 @@
   <button mat-mini-fab (click)="prevImage()" class="navigation-buttons prev">
     <mat-icon>chevron_left</mat-icon>
   </button>
-  <img [src]="images[currentImageIndex]?.path || 'assets/images/NoImage.png'" (click)="expandImage()" [class.expandable]="enableImageExpansion"/>
+  <img [src]="(images[currentImageIndex]?.path | blobToImage) || 'assets/images/NoImage.png'" (click)="expandImage()" [class.expandable]="enableImageExpansion" />
   <button mat-mini-fab (click)="nextImage()" class="navigation-buttons next">
     <mat-icon>chevron_right</mat-icon>
   </button>
@@ -13,6 +13,6 @@
     [class.active]="currentImageIndex == i"
     (mouseenter)="enableHoverPreview && showImage(i)"
     (click)="showImage(i)">
-    <img [src]="image.path" />
+    <img [src]="image.path | blobToImage" />
   </div>
 </div>

@@ -22,5 +22,5 @@ public class UserDTO extends BaseDTO {
     private Role role;
     private AddressDTO address;
     private AddressDTO shippingAddress;
-    private String avatar;
+    private byte[] avatar;
 }

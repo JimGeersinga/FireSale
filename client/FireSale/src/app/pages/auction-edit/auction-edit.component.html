@@ -1,6 +1,6 @@
 <section class="wrapper">
 
-  <h2 class="page-title">Maak een nieuwe veiling aan</h2>
+  <h2 class="page-title">{{this.pagetitle}}</h2>
   <mat-card class="login-card">
     <form [formGroup]="auctionEditForm" (ngSubmit)="submitAuction(auctionEditForm.value)">
       <mat-form-field fullWidth>
@@ -20,24 +20,14 @@
       <mat-form-field class="tags-list">
         <mat-label>Tags</mat-label>
         <mat-chip-list #chipList aria-label="Tags">
-          <mat-chip
-            *ngFor="let tag of currentTags"
-            [selectable]="selectable"
-            [removable]="removable"
+          <mat-chip *ngFor="let tag of currentTags" [selectable]="selectable" [removable]="removable"
             (removed)="removeTag(tag)">
             {{tag}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
-          <input
-            placeholder="Nieuwe tag..."
-            #tagInput
-            [formControl]="tagsControl"
-            [matAutocomplete]="auto"
-            [matChipInputFor]="chipList"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            (keyup)="autocompleteTag($event)"
-            (matChipInputTokenEnd)="addTag($event)"
-            >
+          <input placeholder="Nieuwe tag..." #tagInput [formControl]="tagsControl" [matAutocomplete]="auto"
+            [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (keyup)="autocompleteTag($event)" (matChipInputTokenEnd)="addTag($event)">
         </mat-chip-list>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTags($event)">
           <mat-option *ngFor="let tag of allTags$ | async" [value]="tag">
@@ -67,11 +57,13 @@
         <input type="file" multiple (change)="selectFiles($event)">
         <br /><br />
         <ul>
-          <li *ngFor="let url of selectedFiles"><img [src]=url alt=file /></li>
+          <li *ngFor="let file of selectedFiles; let i = index">
+            <img [src]="file.path | blobToImage" alt="image" /><mat-icon (click)="removeFile(i)">delete</mat-icon>
+          </li>
         </ul>
       </div>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!auctionEditForm.valid">Start veiling</button>
+      <button mat-raised-button color="primary" type="submit"
+        [disabled]="!auctionEditForm.valid || (edit && auctionIsRunning)">{{this.submitbuttontext}}</button>
     </form>
   </mat-card>
 </section>
-

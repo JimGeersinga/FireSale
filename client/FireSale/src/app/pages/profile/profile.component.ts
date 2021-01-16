@@ -27,7 +27,6 @@ export class ProfileComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.id = params.id;
       this.userService.getUserAuctions(this.id).subscribe(response => this.usersAuctions = response.data);
-      console.log(this.usersAuctions); // remove this later
       this.user$ = this.userService.getUserProfile(params.id);
       this.userService.currentUser$.subscribe(user => {
         this.isCurrentUser = user.id === +params.id;

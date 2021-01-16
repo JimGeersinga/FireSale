@@ -22,6 +22,7 @@ const routes: Routes = [
 
   { path: 'auctions', component: AuctionsComponent},
   { path: 'auctions/edit', component: AuctionEditComponent, canActivate: [AuthGuard]  },
+  { path: 'auctions/:id/edit', component: AuctionEditComponent, canActivate: [AuthGuard]  },
   { path: 'auctions/details/:id', component: AuctionDetailComponent },
 
   { path: 'categories', component: CategoriesComponent, canActivate: [AdminGuard]},

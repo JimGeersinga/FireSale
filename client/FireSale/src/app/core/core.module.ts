@@ -6,6 +6,7 @@ import { BasicAuthInterceptor } from './interceptors/basic-auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { ConfigService } from './services/config.service';
 import { HomeComponent } from '../pages/home/home.component';
+import { BlobToImagePipe } from './pipes/blob-to-image.pipe';
 
 const appInitializerFn = (appConfig: ConfigService) => {
   return () => {
@@ -15,7 +16,7 @@ const appInitializerFn = (appConfig: ConfigService) => {
 
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, BlobToImagePipe],
   imports: [
     CommonModule
   ],
@@ -32,7 +33,8 @@ const appInitializerFn = (appConfig: ConfigService) => {
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   exports: [
-    HomeComponent
+    HomeComponent,
+    BlobToImagePipe
   ]
 })
 export class CoreModule { }

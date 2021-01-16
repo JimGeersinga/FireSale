@@ -27,7 +27,7 @@
     >
       <span class="displayname">{{ user.displayName }}</span>
       <img
-        [src]="user.avatar"
+        [src]="user.avatar  | blobToImage"
         class="profile-picture"
       />
       <mat-menu #profileMenu="matMenu">

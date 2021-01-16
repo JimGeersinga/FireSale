@@ -10,8 +10,9 @@ import java.util.Set;
 @Setter
 @Entity
 public class Image extends BaseEntity {
-    @Column(nullable = false, unique = true)
-    private String path;
+    @Lob
+    @Column(nullable = false)
+    private byte[] path;
 
     @Column(nullable = false)
     private Integer sort = 0;

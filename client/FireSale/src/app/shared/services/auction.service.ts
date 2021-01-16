@@ -51,6 +51,10 @@ export class AuctionService {
     return this.api.post(`${this.baseUrl}`, auction);
   }
 
+  public put(id: number, auction: CreateAuctionDTO): Observable<any> {
+    return this.api.put(`${this.baseUrl}/${id}`, auction);
+  }
+
   public patch(auctionId: number, auction: CreateAuctionDTO): Observable<any> {
     return this.api.patch(`${this.baseUrl}/${auctionId}`, auction);
   }
