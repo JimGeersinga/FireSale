@@ -25,9 +25,8 @@ public class AuctionDTO extends BaseDTO {
     private AuctionStatus status;
     private BidDTO finalBid;
     private UserProfileDTO user;
-    private Collection<BidDTO> bids;
     private Collection<ImageDTO> images;
     private Collection<CategoryDTO> categories;
     private Collection<TagDTO> tags;
-
+    private Collection<BidDTO> bids;
 }

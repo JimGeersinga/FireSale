@@ -20,6 +20,6 @@ public class Category extends BaseEntity {
 
     private Boolean archived;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "categories")
     private Collection<Auction> auctions;
 }

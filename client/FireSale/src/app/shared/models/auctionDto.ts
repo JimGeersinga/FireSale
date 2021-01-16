@@ -2,6 +2,7 @@ import { CategoryDTO } from 'src/app/shared/models/categoryDto';
 import { TagDto } from 'src/app/shared/models/tagDto';
 import { ProfileDto } from 'src/app/shared/models/profileDto';
 import { ImageDTO } from './imageDto';
+import { BidDTO } from './bidDto';
 
 export interface AuctionDTO {
   id: number;
@@ -16,4 +17,5 @@ export interface AuctionDTO {
   categories: CategoryDTO[];
   images: ImageDTO[];
   tags: TagDto[];
+  bids: BidDTO[];
 }

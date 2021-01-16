@@ -27,6 +27,11 @@ export class AuctionService {
     return response;
   }
 
+  public getAllActive(): Observable<any> {
+    const response = this.api.get(`${this.baseUrl}/active`);
+    return response;
+  }
+
   public getFeatured(): Observable<any> {
     const response = this.api.get(`${this.baseUrl}/featured`);
     return response;

@@ -49,8 +49,7 @@ public class Auction extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "auction")
     private Collection<Bid> bids;
 
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -59,10 +58,20 @@ public class Auction extends BaseEntity {
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
+    @JoinTable(
+            name = "auction_categories",
+            joinColumns = { @JoinColumn(name = "auction_id") },
+            inverseJoinColumns = { @JoinColumn(name = "categories_id") }
+    )
     private Collection<Category> categories;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
+    @JoinTable(
+            name = "auction_tags",
+            joinColumns = { @JoinColumn(name = "auction_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tags_id") }
+    )
     private Collection<Tag> tags;
 }
 

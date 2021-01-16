@@ -94,8 +94,6 @@ public class AuctionController {
         return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)), HttpStatus.OK);
     }
 
-
-
     @GetMapping("/featured")
     public ResponseEntity featured() {
         final Collection<Auction> auctions = auctionService.getFeatured();
