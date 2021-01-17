@@ -1,8 +1,12 @@
 <section class="wrapper" *ngIf="model$ | async as model">
   <mat-card class="page-header">
     <h2 class="page-title">{{ model.data.name }}</h2>
-    <div class="cancel-button">
+    <div class="button">
       <button (click)="cancelAuction(model.data)" mat-raised-button color="accent" *ngIf="canCancelAuction"><b>ANNULEER</b></button>
+    </div>
+    <div class="button" *ngIf="isAdmin">
+      <button (click)="markAsFeatured(model.data)" mat-raised-button color="accent"
+              [disabled]="model.data.isFeatured"><b>FEATURE</b></button>
     </div>
     <div class="auction-time">
       <mat-chip-list>

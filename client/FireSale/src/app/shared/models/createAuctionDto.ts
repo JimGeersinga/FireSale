@@ -5,6 +5,7 @@ export interface CreateAuctionDTO {
   id: number;
   name: string;
   description: string;
+  isFeatured: boolean;
   minimalBid: number;
   status: string;
   startDate: Date;
