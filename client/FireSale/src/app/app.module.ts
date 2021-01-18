@@ -32,6 +32,7 @@ import { BidComponent } from './components/auctions/bid/bid.component';
 import { AuctionEditComponent } from './pages/auction-edit/auction-edit.component';
 import { CategoryEditComponent } from './pages/category-edit/category-edit.component';
 import { ProfileEditComponent } from './pages/profile-edit/profile-edit.component';
+import { SearchComponent } from './components/auctions/search/search.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
@@ -60,6 +61,7 @@ import { ChangePasswordComponent } from './pages/change-password/change-password
     AuctionEditComponent,
     CategoriesComponent,
     AuctionsSearchComponent,
+    SearchComponent,
     ForgotPasswordComponent,
     ChangePasswordComponent
   ],

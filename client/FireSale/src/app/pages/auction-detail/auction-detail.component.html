@@ -31,6 +31,7 @@
     </div>
     <div class="buttons" *ngIf="(isAdmin || isOwner) && state !== auctionState.CLOSED">
       <button (click)="cancelAuction()" mat-raised-button color="primary" *ngIf="isAdmin || (isOwner && state === auctionState.SCHEDULED)">Veiling annuleren</button>
+      <button (click)="cancelAuction()" mat-raised-button color="warning" *ngIf="(isAdmin || isOwner) && state === auctionState.CLOSED">Veiling verwijderen</button>
       <button mat-raised-button color="primary" (click)="toggleFeatured()"  *ngIf="isAdmin">
         <mat-slide-toggle  [checked]="auction.isFeatured" >Aanbevolen
         </mat-slide-toggle>
@@ -71,7 +72,7 @@
         <br />
         <mat-card-subtitle>Tags</mat-card-subtitle>
         <mat-chip-list>
-          <mat-chip class="tag" *ngFor="let tag of auction.tags">{{tag.name}}</mat-chip>
+          <mat-chip class="tag" *ngFor="let tag of auction.tags" routerLink="/auctions/search" [queryParams]="{t: tag.name}">{{tag.name}}</mat-chip>
         </mat-chip-list>
         <div *ngIf="auction.tags.length === 0">-</div>
       </mat-card-content>

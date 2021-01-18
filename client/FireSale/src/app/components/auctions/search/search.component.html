@@ -1,0 +1,27 @@
+<div class="search">
+  <mat-form-field appearance="fill" class="input">
+    <input matInput placeholder="Zoeken" [(ngModel)]="searchValue">
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="categories">
+    <mat-label>Categorie</mat-label>
+    <mat-select [(value)]="selectedCategory">
+      <mat-option>Selecteer een categorie</mat-option>
+      <mat-option *ngFor="let category of categories" [value]="category">{{category.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="tags">
+    <mat-label>Tags</mat-label>
+    <input matInput [matAutocomplete]="auto" value="{{selectedTag?.name}}" (keyup)="autocompleteTag($event)">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectTag($event)" >
+      <mat-option *ngFor="let tag of (tags | async)?.data" [value]="tag">
+        {{tag.name}}
+      </mat-option>
+    </mat-autocomplete>
+
+
+  </mat-form-field>
+  <button mat-flat-button color="primary" (click)="search()">
+    <mat-icon>search</mat-icon>
+  </button>
+</div>

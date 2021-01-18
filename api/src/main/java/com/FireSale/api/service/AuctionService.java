@@ -45,22 +45,23 @@ public class AuctionService {
         auction.setStatus(AuctionStatus.READY);
         auction.setCategories(categories);
 
-        //Nog niet bestaande tags wegschrijven naar de database
+        // Nog niet bestaande tags wegschrijven naar de database
         List<Tag> tags = new ArrayList<>();
         createAuctionDTO.getTags().stream().forEach(tag -> {
             var t = tagService.getTagByName(tag.getName());
-            if(t == null) {
+            if (t == null) {
                 tags.add(tagService.createTag(tag.getName()));
-            }else{
+            } else {
                 tags.add(t);
             }
         });
 
-        //Alle tags voor auction ophalen en setten bij de auction
-        auction.setTags( tags);
+        // Alle tags voor auction ophalen en setten bij de auction
+        auction.setTags(tags);
         var t = auction.getTags();
         return auctionRepository.save(auction);
     }
+
     @LogDuration
     public Collection<Auction> getAuctions() {
         return auctionRepository.findAll();
@@ -76,9 +77,8 @@ public class AuctionService {
         var featured = auctionRepository.findActiveAuctionsByIsFeaturedTrue();
 
         var count = featured.stream().count();
-        if( count < 10)
-        {
-            var get = 10 - (int)count;
+        if (count < 10) {
+            var get = 10 - (int) count;
             var remainder = PageRequest.of(0, get);
             var r = auctionRepository.findActiveAuctionsByIsFeaturedFalse(remainder);
             featured.addAll(r.getContent());
@@ -90,39 +90,32 @@ public class AuctionService {
     public Collection<Auction> filterAuctions(AuctionFilterDTO dto) {
         if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getTags() != null && dto.getTags().length > 0 && dto.getName() != null ) {
             return auctionRepository.findAuctionsByTagsLikeAndCategoriesANDNameLike(dto.getTags(), dto.getCategories(), dto.getName());
-        }
-        else if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getTags() != null && dto.getTags().length > 0 ) {
-            return auctionRepository.findAuctionsByTagsLikeAndCategoriesLike(dto.getCategories(), dto.getTags());
-        }
-        else if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getName() != null) {
+        } else if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getTags() != null && dto.getTags().length > 0 ) {
+            return auctionRepository.findAuctionsByTagsLikeAndCategoriesLike(dto.getTags(), dto.getCategories());
+        } else if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getName() != null) {
             return auctionRepository.findAuctionsByCategoriesLikeAndNameLike(dto.getCategories(), dto.getName());
-        }
-        else if (dto.getTags() != null && dto.getTags().length > 0 && dto.getName() != null) {
+        } else if (dto.getTags() != null && dto.getTags().length > 0 && dto.getName() != null) {
             return auctionRepository.findAuctionsByTagsLikeAndNameLike(dto.getTags(), dto.getName());
-        }
-        else if (dto.getCategories() != null && dto.getCategories().length > 0) {
+        } else if (dto.getCategories() != null && dto.getCategories().length > 0) {
             return auctionRepository.findAuctionsByCategories(dto.getCategories());
-        }
-        else if (dto.getTags() != null && dto.getTags().length > 0) {
+        } else if (dto.getTags() != null && dto.getTags().length > 0) {
             return auctionRepository.findAuctionsByTags(dto.getTags());
-        }
-        else if (dto.getName() != null) {
+        } else if (dto.getName() != null) {
             return auctionRepository.findAuctionsByNameLike(dto.getName());
-        }
-        else {
+        } else {
             return auctionRepository.findActiveAuctions(PageRequest.of(0, 20)).getContent();
         }
     }
 
     @LogDuration
     public Auction findAuctionById(final long id) {
-        return auctionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("No auction exists for id: %d", id), Auction.class));
+        return auctionRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException(String.format("No auction exists for id: %d", id), Auction.class));
     }
 
     @LogDuration
     public Collection<Auction> getAuctionsByUserId(final long userId) {
-        return auctionRepository.findByUserIdOrderByEndDateDesc(userId);
+        return auctionRepository.findByUserIdAndIsDeletedFalseOrderByEndDateDesc(userId);
     }
 
     @LogDuration
@@ -131,31 +124,32 @@ public class AuctionService {
         final Auction existing = findAuctionById(id);
         final Collection<Category> categories = categoryRepository.findByIdIn(createAuctionDTO.getCategories());
 
-//        if (Guard.isSelf(existing.getUser().getId())) {
-//            throw new UnAuthorizedException("Cannot update the auction");
-//        }
+        // if (Guard.isSelf(existing.getUser().getId())) {
+        // throw new UnAuthorizedException("Cannot update the auction");
+        // }
 
-        if (existing.getStartDate().isBefore(LocalDateTime.now())) throw new UnAuthorizedException("Cannot change a running auction");
+        if (existing.getStartDate().isBefore(LocalDateTime.now()))
+            throw new UnAuthorizedException("Cannot change a running auction");
         existing.setName(createAuctionDTO.getName());
         existing.setDescription(createAuctionDTO.getDescription());
         existing.setStartDate(createAuctionDTO.getStartDate());
         existing.setEndDate(createAuctionDTO.getEndDate());
         existing.setMinimalBid(createAuctionDTO.getMinimalBid());
         existing.setCategories(categories);
-        //existing.setTags(createAuctionDTO.getTags());
-        //Nog niet bestaande tags wegschrijven naar de database
+        // existing.setTags(createAuctionDTO.getTags());
+        // Nog niet bestaande tags wegschrijven naar de database
         List<Tag> tags = new ArrayList<>();
         createAuctionDTO.getTags().stream().forEach(tag -> {
             var t = tagService.getTagByName(tag.getName());
-            if(t == null) {
+            if (t == null) {
                 tags.add(tagService.createTag(tag.getName()));
-            }else{
+            } else {
                 tags.add(t);
             }
         });
 
-        //Alle tags voor auction ophalen en setten bij de auction
-        existing.setTags( tags);
+        // Alle tags voor auction ophalen en setten bij de auction
+        existing.setTags(tags);
         return auctionRepository.save(existing);
     }
 
@@ -168,15 +162,23 @@ public class AuctionService {
             throw new UnAuthorizedException("You are not allowed to cancel this auction");
         }
 
-       if (auction.getName() != null) existing.setName(auction.getName());
-       if (auction.getDescription() != null) existing.setDescription(auction.getDescription());
-       if (auction.getStartDate() != null) existing.setStartDate(auction.getStartDate());
-       if (auction.getEndDate() != null) existing.setEndDate(auction.getEndDate());
-       if (auction.getMinimalBid() != null) existing.setMinimalBid(auction.getMinimalBid());
-       if (auction.getIsFeatured() !=null) existing.setIsFeatured(auction.getIsFeatured());
-       if (auction.getStatus() != null) existing.setStatus(auction.getStatus());
-       if (auction.getIsDeleted() != null) existing.setIsDeleted(auction.getIsDeleted());
-       return auctionRepository.save(existing);
+        if (auction.getName() != null)
+            existing.setName(auction.getName());
+        if (auction.getDescription() != null)
+            existing.setDescription(auction.getDescription());
+        if (auction.getStartDate() != null)
+            existing.setStartDate(auction.getStartDate());
+        if (auction.getEndDate() != null)
+            existing.setEndDate(auction.getEndDate());
+        if (auction.getMinimalBid() != null)
+            existing.setMinimalBid(auction.getMinimalBid());
+        if (auction.getIsFeatured() != null)
+            existing.setIsFeatured(auction.getIsFeatured());
+        if (auction.getStatus() != null)
+            existing.setStatus(auction.getStatus());
+        if (auction.getIsDeleted() != null)
+            existing.setIsDeleted(auction.getIsDeleted());
+        return auctionRepository.save(existing);
     }
 
     @LogDuration
@@ -184,10 +186,10 @@ public class AuctionService {
     public Auction deleteAuction(Long id) {
         final Auction existing = findAuctionById(id);
 
-        if (Guard.isSelf(existing.getUser().getId())) {
+        if (existing.getStatus() != AuctionStatus.CANCELLED || !(Guard.isSelf(existing.getUser().getId()) || Guard.isAdmin())) {
             throw new UnAuthorizedException("Cannot delete the auction");
         }
-
+        existing.setStatus(AuctionStatus.CLOSED);
         existing.setIsDeleted(true);
         return auctionRepository.save(existing);
     }
@@ -202,20 +204,7 @@ public class AuctionService {
 
     @LogDuration
     @Transactional(readOnly = true)
-    public Collection<Category> getAllCategories( ) {
+    public Collection<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

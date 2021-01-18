@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
@@ -30,6 +30,7 @@ export class AuctionDetailComponent implements OnInit {
   private auctionId: number;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private auctionService: AuctionService,
     private userService: UserService,
@@ -72,6 +73,15 @@ export class AuctionDetailComponent implements OnInit {
           this.checkAuctionState();
         });
       }
+    });
+  }
+
+  public deleteAuction(): void {
+    const dialog = this.dialog.open(YesNoDialogComponent, { data: { title: 'Veiling verwijderen', message: 'Weet u zeker dat u de veiling wilt verwijderen?' } });
+    dialog.afterClosed().subscribe((result) => {
+      this.auctionService.delete(this.auctionId).subscribe(() => {
+        this.router.navigate(['/auctions']);
+      });
     });
   }
 

@@ -111,11 +111,6 @@ public class AuctionController {
         return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") final long id) {
-        auctionService.deleteAuction(id);
-    }
-
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") final long id, @Valid @RequestBody final CreateAuctionDTO createAuctionDTO) {
@@ -129,5 +124,12 @@ public class AuctionController {
     @PreAuthorize("isAuthenticated() and (@guard.isAdmin() or @guard.isSelf(#userId))")
     public void patch(@PathVariable("id") final long id, @Valid @RequestBody final AuctionDTO auctionDTO) {
         auctionService.patchAuction(id, auctionMapper.toModel(auctionDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("isAuthenticated()")
+    public void delete(@PathVariable("id") final long id) {
+        auctionService.deleteAuction(id);
     }
 }

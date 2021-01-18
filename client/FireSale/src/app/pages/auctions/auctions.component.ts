@@ -5,8 +5,10 @@ import { AuctionDTO } from 'src/app/shared/models/auctionDto';
 import { CategoryDTO } from 'src/app/shared/models/categoryDto';
 import { DisplayType } from 'src/app/shared/enums/display-type.enum';
 import { FilterDTO } from 'src/app/shared/models/filterDTO';
+import { TagDto } from 'src/app/shared/models/tagDto';
 import { AuctionService } from 'src/app/shared/services/auction.service';
 import { CategoryService } from 'src/app/shared/services/category.service';
+import { TagService } from 'src/app/shared/services/tag.service';
 
 @Component({
   selector: 'app-auctions',
@@ -22,7 +24,6 @@ export class AuctionsComponent implements OnInit {
   public displayType: DisplayType = DisplayType.LIST;
 
   constructor(
-    private activeRoute: ActivatedRoute,
     private categoryService: CategoryService,
     private auctionService: AuctionService
   ) { }
@@ -30,14 +31,7 @@ export class AuctionsComponent implements OnInit {
   ngOnInit(): void {
     this.loadFeaturedAuctions();
     this.loadCategories().subscribe((categories) => {
-      this.activeRoute.queryParams.subscribe((queryParams) => {
-        if (queryParams?.categoryId) {
-          this.categoryName = categories.find((category) => category.id === +queryParams?.categoryId)?.name;
-        } else {
-          this.categoryName = 'Alle veilingen';
-        }
-        this.loadFilteredAuctions(+queryParams?.categoryId);
-      });
+      this.loadAuctions();
     });
   }
 
@@ -61,11 +55,8 @@ export class AuctionsComponent implements OnInit {
     });
   }
 
-  loadFilteredAuctions(categoryId?: number): void {
+  loadAuctions(): void {
     const filterModel: FilterDTO = { tags: [], categories: [], name: null };
-    if (categoryId) {
-      filterModel.categories.push(categoryId);
-    }
 
     this.filteredAuctions = null;
     this.auctionService

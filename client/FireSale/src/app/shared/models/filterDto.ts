@@ -1,5 +1,5 @@
 export interface FilterDTO {
   categories: number[];
-  tags: number[];
+  tags: string[];
   name: string;
 }

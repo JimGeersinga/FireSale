@@ -1,0 +1,30 @@
+// .search {
+//   width: 100%;
+
+//   input {
+//     box-sizing: border-box;
+//     width: 100%;
+//     padding: 12px 20px;
+//     border: 1px solid #ccc;
+//     border-radius: 4px;
+//   }
+// }
+
+
+.search {
+  width: 100%;
+  display: flex;
+  gap: 0.25rem;
+
+  ::ng-deep .mat-form-field-wrapper {
+    margin-bottom: -1.25em;
+  }
+
+  .input {
+    flex: auto;
+  }
+
+  .categories, .tags {
+    flex: 1;
+  }
+}

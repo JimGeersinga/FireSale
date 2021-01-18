@@ -5,13 +5,22 @@
   height: 100%;
   width: 100%;
 
-  >section:first-child {
-    padding-top: 25px;
-    padding-bottom: 25px;
-  }
+
 
   >section {
     padding: 25px 25px 25px 25px;
+  }
+}
+
+section.search-section {
+  background: white;
+  display: flex;
+  padding: 15px 25px;
+  align-items: center;
+
+  app-search {
+    width: 100%;
+    max-width: 50vw;
   }
 }
 

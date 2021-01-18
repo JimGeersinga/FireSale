@@ -1,3 +1,4 @@
 export interface TagDTO {
-    name: string;
+  id?: number;
+  name: string;
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/services/api.service';
+import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { TagDTO } from '../models/tagDto';
 
 interface DataObject {
@@ -26,16 +27,14 @@ export class TagService {
 
   constructor(private api: ApiService) { }
 
-  public getAllTags(): Observable<string[]> {
+  public getAllTags(): Observable<any> {
     return this.api.get(`${this.baseUrl}`);
   }
 
-  public searchTagsByName(searchterm : string) : Observable<string[]> {
+  public searchTagsByName(searchterm : string) : Observable<ApiResponse<TagDTO[]>> {
     const param = new URLSearchParams();
     param.append("searchterm",searchterm);
-    return this.api.get(`${this.baseUrl}?${param}`).pipe(
-      map((data : GetTagResponse) => data.data.map(d => d.name))
-    )
+    return this.api.get(`${this.baseUrl}?${param}`);
   }
 
   public put(tagDto: TagDTO): Observable<any> {

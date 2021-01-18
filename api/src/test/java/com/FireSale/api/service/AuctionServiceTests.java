@@ -2,6 +2,7 @@ package com.FireSale.api.service;
 
 import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.model.Auction;
+import com.FireSale.api.model.AuctionStatus;
 import com.FireSale.api.repository.AuctionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -9,8 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -40,6 +45,51 @@ public class AuctionServiceTests {
     }
 
     @Test
+    @DisplayName("Test getActiveAuctions Success")
+    void testFindActive() {
+        // Setup mock repository
+        Auction a = new Auction();
+        a.setId(1L);
+        a.setName("test");
+        a.setBids(new ArrayList<>());
+        a.setTags(new ArrayList<>());
+        a.setEndDate(LocalDateTime.now().plusDays(1));
+        a.setStartDate(LocalDateTime.now());
+        a.setStatus(AuctionStatus.READY);
+        a.setDescription("Description");
+        List<Auction> auctions = (Arrays.asList(a));
+        Page<Auction> pagedAuctions = new PageImpl(auctions);
+        doReturn(pagedAuctions).when(auctionRepository).findActiveAuctions(PageRequest.of(0, 10));
+        // Execute service call
+        Collection<?> returnedAuction = auctionService.getActiveAuctions(PageRequest.of(0, 10));
+        // Assert response
+        Assertions.assertTrue(returnedAuction != null, "Auction was not found");
+        Assertions.assertSame(returnedAuction.toArray()[0], a, "The auction returned was not the same as the mock");
+    }
+
+    @Test
+    @DisplayName("Test findByUserId Success")
+    void testFindByUserId() {
+        // Setup mock repository
+        Auction a = new Auction();
+        a.setId(1L);
+        a.setName("test");
+        a.setBids(new ArrayList<>());
+        a.setTags(new ArrayList<>());
+        a.setEndDate(LocalDateTime.now().plusDays(1));
+        a.setStartDate(LocalDateTime.now());
+        a.setStatus(AuctionStatus.READY);
+        a.setDescription("Description");
+        List<Auction> auctions = (Arrays.asList(a));
+        doReturn(auctions).when(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(1L);
+        // Execute service call
+        var returnedAuction = auctionService.getAuctionsByUserId(1l);
+        // Assert response
+        Assertions.assertTrue(returnedAuction != null, "Auction was not found");
+        Assertions.assertSame(returnedAuction.toArray()[0], a, "The auction returned was not the same as the mock");
+    }
+
+    @Test
     @DisplayName("Test findById Not Found")
     void testFindByIdNotFound() {
         // Setup mock repository
@@ -51,6 +101,7 @@ public class AuctionServiceTests {
         });
 
         // Assert response
-        assertThat(exception.getMessage()).isEqualTo("Resource of type [Auction] was not found: [No auction exists for id: 1]");
+        assertThat(exception.getMessage())
+                .isEqualTo("Resource of type [Auction] was not found: [No auction exists for id: 1]");
     }
 }

@@ -115,7 +115,7 @@ export class AuctionEditComponent implements OnInit {
         return this.tagService.searchTagsByName(searchTerm);
       }),
       map((data) => {
-        return data;
+        return data.data.map(x => x.name);
       })
     );
 
