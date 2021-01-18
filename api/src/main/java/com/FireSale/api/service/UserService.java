@@ -1,5 +1,6 @@
 package com.FireSale.api.service;
 
+import com.FireSale.api.aspect.LogDuration;
 import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.exception.UnAuthorizedException;
 import com.FireSale.api.exception.UserRegistrationException;
@@ -27,16 +28,19 @@ public class UserService {
     private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @LogDuration
     public User findUserByEmail(final String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("No user exists for email: %s", email), User.class));
     }
 
+    @LogDuration
     public User findUserById(final long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("No user exists for id: %d", userId), User.class));
     }
 
+    @LogDuration
     public User authenticate(String email, String password) {
         final User user = userRepository.findByEmail(email).orElse(null);
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
@@ -45,6 +49,7 @@ public class UserService {
         return null;
     }
 
+    @LogDuration
     @Transactional(readOnly = false)
     public User create(User user) {
         if(userRepository.findByEmail(user.getEmail()).isPresent()){
@@ -66,10 +71,13 @@ public class UserService {
         return  userRepository.save(user);
     }
 
+    @LogDuration
+    @Transactional(readOnly = true)
     public List<User> getAll() {
         return userRepository.findAll();
     }
 
+    @LogDuration
     @Transactional(readOnly = false)
     public User updateUser(Long userId, User user) {
         final User existing = findUserById(userId);
@@ -81,6 +89,7 @@ public class UserService {
         return userRepository.save(existing);
     }
 
+    @LogDuration
     @Transactional(readOnly = false)
     public User patchUser(Long userId, User user) {
         final User existing = findUserById(userId);

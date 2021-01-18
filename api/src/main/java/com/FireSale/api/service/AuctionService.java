@@ -1,5 +1,7 @@
 package com.FireSale.api.service;
 
+import com.FireSale.api.aspect.LogDuration;
+import com.FireSale.api.dto.TagDTO;
 import com.FireSale.api.dto.auction.AuctionFilterDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.exception.ResourceNotFoundException;
@@ -19,7 +21,6 @@ import java.time.LocalDateTime;
 import org.springframework.data.domain.Pageable;
 import java.util.*;
 
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -28,10 +29,10 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final UserRepository userRepository;
     private final TagService tagService;
-
     private final CategoryRepository categoryRepository;
     private final AuctionMapper auctionMapper;
 
+    @LogDuration
     @Transactional(readOnly = false)
     public Auction create(CreateAuctionDTO createAuctionDTO) {
         final User user = userRepository.getOne(SecurityUtil.getSecurityContextUser().getUser().getId());
@@ -60,15 +61,17 @@ public class AuctionService {
         var t = auction.getTags();
         return auctionRepository.save(auction);
     }
-
+    @LogDuration
     public Collection<Auction> getAuctions() {
         return auctionRepository.findAll();
     }
 
+    @LogDuration
     public Collection<Auction> getActiveAuctions(Pageable pageable) {
         return auctionRepository.findActiveAuctions(pageable).getContent();
     }
 
+    @LogDuration
     public Collection<Auction> getFeatured() {
         var featured = auctionRepository.findActiveAuctionsByIsFeaturedTrue();
 
@@ -83,6 +86,7 @@ public class AuctionService {
         return featured;
     }
 
+    @LogDuration
     public Collection<Auction> filterAuctions(AuctionFilterDTO dto) {
         if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getTags() != null && dto.getTags().length > 0 && dto.getName() != null ) {
             return auctionRepository.findAuctionsByTagsLikeAndCategoriesANDNameLike(dto.getTags(), dto.getCategories(), dto.getName());
@@ -110,15 +114,18 @@ public class AuctionService {
         }
     }
 
+    @LogDuration
     public Auction findAuctionById(final long id) {
         return auctionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("No auction exists for id: %d", id), Auction.class));
     }
 
+    @LogDuration
     public Collection<Auction> getAuctionsByUserId(final long userId) {
         return auctionRepository.findByUserIdOrderByEndDateDesc(userId);
     }
 
+    @LogDuration
     @Transactional(readOnly = false)
     public Auction updateAuction(Long id, CreateAuctionDTO createAuctionDTO) {
         final Auction existing = findAuctionById(id);
@@ -152,6 +159,7 @@ public class AuctionService {
         return auctionRepository.save(existing);
     }
 
+    @LogDuration
     @Transactional(readOnly = false)
     public Auction patchAuction(Long id, Auction auction) {
         final Auction existing = findAuctionById(id);
@@ -171,6 +179,7 @@ public class AuctionService {
        return auctionRepository.save(existing);
     }
 
+    @LogDuration
     @Transactional(readOnly = false)
     public Auction deleteAuction(Long id) {
         final Auction existing = findAuctionById(id);
@@ -185,11 +194,14 @@ public class AuctionService {
 
     // todo: category crud:
 
+    @LogDuration
     @Transactional(readOnly = false)
     public Category createCategory(Category category) {
         return categoryRepository.save(category);
     }
 
+    @LogDuration
+    @Transactional(readOnly = true)
     public Collection<Category> getAllCategories( ) {
         return categoryRepository.findAll();
     }

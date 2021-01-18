@@ -1,5 +1,6 @@
 package com.FireSale.api.service;
 
+import com.FireSale.api.aspect.LogDuration;
 import com.FireSale.api.exception.CreateBidException;
 import com.FireSale.api.model.Bid;
 import com.FireSale.api.repository.AuctionRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 public class BidService {
     private final BidRepository bidRepository;
 
+    @LogDuration
     @Transactional(readOnly = false)
     public Bid create(Bid bid) {
         bid.setCreated(LocalDateTime.now());
@@ -36,14 +38,17 @@ public class BidService {
             }
         });
 
-
         return bidRepository.save(bid);
     }
 
+    @LogDuration
+    @Transactional(readOnly = true)
     public List<Bid> getForAuction(long auction) {
         return bidRepository.findByAuctionId(auction);
     }
 
+    @LogDuration
+    @Transactional(readOnly = true)
     public List<Bid> getForUser(long user) {
         return bidRepository.findByUserId(user);
     }
