@@ -17,10 +17,12 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
         @Query("SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.endDate > current_timestamp AND a.user.id = :id AND a.isDeleted = false order by a.endDate asc")
         List<Auction> findActiveAuctionsByUserId(@Param("id") long userId);
 
-        @Query(value = "SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp  order by a.endDate asc", countQuery = "SELECT COUNT(a) FROM Auction a WHERE a.status = 'READY' AND a.startDate <= current_timestamp AND a.endDate > current_timestamp")
+        @Query(value = "SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp  order by a.endDate asc"
+                , countQuery = "SELECT COUNT(a) FROM Auction a WHERE a.status = 'READY' AND a.startDate <= current_timestamp AND a.endDate > current_timestamp")
         Page<Auction> findActiveAuctions(Pageable pageable);
 
-        @Query("SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND a.isFeatured = false order by a.endDate asc")
+        @Query(value = "SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND a.isFeatured = false order by a.endDate asc"
+                , countQuery = "SELECT COUNT(a) FROM Auction a WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND a.isFeatured = false")
         Page<Auction> findActiveAuctionsByIsFeaturedFalse(Pageable pageable);
 
         @Query("SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND a.isFeatured = true  order by a.endDate asc")
@@ -67,6 +69,6 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
         @Query("SELECT a FROM Auction a WHERE a.status = 'READY' AND a.endDate <= current_timestamp AND a.isDeleted = false ")
         List<Auction> getFinalizedAuctions();
         
-        @Query("SELECT distinct a FROM Auction a LEFT JOIN FETCH a.bids b join a.finalBid b WHERE a.status = 'CLOSED' AND a.isDeleted = false and b.user.id = :user order by a.endDate desc")
+        @Query("SELECT distinct a FROM Auction a LEFT JOIN FETCH a.bids b join a.finalBid f WHERE a.status = 'CLOSED' AND a.isDeleted = false and f.user.id = :user order by a.endDate desc")
         List<Auction> findWonByUserBid(Long user);
 }

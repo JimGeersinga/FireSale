@@ -7,15 +7,11 @@ import com.FireSale.api.dto.bid.BidDTO;
 import com.FireSale.api.dto.bid.CreateBidDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.dto.auction.CreateImageDTO;
-import com.FireSale.api.dto.user.PatchUserDTO;
 import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.mapper.BidMapper;
 import com.FireSale.api.model.Auction;
 import com.FireSale.api.model.Bid;
-import com.FireSale.api.service.AuctionService;
-import com.FireSale.api.service.BidService;
-import com.FireSale.api.service.ImageService;
-import com.FireSale.api.service.UserService;
+import com.FireSale.api.service.*;
 import com.FireSale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +25,6 @@ import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,7 +36,7 @@ public class AuctionController {
     private final UserService userService;
     private final AuctionMapper auctionMapper;
     private final ImageService imageService;
-    private final RealTimeAuctionController bidController;
+    private final AuctionNotificationService auctionNotificationService;
     final private BidService bidService;
     private final BidMapper bidMapper;
 
@@ -72,7 +67,7 @@ public class AuctionController {
         bid.setUser(userService.findUserById(SecurityUtil.getSecurityContextUser().getUser().getId()));
         bid = bidService.create(bid);
         BidDTO bidDTO = bidMapper.toDTO(bid);
-        bidController.sendBidNotification(auctionId, bidDTO);
+        auctionNotificationService.sendBidNotification(auctionId, bidDTO);
         return new ResponseEntity<>(new ApiResponse<>(true, bidDTO), HttpStatus.CREATED);
     }
 

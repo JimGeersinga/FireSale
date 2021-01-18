@@ -25,6 +25,7 @@ const routes: Routes = [
 
   { path: 'auctions', component: AuctionsComponent},
   { path: 'auctions/my-bids', component: AuctionsFilteredComponent, data: {routeName: 'myBids'}},
+  { path: 'auctions/my-winnings', component: AuctionsFilteredComponent, data: {routeName: 'myWinnings'}},
   { path: 'auctions/my-favourites', component: AuctionsFilteredComponent, data: {routeName: 'myFavourites'}},
   { path: 'auctions/my-auctions', component: AuctionsFilteredComponent, data: {routeName: 'myAuctions'}},
   { path: 'auctions/search', component: AuctionsSearchComponent },

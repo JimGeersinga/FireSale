@@ -25,9 +25,20 @@ export class AuctionsFilteredComponent implements OnInit {
 
     this.route.data.subscribe(data => {
       if (data.routeName === 'myBids') {
-        this.categoryName = 'Mijn biedingen';
+        this.categoryName = 'Mijn geboden veilingen';
+        this.auctionService.getBidded().subscribe(response => {
+          this.filteredAuctions = response.data;
+        });
+      } else if (data.routeName === 'myWinnings') {
+        this.categoryName = 'Mijn gewonnen veilingen';
+        this.auctionService.getWinnings().subscribe(response => {
+          this.filteredAuctions = response.data;
+        });
       } else if (data.routeName === 'myFavourites') {
         this.categoryName = 'Mijn favorieten';
+        this.auctionService.getFavourite().subscribe(response => {
+          this.filteredAuctions = response.data;
+        });
       } else if (data.routeName === 'myAuctions') {
         this.categoryName = 'Mijn veilingen';
         this.userService.currentUser$.subscribe(currentUser => {

@@ -31,7 +31,7 @@ public class AuctionService {
     private final TagService tagService;
     private final CategoryRepository categoryRepository;
     private final AuctionMapper auctionMapper;
-    private final RealTimeAuctionService AuctionNotificationService;
+    private final AuctionNotificationService auctionNotificationService;
     private final FavouriteAuctionRepository favouriteAuctionRepository;
 
     @LogDuration
@@ -176,7 +176,7 @@ public class AuctionService {
             existing.setIsFeatured(auction.getIsFeatured());
         if (auction.getStatus() != null) {
             existing.setStatus(auction.getStatus());
-            AuctionNotificationService.sendStatusNotification(existing.getId(), existing.getStatus());
+            auctionNotificationService.sendStatusNotification(existing.getId(), existing.getStatus());
 
         }
         return auctionRepository.save(existing);
@@ -193,7 +193,7 @@ public class AuctionService {
         existing.setStatus(AuctionStatus.CLOSED);
         existing.setIsDeleted(true);
 
-        AuctionNotificationService.sendStatusNotification(existing.getId());
+        auctionNotificationService.sendStatusNotification(existing.getId(), existing.getStatus());
 
         return auctionRepository.save(existing);
     }

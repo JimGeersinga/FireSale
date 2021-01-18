@@ -36,6 +36,18 @@ export class AuctionService {
     const response = this.api.get(`${this.baseUrl}/featured`);
     return response;
   }
+  public getFavourite(): Observable<any> {
+    const response = this.api.get(`${this.baseUrl}/favourite`);
+    return response;
+  }
+  public getWinnings(): Observable<any> {
+    const response = this.api.get(`${this.baseUrl}/won`);
+    return response;
+  }
+  public getBidded(): Observable<any> {
+    const response = this.api.get(`${this.baseUrl}/bidded`);
+    return response;
+  }
 
   public getFiltered(filter: FilterDTO): Observable<any> {
     const response = this.api.post(`${this.baseUrl}/filter`, filter);

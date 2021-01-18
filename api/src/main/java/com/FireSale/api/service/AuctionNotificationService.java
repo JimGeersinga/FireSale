@@ -22,7 +22,7 @@ import java.util.Comparator;
 @RequiredArgsConstructor
 @EnableScheduling
 @Service
-public class RealTimeAuctionService {
+public class AuctionNotificationService {
     final private SimpMessagingTemplate template;
     final private AuctionRepository auctionRepository;
 
@@ -34,14 +34,16 @@ public class RealTimeAuctionService {
         template.convertAndSend("/rt-auction/updates/"+ auctionId, new WebsocketAuctionMessage<>(ResponseType.UPDATED, auctionStatus, null, LocalDateTime.now()));
     }
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedDelay = 1000)
     @Transactional(readOnly = true)
     public void closeAuction() {
        var auctions = auctionRepository.getFinalizedAuctions();
         for (Auction auction : auctions) {
-            var finalBid = Collections.max(auction.getBids(), Comparator.comparing(b -> b.getValue()));
+            if(auction.getBids().size() > 0) {
+                var finalBid = Collections.max(auction.getBids(), Comparator.comparing(b -> b.getValue()));
+                auction.setFinalBid(finalBid);
+            }
 
-            auction.setFinalBid(finalBid);
             auction.setStatus(AuctionStatus.CLOSED);
 
             auctionRepository.save(auction);
