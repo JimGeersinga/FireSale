@@ -7,6 +7,8 @@ import com.FireSale.api.dto.address.PatchAddressDTO;
 import com.FireSale.api.dto.address.UpdateAddressDTO;
 import com.FireSale.api.dto.auction.CreateImageDTO;
 import com.FireSale.api.dto.user.*;
+import com.FireSale.api.dto.usersecurity.ChangepasswordDTO;
+import com.FireSale.api.dto.usersecurity.EmailaddressDTO;
 import com.FireSale.api.mapper.AddressMapper;
 import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.mapper.UserMapper;
@@ -15,15 +17,15 @@ import com.FireSale.api.model.Auction;
 import com.FireSale.api.model.ErrorTypes;
 import com.FireSale.api.model.User;
 import com.FireSale.api.security.UserPrincipal;
-import com.FireSale.api.service.AddressService;
-import com.FireSale.api.service.AuctionService;
-import com.FireSale.api.service.ImageService;
-import com.FireSale.api.service.UserService;
+import com.FireSale.api.service.*;
+import com.FireSale.api.util.MailUtil;
 import com.FireSale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +33,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -47,6 +51,10 @@ public class UserController {
     private final ImageService imageService;
     private final AuctionService auctionService;
     private final AuctionMapper auctionMapper;
+    private final JavaMailSender mailSender;
+    private final UserSecurityService userSecurityService;
+    private final MailUtil mailUtil;
+
 
     @PostMapping("/authenticate")
     public ResponseEntity authenticate(@Valid @RequestBody final LoginDTO loginRequest) {
@@ -132,5 +140,32 @@ public class UserController {
     public ResponseEntity getAuctionsByUserId(@PathVariable("userId") final long userId) {
         final Collection<Auction> auctions = auctionService.getAuctionsByUserId(userId);
         return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)), HttpStatus.OK);
+    }
+
+    @PostMapping("/forgotpassword")
+    public ResponseEntity resetPassword(@RequestBody final EmailaddressDTO emailaddressDTO) {
+        final User user = userService.findUserByEmail(emailaddressDTO.getEmailaddress());
+        final UUID token = UUID.randomUUID();
+        final String subject = "Wachtwoord reset - FireSale";
+        final String body = "Gebruik de volgende link om uw wachtwoord te resetten: http://localhost:4200/users/changepassword/" + token;
+        userSecurityService.createPasswordResetTokenForUser(user, token);
+        mailSender.send(mailUtil.constructEmail(user, subject, body));
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/changepassword")
+    public ResponseEntity changePassword(@RequestBody final ChangepasswordDTO changepasswordDTO) {
+        String result = userSecurityService.validatePasswordResetToken(changepasswordDTO.getToken().toString());
+        if (result != null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } else {
+            Optional<User> user = userSecurityService.getUserByPasswordResetToken(changepasswordDTO.getToken().toString());
+            if (user.isPresent()) {
+                userSecurityService.changeUserPassword(user.get(), changepasswordDTO.getPassword());
+                return new ResponseEntity(HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+        }
     }
 }

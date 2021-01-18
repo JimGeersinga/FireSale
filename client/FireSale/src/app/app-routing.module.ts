@@ -13,6 +13,8 @@ import { AuctionEditComponent } from './pages/auction-edit/auction-edit.componen
 import { AuctionDetailComponent } from './pages/auction-detail/auction-detail.component';
 import { ProfileEditComponent } from './pages/profile-edit/profile-edit.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
 
 const routes: Routes = [
@@ -30,7 +32,11 @@ const routes: Routes = [
   { path: 'categories/:id', component: CategoryDetailComponent, canActivate: [AdminGuard] },
 
   { path: 'profile/:id', component: ProfileComponent },
-  { path: 'profile/:id/edit', component: ProfileEditComponent }
+  { path: 'profile/:id/edit', component: ProfileEditComponent },
+
+  { path: 'users/forgotpassword', component: ForgotPasswordComponent },
+  { path: 'users/changepassword/:token', component: ChangePasswordComponent }
+  
 ];
 
 @NgModule({
