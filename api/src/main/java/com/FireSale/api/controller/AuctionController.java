@@ -114,6 +114,31 @@ public class AuctionController {
                 HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/favourite")
+    public ResponseEntity favourite() {
+        final Collection<Auction> auctions = auctionService.getFavourites(SecurityUtil.getSecurityContextUser().getUser().getId());
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+                HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/won")
+    public ResponseEntity won() {
+        final Collection<Auction> auctions = auctionService.getWonAuction(SecurityUtil.getSecurityContextUser().getUser().getId());
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+                HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/bidded")
+    public ResponseEntity bidded() {
+        final Collection<Auction> auctions = auctionService.getByUserBid(SecurityUtil.getSecurityContextUser().getUser().getId());
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+                HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable("id") final long id) {
         final Auction auction = auctionService.findAuctionById(id);
@@ -126,6 +151,12 @@ public class AuctionController {
         Collection<CreateImageDTO> images = createAuctionDTO.getImages();
         Auction auction = auctionService.updateAuction(id, createAuctionDTO);
         imageService.storeAuctionImages(images, auction);
+    }
+
+    @PostMapping("/{id}/favourite")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void favourite(@PathVariable("id") final long id,  @Valid @RequestBody boolean favourite) {
+        auctionService.toggleFavourite(id, SecurityUtil.getSecurityContextUser().getUser().getId(),favourite);
     }
 
     @PatchMapping("/{id}")

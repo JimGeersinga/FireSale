@@ -10,6 +10,7 @@ import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.model.*;
 import com.FireSale.api.repository.AuctionRepository;
 import com.FireSale.api.repository.CategoryRepository;
+import com.FireSale.api.repository.FavouriteAuctionRepository;
 import com.FireSale.api.repository.UserRepository;
 import com.FireSale.api.security.Guard;
 import com.FireSale.api.util.SecurityUtil;
@@ -31,6 +32,7 @@ public class AuctionService {
     private final TagService tagService;
     private final CategoryRepository categoryRepository;
     private final AuctionMapper auctionMapper;
+    private final FavouriteAuctionRepository favouriteAuctionRepository;
 
     @LogDuration
     @Transactional(readOnly = false)
@@ -202,5 +204,38 @@ public class AuctionService {
     @Transactional(readOnly = true)
     public Collection<Category> getAllCategories() {
         return categoryRepository.findAll();
+    }
+
+    public void toggleFavourite(long auction, Long user, boolean favourite) {
+        favouriteAuctionRepository.findByAuctionIdAndUserId(auction, user).ifPresentOrElse(fa -> {
+            if(!favourite){
+                favouriteAuctionRepository.delete(fa);
+            }
+
+        }, ()->{
+            if(favourite)
+            {
+                var fav = new FavouriteAuction();
+                fav.setUser(userRepository.getOne(user));
+                fav.setAuction(auctionRepository.getOne(auction));
+                favouriteAuctionRepository.save(fav);
+            }
+        });
+    }
+
+    @LogDuration
+    @Transactional(readOnly = true)
+    public Collection<Auction> getFavourites(Long id) {
+        return auctionRepository.findAuctionsByFavourite(id);
+    }
+
+    @LogDuration
+    @Transactional(readOnly = true)
+    public Collection<Auction> getByUserBid(Long id) {
+        return auctionRepository.findActiveByUserBid(id);
+    }
+
+    public Collection<Auction> getWonAuction(Long id) {
+        return auctionRepository.findWonByUserBid(id);
     }
 }
