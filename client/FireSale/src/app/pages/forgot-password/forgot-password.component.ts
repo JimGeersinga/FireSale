@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
-import { EmailaddressDto } from 'src/app/shared/models/emailaddressDto';
+import { EmailaddressDTO } from 'src/app/shared/models/emailaddressDto';
 import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class ForgotPasswordComponent implements OnInit {
     });
   }
 
-  submitForgotpasswordform(data: EmailaddressDto): void {
+  submitForgotpasswordform(data: EmailaddressDTO): void {
     if (!this.forgotpasswordForm.valid) {
       this.dialog.open(OkDialogComponent, {
         data: {

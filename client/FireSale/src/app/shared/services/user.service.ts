@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/services/api.service';
-import { ChangepasswordDto } from '../models/ChangepasswordDto';
-import { EmailaddressDto } from '../models/emailaddressDto';
+import { ChangepasswordDTO } from '../models/ChangepasswordDto';
+import { EmailaddressDTO} from '../models/emailaddressDto';
 import { LoginDTO } from '../models/loginDto';
 import { RegisterDTO } from '../models/registerDto';
 import { UpdateUserDTO } from '../models/updateUserDto';
@@ -68,19 +68,19 @@ export class UserService {
   }
 
 
-  public requestPassword(emailaddress: EmailaddressDto): Observable<any> {
+  public requestPassword(emailaddress: EmailaddressDTO): Observable<any> {
     return this.api.post(`${this.baseUrl}` + '/forgotpassword', emailaddress);
   }
 
   public changePassword(
-    newPasswordAndToken: ChangepasswordDto
+    newPasswordAndToken: ChangepasswordDTO
   ): Observable<any> {
     return this.api.post(
       `${this.baseUrl}` + '/changepassword',
       newPasswordAndToken
     );
   }
-  
+
   private loadCurrentUser(): void {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser) {

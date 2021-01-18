@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { CategoryDTO } from 'src/app/shared/models/categoryDto';
-import { TagDto } from 'src/app/shared/models/tagDto';
+import { TagDTO } from 'src/app/shared/models/tagDto';
 import { TagService } from 'src/app/shared/services/tag.service';
 
 @Component({
@@ -19,8 +19,8 @@ export class SearchComponent implements OnInit {
 
   public searchValue: string;
   public selectedCategory: CategoryDTO;
-  public selectedTag: TagDto;
-  public tags: Observable<ApiResponse<TagDto[]>>;
+  public selectedTag: TagDTO;
+  public tags: Observable<ApiResponse<TagDTO[]>>;
 
   constructor(
     private route: ActivatedRoute,

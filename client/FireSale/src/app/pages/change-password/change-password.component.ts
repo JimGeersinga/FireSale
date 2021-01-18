@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CustomErrorStateMatcher } from 'src/app/core/providers/CustomErrorStateMatcher';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
 import { UserService } from 'src/app/shared/services/user.service';
-import { ChangepasswordDto } from 'src/app/shared/models/ChangepasswordDto';
+import { ChangepasswordDTO } from 'src/app/shared/models/ChangepasswordDto';
 
 @Component({
   selector: 'app-change-password',
@@ -53,7 +53,7 @@ export class ChangePasswordComponent implements OnInit {
     return !pass || pass == confirmPass ? null : { notSame: true };
   }
 
-  submitChangepasswordform(formdata: ChangepasswordDto): void {
+  submitChangepasswordform(formdata: ChangepasswordDTO): void {
     if (!this.changepasswordForm.valid) {
       this.dialog.open(OkDialogComponent, {
         data: {

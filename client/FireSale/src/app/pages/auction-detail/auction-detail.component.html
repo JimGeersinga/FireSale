@@ -65,8 +65,8 @@
         <br />
         <mat-card-subtitle>Categorieën</mat-card-subtitle>
         <mat-chip-list>
-          <mat-chip class="category" *ngFor="let category of auction.categories" routerLink="/auctions"
-            [queryParams]="{categoryId: category.id}"> {{category.name}}</mat-chip>
+          <mat-chip class="category" *ngFor="let category of auction.categories"
+            routerLink="/auctions/search" [queryParams]="{c: category.id}"> {{category.name}}</mat-chip>
         </mat-chip-list>
         <div *ngIf="auction.categories.length === 0">-</div>
         <br />

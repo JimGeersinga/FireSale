@@ -1,3 +1,3 @@
-export interface EmailaddressDto {
+export interface EmailaddressDTO {
     emailaddress: string;
 }
