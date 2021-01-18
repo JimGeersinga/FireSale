@@ -1,32 +1,29 @@
-<h2>Categorieën</h2>
-<section>
+<section class="wrapper">
+
+  <h2 class="page-title">Categorieën</h2>
+
+  <mat-card>
     <a mat-flat-button color="accent" class="new-category" [routerLink]="['/categories/create']" href="">
-        <mat-icon>add</mat-icon>
-        Categorie toevoegen
+      <mat-icon>add</mat-icon>
+      Categorie toevoegen
     </a>
-</section>
-
-
-
-<mat-table [dataSource]="data">
-    <!-- Age Definition -->
-    <ng-container matColumnDef="name">
+    <mat-table [dataSource]="data" class="categories">
+      <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> Naam </mat-header-cell>
-        <mat-cell *matCellDef="let row"> 
-            <input matInput type="text" (change)="edit(row.id,$event)" value="{{row.name}}">
-            
+        <mat-cell *matCellDef="let row" class="name">
+          <input matInput type="text" class="category-name-input" (change)="edit(row.id,$event)" value="{{row.name}}">
         </mat-cell>
-    </ng-container>
+      </ng-container>
 
-    <!-- Title Definition -->
-    <ng-container matColumnDef="buttons">
-        <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
-        <mat-cell *matCellDef="let row"> <button mat-button (click)="delete(row.id)">
+      <ng-container matColumnDef="buttons">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let row" class="buttons"> <button mat-button (click)="delete(row.id)">
             {{(row.archived ? "Activeer" : "Archiveer")}}
-        </button></mat-cell>
-    </ng-container>
+          </button></mat-cell>
+      </ng-container>
 
-    <!-- Header and Row Declarations -->
-    <mat-header-row *matHeaderRowDef="['name', 'buttons']"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: ['name', 'buttons']"></mat-row>
-</mat-table>
+      <mat-header-row *matHeaderRowDef="['name', 'buttons']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['name', 'buttons']"></mat-row>
+    </mat-table>
+  </mat-card>
+</section>

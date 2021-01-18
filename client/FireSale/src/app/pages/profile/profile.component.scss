@@ -26,8 +26,10 @@
     }
   }
 
-  .user-edit {
+  .buttons {
     position: absolute;
+    display: flex;
+    gap: 0.5rem;
     top: 10px;
     right: 10px;
   }

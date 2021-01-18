@@ -1,5 +1,6 @@
 package com.FireSale.api.dto.usersecurity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,8 @@ import java.util.UUID;
 public class ChangepasswordDTO {
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",
             message = "Password should have a minimum eight characters, at least one letter, one number and one special character")
+    @NotEmpty
     private String password;
-    private UUID token;
+    @NotEmpty
+    private String token;
 }

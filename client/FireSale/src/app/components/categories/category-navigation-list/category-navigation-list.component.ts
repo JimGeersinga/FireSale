@@ -18,18 +18,6 @@ export class CategoryNavigationListComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public filterItemsByCategory(categoryId?: number): void {
-    if (categoryId) {
-      this.router.navigate(['auctions'],  {
-        queryParams: {
-          categoryId,
-        },
-      });
-    } else {
-      this.router.navigate(['auctions']);
-    }
-  }
-
   @HostListener('window:scroll', ['$event'])
   public onWindowScroll(event: Event): void {
     const container: HTMLDivElement = document.querySelector('.left-side');

@@ -18,9 +18,11 @@ public interface UserMapper extends ModelToDTOMapper<User, UserDTO> {
     User toModel(PatchUserDTO patch);
     User toModel(UpdateUserDTO update);
 
+    @Mapping(target = "image", source = "avatar.path")
     UserProfileDTO toProfile(User user);
 
     default byte[] map(Image value) {
+        if(value == null) return null;
         return value.getPath();
     }
 }

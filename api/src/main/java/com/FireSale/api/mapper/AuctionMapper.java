@@ -33,4 +33,8 @@ public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
     @Override
     @Mapping(target = "user", ignore = true)
     Auction toModel(AuctionDTO auction);
+
+    @Override
+    @Mapping(target = "user.image", source = "user.avatar.path")
+    AuctionDTO toDTO(Auction auction);
 }

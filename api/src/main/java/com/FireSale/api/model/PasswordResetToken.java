@@ -24,7 +24,7 @@ public class PasswordResetToken extends BaseEntity {
     private Long id;
 
     @Column(unique = true)
-    private UUID token;
+    private String token;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
@@ -33,7 +33,7 @@ public class PasswordResetToken extends BaseEntity {
     private LocalDateTime expiryDate;
 
     public PasswordResetToken(UUID token, User user) {
-        this.token = token;
+        this.token = token.toString();
         this.user = user;
         this.expiryDate = LocalDateTime.now().plusHours(EXPIRATION);
     }

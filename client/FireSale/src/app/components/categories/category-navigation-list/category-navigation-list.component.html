@@ -1,9 +1,7 @@
 <h2>Categorieën</h2>
 <mat-list>
-  <a mat-list-item routerLink="/auctions" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}"
-  (click)="filterItemsByCategory()">Alle</a>
-  <mat-divider></mat-divider>
-  <a mat-list-item *ngFor="let category of categories"
-  (click)="filterItemsByCategory(category.id)" routerLink="/auctions" routerLinkActive="active-link"
-  [queryParams]="{categoryId: category.id}">{{category.name}}</a>
+  <!-- <a mat-list-item routerLink="/auctions" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" >Alle</a> -->
+  <!-- <mat-divider></mat-divider> -->
+  <a mat-list-item *ngFor="let category of categories" routerLink="/auctions/search" routerLinkActive="active-link"
+  [queryParams]="{c: category.id}">{{category.name}}</a>
 </mat-list>

@@ -98,8 +98,8 @@ export class AuctionEditComponent implements OnInit {
     if (this.edit) {
       this.pagetitle = `Wijzig veiling ${auction.name}`;
     }
-    this.currentTags = auction?.tags.map((x) => x.name);
-    this.selectedFiles = auction?.images;
+    this.currentTags = auction?.tags.map((x) => x.name) || [];
+    this.selectedFiles = auction?.images || [];
     if (Date.parse(auction?.startDate.toString()) > Date.now()) {
       this.auctionIsRunning = false;
     }

@@ -5,12 +5,15 @@
       <h2 class="display-name">{{user.data.displayName}}</h2>
       <span class="user-since">Actief sinds: {{user.data.created | date:'dd MMMM yyyy'}}</span>
     </div>
-    <button *ngIf="isCurrentUser" class="user-edit" mat-mini-fab color="primary" [routerLink]="['edit']">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button *ngIf="isCurrentUser" class="user-edit" mat-mini-fab color="primary" (click)="remove()">
-      <mat-icon>delete</mat-icon>
-    </button>
+    <div class="buttons">
+      <button *ngIf="isCurrentUser" class="user-edit" mat-mini-fab color="primary" [routerLink]="['edit']">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button *ngIf="isCurrentUser" class="user-delete" mat-mini-fab color="primary" (click)="remove()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
   </div>
 
   <section class="auctions">
@@ -18,4 +21,5 @@
       <app-auction-list title="Veilingen" [auctions]="usersAuctions" [showInCard]="false"></app-auction-list>
     </mat-card>
   </section>
+  <br/>
 </section>

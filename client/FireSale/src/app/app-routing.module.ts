@@ -23,10 +23,10 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent},
 
   { path: 'auctions', component: AuctionsComponent},
+  { path: 'auctions/search', component: AuctionsSearchComponent },
   { path: 'auctions/create', component: AuctionEditComponent, canActivate: [AuthGuard]  },
   { path: 'auctions/:id', component: AuctionDetailComponent },
   { path: 'auctions/:id/edit', component: AuctionEditComponent, canActivate: [AuthGuard]  },
-  { path: 'auctions/search', component: AuctionsSearchComponent },
 
   { path: 'categories', component: CategoriesComponent, canActivate: [AdminGuard]},
   { path: 'categories/create', component: CategoryEditComponent, canActivate: [AdminGuard]  },
