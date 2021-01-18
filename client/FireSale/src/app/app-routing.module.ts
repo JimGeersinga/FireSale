@@ -5,7 +5,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { HomeComponent } from './pages/home/home.component';
-import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
 import { CategoryEditComponent } from './pages/category-edit/category-edit.component';
 import { AdminGuard } from './core/guards/admin.guard';
 import { AuctionsComponent } from './pages/auctions/auctions.component';
@@ -31,7 +30,6 @@ const routes: Routes = [
 
   { path: 'categories', component: CategoriesComponent, canActivate: [AdminGuard]},
   { path: 'categories/create', component: CategoryEditComponent, canActivate: [AdminGuard]  },
-  { path: 'categories/:id', component: CategoryDetailComponent, canActivate: [AdminGuard] },
 
   { path: 'profile/:id', component: ProfileComponent },
   { path: 'profile/:id/edit', component: ProfileEditComponent },

@@ -9,7 +9,7 @@ import { CategoryService } from 'src/app/shared/services/category.service';
 })
 export class CategoriesComponent implements OnInit {
   categories: CategoryUpsertDTO[] = [];
-  displayedColumns: string[] = ['id', 'name', 'active'];
+  data: CategoryUpsertDTO[] = [];
   constructor(private categoryService: CategoryService) { }
 
   ngOnInit(): void {
@@ -21,8 +21,7 @@ export class CategoriesComponent implements OnInit {
           archived: false
         });
       }
-    });
-    this.categoryService.getArchived().subscribe((response) => {
+      this.categoryService.getArchived().subscribe((response) => {
       for (const item of response.data) {
         this.categories.push({
           id: item.id,
@@ -30,6 +29,28 @@ export class CategoriesComponent implements OnInit {
           archived: true
         });
       }
+      this.data = this.categories;
+      console.log(this.data);
+      console.log(this.categories);
+    });
+    });
+    
+
+  }
+  delete(id: number): void {
+    const model = this.categories.find(x => x.id === id);
+    model.archived = !model.archived;
+    this.categoryService.put(model).subscribe(_ => {
+    });
+  }
+  edit(id: number, e: any)
+  {
+    const newVal = e.target.value;
+    const model = this.categories.find(x => x.id === id); 
+    model.name = newVal;
+
+
+     this.categoryService.put(model).subscribe(_ => {
     });
 
   }

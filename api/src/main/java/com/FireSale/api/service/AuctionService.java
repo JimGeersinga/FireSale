@@ -157,11 +157,9 @@ public class AuctionService {
     @Transactional(readOnly = false)
     public Auction patchAuction(Long id, Auction auction) {
         final Auction existing = findAuctionById(id);
-
         if (!Guard.isSelf(existing.getUser().getId()) && !Guard.isAdmin()) {
             throw new UnAuthorizedException("You are not allowed to cancel this auction");
         }
-
         if (auction.getName() != null)
             existing.setName(auction.getName());
         if (auction.getDescription() != null)
@@ -193,8 +191,6 @@ public class AuctionService {
         existing.setIsDeleted(true);
         return auctionRepository.save(existing);
     }
-
-    // todo: category crud:
 
     @LogDuration
     @Transactional(readOnly = false)

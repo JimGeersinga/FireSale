@@ -127,7 +127,7 @@ public class UserService {
 
         return userRepository.save(existing);
     }
-
+    @Transactional(readOnly = false)
     public void delete(User user) {
         var userToDelete = userRepository.findById(user.getId()).orElseThrow(() -> new ResourceNotFoundException(
                 String.format("No user exists for id: %s", user.getId()), User.class));

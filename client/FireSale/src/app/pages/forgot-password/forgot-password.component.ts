@@ -13,7 +13,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 })
 export class ForgotPasswordComponent implements OnInit {
   forgotpasswordForm = this.formBuilder.group({
-    emailaddress: ['', Validators.required],
+    emailaddress: ['', [Validators.email, Validators.required]],
   });
 
   returnUrl: string;

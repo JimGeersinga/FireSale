@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { AuctionDTO } from 'src/app/shared/models/auctionDto';
@@ -20,7 +21,9 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackbar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -33,4 +36,11 @@ export class ProfileComponent implements OnInit {
       });
     });
   }
+
+  public remove(): void{
+    this.userService.delete().subscribe();
+    this.router.navigate(['/login']);
+    this.snackbar.open('U bent uitgelogd');
+  }
+
 }

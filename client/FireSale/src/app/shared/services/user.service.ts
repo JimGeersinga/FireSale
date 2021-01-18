@@ -67,6 +67,10 @@ export class UserService {
     return this.api.get(`${this.baseUrl}/${id}/auctions`);
   }
 
+  public delete(): Observable<any> {
+    return this.api.delete(`${this.baseUrl}`);
+    this.logout();
+  }
 
   public requestPassword(emailaddress: EmailaddressDTO): Observable<any> {
     return this.api.post(`${this.baseUrl}` + '/forgotpassword', emailaddress);

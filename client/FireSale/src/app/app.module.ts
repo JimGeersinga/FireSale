@@ -21,7 +21,6 @@ import { SortByPipe } from './core/pipes/sort-by.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CategoryNavigationListComponent } from './components/categories/category-navigation-list/category-navigation-list.component';
 import { CategoryListItemComponent } from './components/categories/category-list-item/category-list-item.component';
-import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
 import { AuctionsComponent } from './pages/auctions/auctions.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { AuctionsSearchComponent } from './pages/auctions-search/auctions-search.component';
@@ -55,7 +54,6 @@ import { ChangePasswordComponent } from './pages/change-password/change-password
     CategoryNavigationListComponent,
     CategoriesComponent,
     CategoryListItemComponent,
-    CategoryDetailComponent,
     CategoryEditComponent,
     AuctionsComponent,
     AuctionEditComponent,
@@ -76,7 +74,7 @@ import { ChangePasswordComponent } from './pages/change-password/change-password
     CoreModule,
     RouterModule,
     CountdownModule,
-    FlexLayoutModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent],

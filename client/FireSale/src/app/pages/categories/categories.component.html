@@ -5,6 +5,28 @@
         Categorie toevoegen
     </a>
 </section>
-<mat-list>
-        <app-category-list-item *ngFor="let category of categories" [model]="category"></app-category-list-item>
-</mat-list>
+
+
+
+<mat-table [dataSource]="data">
+    <!-- Age Definition -->
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Naam </mat-header-cell>
+        <mat-cell *matCellDef="let row"> 
+            <input matInput type="text" (change)="edit(row.id,$event)" value="{{row.name}}">
+            
+        </mat-cell>
+    </ng-container>
+
+    <!-- Title Definition -->
+    <ng-container matColumnDef="buttons">
+        <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
+        <mat-cell *matCellDef="let row"> <button mat-button (click)="delete(row.id)">
+            {{(row.archived ? "Activeer" : "Archiveer")}}
+        </button></mat-cell>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <mat-header-row *matHeaderRowDef="['name', 'buttons']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['name', 'buttons']"></mat-row>
+</mat-table>

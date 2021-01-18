@@ -86,6 +86,14 @@ public class UserController {
         return new ResponseEntity<>(new ApiResponse<>(true, users.stream().map(userMapper::toProfile).collect(Collectors.toList())), HttpStatus.OK);
     }
 
+    @DeleteMapping()
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete() {
+        final UserPrincipal user = SecurityUtil.getSecurityContextUser();
+        userService.delete(user.getUser());
+    }
+
+
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserProfileDTO>> getUser(@PathVariable("userId") final long userId) {
         final User user = userService.findUserById(userId);

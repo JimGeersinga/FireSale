@@ -13,13 +13,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 public class AuctionServiceTests {
@@ -42,6 +45,7 @@ public class AuctionServiceTests {
         // Assert response
         Assertions.assertTrue(returnedAuction.isPresent(), "Auction was not found");
         Assertions.assertSame(returnedAuction.get(), auction, "The auction returned was not the same as the mock");
+        verify(auctionRepository).findById(any(Long.class));
     }
 
     @Test
@@ -65,6 +69,7 @@ public class AuctionServiceTests {
         // Assert response
         Assertions.assertTrue(returnedAuction != null, "Auction was not found");
         Assertions.assertSame(returnedAuction.toArray()[0], a, "The auction returned was not the same as the mock");
+        verify(auctionRepository).findActiveAuctions(any(Pageable.class));
     }
 
     @Test
@@ -87,6 +92,7 @@ public class AuctionServiceTests {
         // Assert response
         Assertions.assertTrue(returnedAuction != null, "Auction was not found");
         Assertions.assertSame(returnedAuction.toArray()[0], a, "The auction returned was not the same as the mock");
+        verify(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(any(Long.class));
     }
 
     @Test
@@ -101,7 +107,7 @@ public class AuctionServiceTests {
         });
 
         // Assert response
-        assertThat(exception.getMessage())
-                .isEqualTo("Resource of type [Auction] was not found: [No auction exists for id: 1]");
+        assertThat(exception.getMessage()).isEqualTo("Resource of type [Auction] was not found: [No auction exists for id: 1]");
+        verify(auctionRepository).findById(any(Long.class));
     }
 }

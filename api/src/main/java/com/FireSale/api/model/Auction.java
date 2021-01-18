@@ -1,6 +1,7 @@
 package com.FireSale.api.model;
 
 import com.FireSale.api.dto.TagDTO;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 public class Auction extends BaseEntity {
+
     @Column(nullable = false)
     private String name;
 
