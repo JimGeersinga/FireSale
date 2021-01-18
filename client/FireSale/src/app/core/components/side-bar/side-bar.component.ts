@@ -1,7 +1,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserDto } from 'src/app/shared/models/userDto';
+import { UserDTO } from 'src/app/shared/models/userDto';
 import { UserService } from 'src/app/shared/services/user.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,17 +12,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./side-bar.component.scss']
 })
 export class SideBarComponent implements OnInit {
-  public currentUser$: Observable<UserDto>;
-  public isAdmin = false;
+  public currentUser$: Observable<UserDTO>;
+  public isAdmin$: Observable<boolean>;
 
   constructor(
     private userService: UserService,
     private router: Router,
     private snackbar: MatSnackBar) {
     this.currentUser$ = this.userService.currentUser$;
-    this.currentUser$.subscribe(item => {
-      this.isAdmin = item && item.role === 'ADMIN';
-    });
+    this.isAdmin$ = this.userService.userIsAdmin$;
   }
 
   ngOnInit(): void {

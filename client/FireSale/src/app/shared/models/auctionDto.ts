@@ -1,6 +1,6 @@
 import { CategoryDTO } from 'src/app/shared/models/categoryDto';
-import { TagDto } from 'src/app/shared/models/tagDto';
-import { ProfileDto } from 'src/app/shared/models/profileDto';
+import { TagDTO } from 'src/app/shared/models/tagDto';
+import { ProfileDTO } from 'src/app/shared/models/profileDto';
 import { ImageDTO } from './imageDto';
 import { BidDTO } from './bidDto';
 
@@ -10,12 +10,13 @@ export interface AuctionDTO {
   description: string;
   isFeatured: boolean;
   minimalBid: number;
+  finalBid: BidDTO;
   startDate: Date;
   endDate: Date;
   status: string;
-  user: ProfileDto;
+  user: ProfileDTO;
   categories: CategoryDTO[];
   images: ImageDTO[];
-  tags: TagDto[];
+  tags: TagDTO[];
   bids: BidDTO[];
 }

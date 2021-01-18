@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CustomErrorStateMatcher } from 'src/app/core/providers/CustomErrorStateMatcher';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
 import { CreateImageDTO } from 'src/app/shared/models/createImageDto';
-import { UpdateUserDto } from 'src/app/shared/models/updateUserDto';
+import { UpdateUserDTO } from 'src/app/shared/models/updateUserDto';
 import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
@@ -93,7 +93,7 @@ export class ProfileEditComponent implements OnInit {
     reader.readAsDataURL(event.target.files[0]);
   }
 
-  submitProfileUpdate(id: number, data: UpdateUserDto): void {
+  submitProfileUpdate(id: number, data: UpdateUserDTO): void {
     if (!this.profileUpdateForm.valid) {
       this.dialog.open(OkDialogComponent, { data: { title: 'Wijzigen gegevens', message: 'Formulier is niet correct ingevuld' } });
     }

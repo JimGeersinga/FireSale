@@ -1,6 +1,6 @@
-import { BaseDto } from 'src/app/shared/baseDto';
+import { BaseDto as BaseDTO } from 'src/app/shared/baseDto';
 
-export interface ProfileDto extends BaseDto {
+export interface ProfileDTO extends BaseDTO {
   displayName: string;
   avatar: string;
 }

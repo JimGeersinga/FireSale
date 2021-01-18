@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CustomErrorStateMatcher } from 'src/app/core/providers/CustomErrorStateMatcher';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
-import { RegisterDto } from 'src/app/shared/models/registerDto';
+import { RegisterDTO } from 'src/app/shared/models/registerDto';
 import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
@@ -73,7 +73,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  public submitRegistration(data: RegisterDto): void {
+  public submitRegistration(data: RegisterDTO): void {
     if (!this.registerForm.valid) {
       this.dialog.open(OkDialogComponent, { data: { title: 'Registratieformulier', message: 'Registratieformulier is niet correct ingevuld' } });
     }

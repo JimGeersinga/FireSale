@@ -36,9 +36,14 @@ import { OkDialogComponent } from './components/ok-dialog/ok-dialog.component';
 import { ImageViewerComponent } from './components/image-viewer/image-viewer.component';
 import { CoreModule } from '../core/core.module';
 import { ImageViewerDialogComponent } from './components/image-viewer-dialog/image-viewer-dialog.component';
+import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.component';
 
 @NgModule({
-  declarations: [ImageViewerComponent, OkDialogComponent, ImageViewerDialogComponent],
+  declarations: [
+    ImageViewerComponent,
+    OkDialogComponent,
+    YesNoDialogComponent,
+    ImageViewerDialogComponent],
   imports: [
     CoreModule,
     CommonModule,
@@ -108,7 +113,8 @@ import { ImageViewerDialogComponent } from './components/image-viewer-dialog/ima
     MatToolbarModule,
     MatTooltipModule,
     ImageViewerComponent,
-    OkDialogComponent
+    OkDialogComponent,
+    YesNoDialogComponent
   ],
   providers: [
     DatePipe,

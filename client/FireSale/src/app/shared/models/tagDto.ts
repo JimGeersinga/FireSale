@@ -1,3 +1,3 @@
-export interface TagDto {
+export interface TagDTO {
     name: string;
 }

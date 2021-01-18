@@ -1,27 +1,53 @@
-<section class="wrapper" *ngIf="model$ | async as model">
+<section class="wrapper" *ngIf="auction">
   <mat-card class="page-header">
-    <h2 class="page-title">{{ model.data.name }}</h2>
-    <div class="button">
-      <button (click)="cancelAuction(model.data)" mat-raised-button color="accent" *ngIf="canCancelAuction"><b>ANNULEER</b></button>
+    <h2 class="page-title"><span class="featured" *ngIf="auction.isFeatured">
+        <mat-icon>star</mat-icon>
+      </span> {{ auction.name }}</h2>
+    <div class="info-tags">
+      <ng-container *ngIf="state === auctionState.SCHEDULED">
+        <span title="start">
+          <mat-icon>schedule</mat-icon> Start op {{auction.startDate | date: 'dd MMM "yy, HH:mm'}}
+        </span>
+        <span title="eind">
+          <mat-icon>alarm</mat-icon> Eindigd op {{auction.endDate | date: 'dd MMM "yy, HH:mm'}}
+        </span>
+      </ng-container>
+      <ng-container *ngIf="state === auctionState.RUNNING">
+        <span title="start">
+          <mat-icon>schedule</mat-icon> Gestart op {{auction.startDate | date: 'dd MMM "yy, HH:mm'}}
+        </span>
+        <span title="eind">
+          <mat-icon>alarm</mat-icon> Eindigd op {{auction.endDate | date: 'dd MMM "yy, HH:mm'}}
+        </span>
+      </ng-container>
+      <ng-container *ngIf="state === auctionState.CLOSED">
+        <span title="eind">
+          <mat-icon>alarm</mat-icon> Geeindigd op {{auction.endDate | date: 'dd MMM "yy, HH:mm'}}
+        </span>
+        <span title="gesloten">
+          <mat-icon>lock</mat-icon> Gesloten
+        </span>
+      </ng-container>
     </div>
-    <div class="button" *ngIf="isAdmin">
-      <button (click)="markAsFeatured(model.data)" mat-raised-button color="accent"
-              [disabled]="model.data.isFeatured"><b>FEATURE</b></button>
+    <div class="buttons" *ngIf="(isAdmin || isOwner) && state !== auctionState.CLOSED">
+      <button (click)="cancelAuction()" mat-raised-button color="primary" *ngIf="isAdmin || (isOwner && state === auctionState.SCHEDULED)">Veiling annuleren</button>
+      <button mat-raised-button color="primary" (click)="toggleFeatured()"  *ngIf="isAdmin">
+        <mat-slide-toggle  [checked]="auction.isFeatured" >Aanbevolen
+        </mat-slide-toggle>
+      </button>
+
     </div>
-    <div class="auction-time">
-      <mat-chip-list>
-        <mat-chip><b>START: </b> {{model.data.startDate | date: 'dd-MM-yyyy HH:mm'}}</mat-chip>
-        <mat-chip><b>EIND: </b> {{model.data.endDate | date: 'dd-MM-yyyy HH:mm'}}</mat-chip>
-      </mat-chip-list>
-    </div>
+    <button class="auction-edit" mat-mini-fab color="primary" [routerLink]="['edit']" *ngIf="isOwner && state === auctionState.SCHEDULED">
+      <mat-icon>edit</mat-icon>
+    </button>
   </mat-card>
 
   <section class="auction-display">
     <mat-card class="product-wrapper">
-      <app-image-viewer class="images" [images]="model.data.images"></app-image-viewer>
+      <app-image-viewer class="images" [images]="auction.images"></app-image-viewer>
 
-      <app-bid class="bid" [auctionId]="model.data.id" [endDate]="model.data.endDate"
-        [minimumValue]="model.data.minimalBid">
+      <app-bid class="bid" [auction]="auction" [endDate]="auction.endDate"
+        [minimumValue]="auction.minimalBid" [startDate]="auction.startDate" [state]="state">
       </app-bid>
     </mat-card>
   </section>
@@ -33,22 +59,21 @@
       <mat-card-content>
         <mat-card-subtitle>Beschrijving</mat-card-subtitle>
         <div>
-          {{ model.data.description }}
+          {{ auction.description }}
         </div>
         <br />
         <mat-card-subtitle>Categorieën</mat-card-subtitle>
         <mat-chip-list>
-          <mat-chip class="category" *ngFor="let category of model.data.categories"
-            routerLink="/auctions"
+          <mat-chip class="category" *ngFor="let category of auction.categories" routerLink="/auctions"
             [queryParams]="{categoryId: category.id}"> {{category.name}}</mat-chip>
         </mat-chip-list>
-        <div *ngIf="model.data.categories.length === 0">-</div>
+        <div *ngIf="auction.categories.length === 0">-</div>
         <br />
         <mat-card-subtitle>Tags</mat-card-subtitle>
         <mat-chip-list>
-          <mat-chip class="tag" *ngFor="let tag of model.data.tags">{{tag.name}}</mat-chip>
+          <mat-chip class="tag" *ngFor="let tag of auction.tags">{{tag.name}}</mat-chip>
         </mat-chip-list>
-        <div *ngIf="model.data.tags.length === 0">-</div>
+        <div *ngIf="auction.tags.length === 0">-</div>
       </mat-card-content>
     </mat-card>
 
@@ -58,9 +83,9 @@
     <mat-card>
       <mat-card-title>Verkoper</mat-card-title>
       <br />
-      <mat-card-header [routerLink]="['/profile', model.data.user.id]">
-        <img mat-card-avatar class="avatar-image" [src]="model.data.user.avatar | blobToImage" />
-        <mat-card-title>{{model.data.user.displayName}}</mat-card-title>
+      <mat-card-header [routerLink]="['/profile', auction.user.id]">
+        <img mat-card-avatar class="avatar-image" [src]="auction.user.avatar | blobToImage" />
+        <mat-card-title>{{auction.user.displayName}}</mat-card-title>
         <mat-card-subtitle>subtitle placeholder</mat-card-subtitle>
       </mat-card-header>
     </mat-card>

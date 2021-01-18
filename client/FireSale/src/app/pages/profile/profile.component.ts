@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { AuctionDTO } from 'src/app/shared/models/auctionDto';
-import { ProfileDto } from 'src/app/shared/models/profileDto';
+import { ProfileDTO } from 'src/app/shared/models/profileDto';
 import { UserService } from 'src/app/shared/services/user.service';
 
 
@@ -13,7 +13,7 @@ import { UserService } from 'src/app/shared/services/user.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  public user$: Observable<ApiResponse<ProfileDto>>;
+  public user$: Observable<ApiResponse<ProfileDTO>>;
   public isCurrentUser = false;
   public id: number;
   public usersAuctions: AuctionDTO[];

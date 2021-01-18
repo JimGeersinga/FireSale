@@ -1,7 +1,10 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AuctionState } from 'src/app/shared/enums/auction-state.enum';
+import { AuctionDTO } from 'src/app/shared/models/auctionDto';
 import { BidDTO } from 'src/app/shared/models/bidDto';
 import { AuctionMessageResponseType } from 'src/app/shared/models/webSocketAuctionMessage';
 import { AuctionService } from 'src/app/shared/services/auction.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import { WebSocketService } from 'src/app/shared/services/websocket.service';
 import { Util } from 'src/app/shared/util';
 
@@ -12,9 +15,12 @@ import { Util } from 'src/app/shared/util';
   styleUrls: ['./bid.component.scss']
 })
 export class BidComponent implements OnInit {
-  @Input() public auctionId: number;
+  @Input() public auction: AuctionDTO;
+  @Input() public startDate: Date;
   @Input() public endDate: Date;
+  @Input() public state: AuctionState;
   @Input() public minimumValue: number;
+
   public auctionError = '';
   @ViewChild('lastBidElement') lastBidRef: ElementRef;
 
@@ -22,28 +28,45 @@ export class BidComponent implements OnInit {
   get lastBid(): BidDTO {
     return this.bids.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())[0];
   }
-  get auctionClosed(): boolean {
-    return  (this.timeLeft - Date.now()) <= 0;
-  }
-  public timeLeft: number;
+
+  public isWinner = false;
+  public isOwner = false;
+
+  public timeLeft = 0;
   public util = Util;
+  public auctionState = AuctionState;
 
   constructor(
     private webSocketService: WebSocketService,
-    private auctionService: AuctionService
+    private auctionService: AuctionService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
-    this.timeLeft = new Date(this.endDate).getTime();
+    if (this.state === AuctionState.SCHEDULED) {
+      this.timeLeft = new Date(this.startDate).getTime();
+    }
+    else if (this.state === AuctionState.RUNNING) {
+      this.timeLeft = new Date(this.endDate).getTime();
+    }
+
+    this.userService.currentUser$.subscribe(currentUser => {
+      if (!currentUser) {
+        return;
+      }
+
+      this.isWinner = currentUser.id === this.auction.finalBid?.userId;
+      this.isOwner = currentUser.id === this.auction.user.id;
+    });
 
     // Load initial bids
-    this.auctionService.getBids(this.auctionId).subscribe((response) => {
+    this.auctionService.getBids(this.auction.id).subscribe((response) => {
       this.bids = response.data;
       this.minimumValue = this.getNextBidValue();
     });
 
     // Listen for newly placed bids
-    this.webSocketService.listenForAuctionUpdate<BidDTO>(this.auctionId).subscribe((message) => {
+    this.webSocketService.listenForAuctionUpdate<BidDTO>(this.auction.id).subscribe((message) => {
       if (message.responseType === AuctionMessageResponseType.BID_PLACED) {
         this.bids.push(message.data);
         this.minimumValue = this.getNextBidValue();
@@ -53,19 +76,13 @@ export class BidComponent implements OnInit {
   }
 
   public placeBid(bid: number): void {
-    this.auctionService.placeBid(this.auctionId, bid).subscribe(response => {
-        console.log('bid placed');
-        console.log(response);
-        this.auctionError = '';
-
-      },
+    this.auctionError = null;
+    this.auctionService.placeBid(this.auction.id, bid).subscribe(response => {
+      console.log('bid placed', response);
+    },
       error => {
-        console.log('bid error');
-        console.log(error);
+        console.log('bid error', error);
         this.auctionError = 'U bent overboden of de veiling is gesloten.';
-      },
-      () => {
-        console.log('bid complete');
       });
   }
 

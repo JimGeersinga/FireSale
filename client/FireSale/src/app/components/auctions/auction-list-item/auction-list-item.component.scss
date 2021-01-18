@@ -32,6 +32,7 @@
       font-weight: bold;
       white-space: break-spaces;
       word-break: break-word;
+      overflow: hidden;
     }
 
     .description {
@@ -100,15 +101,42 @@ mat-card {
   border-radius: 100px;
 }
 
+.state {
+  &.scheduled {
+    .countdown-title {
+      font-size: 0.75rem;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .countdown-timer {
+      padding-top: 0px;
+      padding-bottom: 0;
+      font-size: 1.25rem;
+    }
+  }
+  .countdown-title {
+    color: #673ab7;
+    font-weight: bold;
+    display: block;
+    font-size: large;
+    padding: 0.5rem;
+    white-space: nowrap;
+  }
 
-.countdown-timer {
-  color: #673ab7;
-  font-weight: bold;
-  font-size: x-large;
-  display: block;
-  padding: 0.5rem;
-  white-space: nowrap;
+  .countdown-timer {
+    color: #673ab7;
+    font-weight: bold;
+    font-size: large;
+    display: block;
+    padding: 0.5rem;
+    white-space: nowrap;
+  }
 }
+
+.auction-button {
+  align-self: flex-end;
+}
+
 
 
 div.auction-box {

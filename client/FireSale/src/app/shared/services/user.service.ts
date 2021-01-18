@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/services/api.service';
-import { LoginDto } from '../models/loginDto';
-import { RegisterDto } from '../models/registerDto';
-import { UpdateUserDto } from '../models/updateUserDto';
-import { UserDto } from '../models/userDto';
+import { LoginDTO } from '../models/loginDto';
+import { RegisterDTO } from '../models/registerDto';
+import { UpdateUserDTO } from '../models/updateUserDto';
+import { UserDTO } from '../models/userDto';
 
 @Injectable({
   providedIn: 'root'
@@ -13,20 +13,18 @@ import { UserDto } from '../models/userDto';
 export class UserService {
   private baseUrl = 'users';
 
-  public currentUser$: BehaviorSubject<UserDto | null> = new BehaviorSubject(null);
+  public currentUser$: BehaviorSubject<UserDTO | null> = new BehaviorSubject(null);
+  public userIsAdmin$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private api: ApiService) {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser) {
-      this.currentUser$.next(currentUser);
-    }
+    this.loadCurrentUser();
   }
 
-  public register(registerDto: RegisterDto): Observable<any> {
+  public register(registerDto: RegisterDTO): Observable<any> {
     return this.api.post(`${this.baseUrl}`, registerDto);
   }
 
-  public login(loginDto: LoginDto): Observable<any> {
+  public login(loginDto: LoginDTO): Observable<any> {
     return this.api.post(`${this.baseUrl}/authenticate`, loginDto).pipe(
       tap({
         next: response => {
@@ -34,7 +32,7 @@ export class UserService {
           if (response.success && response.data) {
             user.authData = window.btoa(`${loginDto.email}:${loginDto.password}`);
             localStorage.setItem('currentUser', JSON.stringify(user));
-            this.currentUser$.next(user);
+            this.loadCurrentUser();
           } else if (!response.success) {
             console.log(response.errorCode, response.errorMessage);
           }
@@ -47,9 +45,10 @@ export class UserService {
   public logout(): void {
     localStorage.removeItem('currentUser');
     this.currentUser$.next(null);
+    this.userIsAdmin$.next(false);
   }
 
-  public updateProfile(id: number, updateUserDto: UpdateUserDto): Observable<any> {
+  public updateProfile(id: number, updateUserDto: UpdateUserDTO): Observable<any> {
     console.log(updateUserDto);
     return this.api.patch(`${this.baseUrl}/${id}`, updateUserDto);
   }
@@ -60,5 +59,13 @@ export class UserService {
 
   public getUserAuctions(id: number): Observable<any> {
     return this.api.get(`${this.baseUrl}/${id}/auctions`);
+  }
+
+  private loadCurrentUser(): void {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      this.currentUser$.next(currentUser);
+      this.userIsAdmin$.next(currentUser.role === 'ADMIN');
+    }
   }
 }

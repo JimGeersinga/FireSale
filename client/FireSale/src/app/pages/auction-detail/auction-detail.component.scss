@@ -7,14 +7,29 @@ section.wrapper {
 
 .page-header {
   h2 {
-    display: inline;
+    display: flex;
+    align-items: center;
   }
-  .auction-time {
-    float:right;
+  .info-tags {
+    display: flex;
+    font-size: 0.85rem;
+    gap: 1rem;
+
+    span {
+      mat-icon {
+        margin-right: 0.25rem;
+        font-size: 1.2rem;
+        height: 20px;
+        width: 20px;
+      }
+      display: flex;
+      align-items: center;
+    }
   }
-  .button {
-    float:right;
-    padding-left: 1rem;;
+  .buttons {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
   }
 }
 
@@ -43,6 +58,27 @@ section.wrapper {
     }
   }
 
+}
+
+
+.featured {
+  display: inline-block;
+  margin: 0.25rem;
+  margin-right: 0.75rem;
+  width: 24px;
+  height: 24px;
+  z-index: 3;
+  padding: 4px;
+  text-align: center;
+  background-color: #ffd740;
+  color: rgba(0, 0, 0, .87);
+  border-radius: 100px;
+}
+
+.auction-edit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 mat-card {

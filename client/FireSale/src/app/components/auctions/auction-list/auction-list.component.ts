@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AuctionDTO } from 'src/app/shared/models/auctionDto';
-import { DisplayType } from 'src/app/shared/models/display-type.enum';
+import { DisplayType } from 'src/app/shared/enums/display-type.enum';
 
 @Component({
   selector: 'app-auction-list',

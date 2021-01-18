@@ -6,10 +6,13 @@ import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
 import { AuctionDTO } from 'src/app/shared/models/auctionDto';
 import { CreateAuctionDTO } from 'src/app/shared/models/createAuctionDto';
-import { ProfileDto } from 'src/app/shared/models/profileDto';
-import { UserDto } from 'src/app/shared/models/userDto';
 import { AuctionService } from 'src/app/shared/services/auction.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { AuctionState } from 'src/app/shared/enums/auction-state.enum';
+import { ThrowStmt } from '@angular/compiler';
+import { YesNoDialogComponent } from 'src/app/shared/components/yes-no-dialog/yes-no-dialog.component';
+import { AuctionUtil } from 'src/app/shared/auctionUtil';
+
 
 @Component({
   selector: 'app-auction-detail',
@@ -17,10 +20,13 @@ import { UserService } from 'src/app/shared/services/user.service';
   styleUrls: ['./auction-detail.component.scss']
 })
 export class AuctionDetailComponent implements OnInit {
-  public model$: Observable<ApiResponse<AuctionDTO>>;
+  public auction: AuctionDTO;
   public isAdmin = false;
-  public user$: Observable<ApiResponse<ProfileDto>>;
-  public canCancelAuction = false;
+  public isOwner = false;
+
+  public auctionState = AuctionState;
+  public state: AuctionState;
+
   private auctionId: number;
 
   constructor(
@@ -29,9 +35,6 @@ export class AuctionDetailComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog
   ) {
-      this.userService.currentUser$.subscribe(item => {
-      this.isAdmin = item && item.role === 'ADMIN';
-    });
   }
 
   ngOnInit(): void {
@@ -42,32 +45,39 @@ export class AuctionDetailComponent implements OnInit {
   }
 
   public loadAuction(): void {
-    this.model$ = this.auctionService.getSingle(this.auctionId);
-    this.model$.subscribe(response => {
-      const auction = response.data;
-
-      this.userService.currentUser$.subscribe(currentUser => {
-        if (!currentUser) {
-          this.canCancelAuction = false;
-          return;
-        }
-        const currentUserIsAdmin = currentUser.role === 'ADMIN';
-        this.canCancelAuction = (auction.status === 'READY' && ((currentUser.id === auction.user.id && (auction.startDate > new Date())) || currentUserIsAdmin));
-      });
+    this.auctionService.getSingle(this.auctionId).subscribe(response => {
+      this.auction = response.data;
+      this.checkAuctionState();
     });
   }
 
-  cancelAuction(data: CreateAuctionDTO): void {
-    data.status = 'CANCELLED';
-    this.auctionService.patch(this.auctionId, data).subscribe(() => {
-      this.loadAuction();
+  public checkAuctionState(): void {
+    this.userService.currentUser$.subscribe(currentUser => {
+      if (!currentUser) {
+        return;
+      }
+      this.isAdmin = this.userService.userIsAdmin$.value;
+      this.isOwner = currentUser.id === this.auction.user.id;
     });
-    this.dialog.open(OkDialogComponent, { data: { title: 'Veiling annuleren', message: 'De veiling is geannuleerd' } });
+
+    this.state = AuctionUtil.getState(this.auction);
   }
 
-  markAsFeatured(data: CreateAuctionDTO): void {
-    data.isFeatured = true;
-    this.auctionService.patch(this.auctionId, data).subscribe(x => {console.log('test')});
-    this.dialog.open(OkDialogComponent, { data: { title: 'Feature', message: 'De veiling is aangemerkt als featured.' } });
+  public cancelAuction(): void {
+    const dialog = this.dialog.open(YesNoDialogComponent, { data: { title: 'Veiling annuleren', message: 'Weet u zeker dat u de veiling wilt annuleren?' } });
+    dialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.auctionService.patch(this.auctionId, { status: 'CANCELLED' }).subscribe(() => {
+          this.auction.status = 'CANCELLED';
+          this.checkAuctionState();
+        });
+      }
+    });
+  }
+
+  public toggleFeatured(): void {
+    this.auctionService.patch(this.auctionId, { isFeatured: !this.auction.isFeatured }).subscribe(_ => {
+      this.auction.isFeatured = !this.auction.isFeatured;
+    });
   }
 }

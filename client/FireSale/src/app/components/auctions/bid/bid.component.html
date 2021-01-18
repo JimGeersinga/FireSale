@@ -1,46 +1,64 @@
-<countdown class="countdown" [config]="{ stopTime: timeLeft, formatDate: util.formatDate}"></countdown>
+<ng-container *ngIf="state === auctionState.SCHEDULED">
+  <span class="countdown-title no-bottom">START OVER</span>
+  <countdown class="countdown" [config]="{ stopTime: timeLeft, formatDate: util.formatDate}"></countdown>
+  <ng-container *ngTemplateOutlet="bidsList"></ng-container>
+</ng-container>
 
-<div class="place-bid">
-  <div class="custom-input">
-    <span matPrefix>€&nbsp;</span>
-    <input matInput class="right-align" type="number" [(ngModel)]="minimumValue" [disabled]="auctionClosed">
-  </div>
-  <button mat-flat-button color="primary" (click)="placeBid(minimumValue)" [disabled]="auctionClosed">Bieden</button>
+<ng-container *ngIf="state === auctionState.RUNNING">
+  <countdown class="countdown" [config]="{ stopTime: timeLeft, formatDate: util.formatDate}"></countdown>
 
-</div>
-<div class="auction-error" *ngIf="auctionError.length > 0">
-  {{ auctionError }}
-</div>
-
-<div class="bids">
-  <div #lastBidElement class="bid-record last-bid mat-elevation-z2">
-    <ng-container *ngIf="lastBid">
-      <span class="value">€{{lastBid.value || 0}}</span>
-      <span class="user">{{lastBid.userName}}</span>
-      <span class="timestamp" title="{{lastBid.created | date:'dd-MM-yyyy HH:mm'}}">{{lastBid.created |
-        date:'HH:mm:ss'}}</span>
-    </ng-container>
-    <ng-container *ngIf="bids.length === 0">
-      <span class="value">€0</span>
-      <span class="message">Nog geen biedingen</span>
-    </ng-container>
-  </div>
-  <div class="bid-history">
-    <mat-list>
-      <mat-list-item *ngFor="let bid of bids | slice:1">
-        <div class="bid-record">
-          <span class="value">€{{bid.value}}</span>
-          <span class="user">{{bid.userName}}</span>
-          <span class="timestamp" title="{{bid.created | date:'dd-MM-yyyy HH:mm'}}">{{bid.created |
-            date:'HH:mm:ss'}}</span>
-        </div>
-      </mat-list-item>
-    </mat-list>
-    <div class="auction-closed" *ngIf="auctionClosed">
-      De veiling is gesloten
+  <div class="place-bid" *ngIf="!isOwner">
+    <div class="custom-input">
+      <span matPrefix>€&nbsp;</span>
+      <input matInput class="right-align" type="number" [(ngModel)]="minimumValue">
     </div>
+    <button mat-flat-button color="primary" (click)="placeBid(minimumValue)">Bieden</button>
+  </div>
+
+  <div class="auction-error" *ngIf="auctionError">
+    {{ auctionError }}
+  </div>
+
+  <ng-container *ngTemplateOutlet="bidsList"></ng-container>
+</ng-container>
+
+
+<ng-container *ngIf="state === auctionState.CLOSED">
+  <span class="countdown-title" *ngIf="isWinner">GEWONNEN!</span>
+  <span class="countdown-title" *ngIf="!isWinner">GESLOTEN</span>
+
+  <ng-container *ngTemplateOutlet="bidsList"></ng-container>
+</ng-container>
+
+
+
+<ng-template #bidsList>
+  <div class="bids">
+    <div #lastBidElement class="bid-record last-bid mat-elevation-z2">
+      <ng-container *ngIf="lastBid">
+        <span class="value">€{{lastBid.value || 0}}</span>
+        <span class="user"><a [routerLink]="['/profile', lastBid.userId]">{{lastBid.userName}}</a></span>
+        <span class="timestamp" title="{{lastBid.created | date:'dd-MM-yyyy HH:mm'}}">{{lastBid.created |
+          date:'HH:mm:ss'}}</span>
+      </ng-container>
+      <ng-container *ngIf="bids.length === 0">
+        <span class="value">€0</span>
+        <span class="message">Nog geen biedingen</span>
+      </ng-container>
+    </div>
+    <div class="bid-history">
+      <mat-list>
+        <mat-list-item *ngFor="let bid of bids | slice:1">
+          <div class="bid-record">
+            <span class="value">€{{bid.value}}</span>
+            <span class="user"><a [routerLink]="['/profile', bid.userId]">{{bid.userName}}</a></span>
+            <span class="timestamp" title="{{bid.created | date:'dd-MM-yyyy HH:mm'}}">{{bid.created |
+              date:'HH:mm:ss'}}</span>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <span class="footer">{{bids.length}} biedingen</span>
 
   </div>
-  <span class="footer">{{bids.length}} biedingen</span>
-
-</div>
+</ng-template>

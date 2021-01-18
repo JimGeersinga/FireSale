@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/services/api.service';
-import { TagDto } from '../models/tagDto';
+import { TagDTO } from '../models/tagDto';
 
 interface DataObject {
   id: number;
@@ -21,12 +21,12 @@ interface GetTagResponse{
 })
 
 export class TagService {
-  
+
   private baseUrl = 'tags';
 
   constructor(private api: ApiService) { }
 
-  public getAllTags(): Observable<string[]> { 
+  public getAllTags(): Observable<string[]> {
     return this.api.get(`${this.baseUrl}`);
   }
 
@@ -38,7 +38,7 @@ export class TagService {
     )
   }
 
-  public put(tagDto: TagDto): Observable<any> {
+  public put(tagDto: TagDTO): Observable<any> {
     return this.api.put(`${this.baseUrl}`, tagDto.name);
   }
 }

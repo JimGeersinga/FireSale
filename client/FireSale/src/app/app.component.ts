@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserDto } from './shared/models/userDto';
+import { UserDTO } from './shared/models/userDto';
 import { UserService } from './shared/services/user.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { UserService } from './shared/services/user.service';
 export class AppComponent {
   title = 'FireSale';
 
-  public currentUser$: Observable<UserDto>;
+  public currentUser$: Observable<UserDTO>;
 
   constructor(
     private userService: UserService,

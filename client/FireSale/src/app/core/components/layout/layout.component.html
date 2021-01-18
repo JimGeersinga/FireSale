@@ -14,7 +14,7 @@
         <span>Veilingen</span>
       </a>
 
-      <a mat-button [routerLink]="['/categories']" *ngIf="isAdmin">
+      <a mat-button [routerLink]="['/categories']" *ngIf="isAdmin$ | async">
         <span>Categorieën</span>
       </a>
     </div>

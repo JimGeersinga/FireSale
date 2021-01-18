@@ -21,13 +21,13 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent},
 
   { path: 'auctions', component: AuctionsComponent},
-  { path: 'auctions/edit', component: AuctionEditComponent, canActivate: [AuthGuard]  },
+  { path: 'auctions/create', component: AuctionEditComponent, canActivate: [AuthGuard]  },
+  { path: 'auctions/:id', component: AuctionDetailComponent },
   { path: 'auctions/:id/edit', component: AuctionEditComponent, canActivate: [AuthGuard]  },
-  { path: 'auctions/details/:id', component: AuctionDetailComponent },
 
   { path: 'categories', component: CategoriesComponent, canActivate: [AdminGuard]},
-  { path: 'categories/edit', component: CategoryEditComponent, canActivate: [AdminGuard]  },
-  { path: 'categories/details/:id', component: CategoryDetailComponent, canActivate: [AdminGuard] },
+  { path: 'categories/create', component: CategoryEditComponent, canActivate: [AdminGuard]  },
+  { path: 'categories/:id', component: CategoryDetailComponent, canActivate: [AdminGuard] },
 
   { path: 'profile/:id', component: ProfileComponent },
   { path: 'profile/:id/edit', component: ProfileEditComponent }

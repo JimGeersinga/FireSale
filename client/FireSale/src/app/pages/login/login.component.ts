@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
-import { LoginDto } from 'src/app/shared/models/loginDto';
+import { LoginDTO } from 'src/app/shared/models/loginDto';
 import { UserService } from 'src/app/shared/services/user.service';
 
 
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  submitLogin(data: LoginDto): void {
+  submitLogin(data: LoginDTO): void {
     if (!this.loginForm.valid) {
       this.dialog.open(OkDialogComponent, { data: { title: 'Loginformulier', message: 'Loginformulier is niet correct ingevuld' } });
     }

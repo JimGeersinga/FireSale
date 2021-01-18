@@ -1,6 +1,6 @@
-import { AddressDto } from './addressDto';
+import { AddressDTO } from './addressDto';
 
-export interface RegisterDto {
+export interface RegisterDTO {
     email: string;
     gender: string;
     firstName: string;
@@ -9,6 +9,6 @@ export interface RegisterDto {
     displayName: string;
     password: string;
     passwordVerify: string;
-    address: AddressDto;
-    shippingAddress: AddressDto;
+    address: AddressDTO;
+    shippingAddress: AddressDTO;
 }

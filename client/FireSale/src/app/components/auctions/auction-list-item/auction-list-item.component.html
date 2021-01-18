@@ -37,10 +37,12 @@
       <div class="bidding">
         <a class="auction-button" mat-flat-button fullWidth color="primary">€ {{ auctionValue }}</a>
         <div class="spacer"></div>
-        <countdown class="countdown-timer" [config]="{ stopTime: timeLeft, formatDate: util.formatDate }"></countdown>
+        <ng-container *ngTemplateOutlet="auctionStateTemplate"></ng-container>
       </div>
     </div>
-    <span class="featured" *ngIf="model.isFeatured"><mat-icon>star</mat-icon></span>
+    <span class="featured" *ngIf="model.isFeatured">
+      <mat-icon>star</mat-icon>
+    </span>
   </ng-container>
 </ng-template>
 
@@ -55,41 +57,63 @@
         {{ model.description }}
       </div>
       <div class="bidding">
-        <a class="auction-button" mat-flat-button fullWidth color="primary"
-          [routerLink]="['/auctions/details', model.id]" queryParamsHandling="merge">€ {{ auctionValue }}</a>
+        <a class="auction-button" mat-flat-button fullWidth color="primary" [routerLink]="['/auctions', model.id]"
+          queryParamsHandling="merge">€ {{ auctionValue }}</a>
         <div class="spacer"></div>
-        <countdown class="countdown-timer" [config]="{ stopTime: timeLeft, formatDate: util.formatDate }"></countdown>
+        <ng-container *ngTemplateOutlet="auctionStateTemplate"></ng-container>
       </div>
     </div>
-    <span class="featured" *ngIf="model.isFeatured"><mat-icon>star</mat-icon></span>
+    <span class="featured" *ngIf="model.isFeatured">
+      <mat-icon>star</mat-icon>
+    </span>
   </ng-container>
 </ng-template>
 
 <ng-container [ngSwitch]="displayType">
   <ng-container *ngSwitchCase="displayTypeEnum.GRID" [ngSwitch]="showInCard">
     <ng-container *ngSwitchCase="false">
-      <div class="auction-box display-grid" [class.ssc]="!model" [routerLink]="['/auctions/details', model?.id]"
+      <div class="auction-box display-grid" [class.ssc]="!model" [routerLink]="['/auctions', model?.id]"
         queryParamsHandling="merge">
         <ng-container *ngTemplateOutlet="auctionBoxGrid"></ng-container>
       </div>
     </ng-container>
 
     <mat-card class="auction-box display-grid" [class.ssc]="!model" *ngSwitchDefault
-      [routerLink]="['/auctions/details', model?.id]" queryParamsHandling="merge">
+      [routerLink]="['/auctions', model?.id]" queryParamsHandling="merge">
       <ng-container *ngTemplateOutlet="auctionBoxGrid"></ng-container>
     </mat-card>
   </ng-container>
   <ng-container *ngSwitchDefault [ngSwitch]="showInCard">
     <ng-container *ngSwitchCase="false">
-      <div class="auction-box display-list" [class.ssc]="!model" [routerLink]="['/auctions/details', model?.id]"
+      <div class="auction-box display-list" [class.ssc]="!model" [routerLink]="['/auctions', model?.id]"
         queryParamsHandling="merge">
         <ng-container *ngTemplateOutlet="auctionBoxList"></ng-container>
       </div>
     </ng-container>
     <mat-card class="auction-box display-list" [class.ssc]="!model" *ngSwitchDefault
-      [routerLink]="['/auctions/details', model?.id]" queryParamsHandling="merge">
+      [routerLink]="['/auctions', model?.id]" queryParamsHandling="merge">
       <ng-container *ngTemplateOutlet="auctionBoxList"></ng-container>
     </mat-card>
   </ng-container>
 
 </ng-container>
+
+
+<ng-template #auctionStateTemplate>
+  <div class="state" [class.scheduled]="state === auctionState.SCHEDULED">
+    <ng-container [ngSwitch]="state">
+      <ng-container *ngSwitchCase="auctionState.SCHEDULED">
+        <span class="countdown-title">START OVER</span>
+        <countdown class="countdown-timer" [config]="{ stopTime: timeLeft, formatDate: util.formatDate }">
+        </countdown>
+      </ng-container>
+      <ng-container *ngSwitchCase="auctionState.RUNNING">
+        <countdown class="countdown-timer" [config]="{ stopTime: timeLeft, formatDate: util.formatDate }">
+        </countdown>
+      </ng-container>
+      <ng-container *ngSwitchCase="auctionState.CLOSED">
+        <span class="countdown-title">GESLOTEN</span>
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-template>

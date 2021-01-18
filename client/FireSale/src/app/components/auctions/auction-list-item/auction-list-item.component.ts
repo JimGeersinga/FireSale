@@ -4,11 +4,13 @@ import { Observable } from 'rxjs/internal/Observable';
 import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { AuctionDTO } from 'src/app/shared/models/auctionDto';
 import { BidDTO } from 'src/app/shared/models/bidDto';
-import { DisplayType } from 'src/app/shared/models/display-type.enum';
+import { DisplayType } from 'src/app/shared/enums/display-type.enum';
 import { AuctionMessageResponseType } from 'src/app/shared/models/webSocketAuctionMessage';
 import { AuctionService } from 'src/app/shared/services/auction.service';
 import { WebSocketService } from 'src/app/shared/services/websocket.service';
 import { Util } from 'src/app/shared/util';
+import { AuctionUtil } from 'src/app/shared/auctionUtil';
+import { AuctionState } from 'src/app/shared/enums/auction-state.enum';
 
 @Component({
   selector: 'app-auction-list-item',
@@ -20,20 +22,32 @@ export class AuctionListItemComponent implements OnInit {
   @Input() public showInCard = true;
   @Input() public displayType: DisplayType;
 
-  public timeLeft: number;
+  public timeLeft = 0;
   public auctionValue: number = null;
   public util = Util;
+
   public displayTypeEnum = DisplayType;
+  public auctionState = AuctionState;
+  public state: AuctionState;
 
   constructor(private webSocketService: WebSocketService) { }
 
   ngOnInit(): void {
     if (this.model === null) { return; }
 
-    this.timeLeft = new Date(this.model.endDate).getTime();
+    this.state = AuctionUtil.getState(this.model);
+    if (this.state === AuctionState.SCHEDULED) {
+      this.timeLeft = new Date(this.model.startDate).getTime();
+    } else if (this.state === this.auctionState.RUNNING) {
+      this.timeLeft = new Date(this.model.endDate).getTime();
 
-    const highestBid = this.model.bids?.reduce((prev, next) => (prev.value > next.value) ? prev : next);
-    this.auctionValue = highestBid?.value || this.model.minimalBid || 0;
+    }
+
+    let highestBid = this.model.minimalBid;
+    if (this.model.bids && this.model.bids.length > 0) {
+      highestBid = this.model.bids?.reduce((prev, next) => (prev.value > next.value) ? prev : next).value;
+    }
+    this.auctionValue = highestBid || 0;
 
     // Listen for newly placed bids
     this.webSocketService.listenForAuctionUpdate<BidDTO>(this.model.id).subscribe((message) => {

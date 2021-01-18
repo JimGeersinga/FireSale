@@ -12,7 +12,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER, TAB } from '@angular/cdk/keycodes';
 import { TagService } from 'src/app/shared/services/tag.service';
-import { TagDto } from 'src/app/shared/models/tagDto';
+import { TagDTO } from 'src/app/shared/models/tagDto';
 import { CategoryDTO } from 'src/app/shared/models/categoryDto';
 import { CreateAuctionDTO } from 'src/app/shared/models/createAuctionDto';
 import { AuctionService } from 'src/app/shared/services/auction.service';
@@ -42,7 +42,7 @@ export class AuctionEditComponent implements OnInit {
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA, TAB];
   tagsControl = new FormControl();
-  tags: TagDto[] = [];
+  tags: TagDTO[] = [];
   currentTags: string[] = [];
 
   public searchBehaviourSubject$ = new BehaviorSubject('');
@@ -214,11 +214,11 @@ export class AuctionEditComponent implements OnInit {
 
       if (this.edit) {
         this.auctionService.put(this.id, data).subscribe((result) => {
-          this.router.navigate(['/auctions/details', this.id]);
+          this.router.navigate(['/auctions', this.id]);
         });
       } else {
         this.auctionService.post(data).subscribe((result) => {
-          this.router.navigate(['/auctions/details', result.data.id]);
+          this.router.navigate(['/auctions', result.data.id]);
         });
       }
     }
