@@ -1,7 +1,6 @@
 package com.FireSale.api.service;
 
 import com.FireSale.api.aspect.LogDuration;
-import com.FireSale.api.dto.TagDTO;
 import com.FireSale.api.dto.auction.AuctionFilterDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.exception.ResourceNotFoundException;
@@ -31,6 +30,7 @@ public class AuctionService {
     private final TagService tagService;
     private final CategoryRepository categoryRepository;
     private final AuctionMapper auctionMapper;
+    private final RealTimeAuctionService AuctionNotificationService;
 
     @LogDuration
     @Transactional(readOnly = false)
@@ -172,10 +172,11 @@ public class AuctionService {
             existing.setMinimalBid(auction.getMinimalBid());
         if (auction.getIsFeatured() != null)
             existing.setIsFeatured(auction.getIsFeatured());
-        if (auction.getStatus() != null)
+        if (auction.getStatus() != null) {
             existing.setStatus(auction.getStatus());
-        if (auction.getIsDeleted() != null)
-            existing.setIsDeleted(auction.getIsDeleted());
+            AuctionNotificationService.sendStatusNotification(existing.getId(), existing.getStatus());
+
+        }
         return auctionRepository.save(existing);
     }
 
@@ -189,6 +190,9 @@ public class AuctionService {
         }
         existing.setStatus(AuctionStatus.CLOSED);
         existing.setIsDeleted(true);
+
+        AuctionNotificationService.sendStatusNotification(existing.getId());
+
         return auctionRepository.save(existing);
     }
 

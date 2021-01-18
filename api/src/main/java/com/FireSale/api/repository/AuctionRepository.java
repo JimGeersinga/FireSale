@@ -55,4 +55,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
         List<Auction> findAuctionsByTagsLikeAndCategoriesLike(String[] tags, long[] categories);
 
         List<Auction> findByUserIdAndIsDeletedFalseOrderByEndDateDesc(long userId);
+
+        @Query("SELECT a FROM Auction a WHERE a.status = 'READY' AND a.endDate <= current_timestamp AND a.isDeleted = false ")
+        List<Auction> getFinalizedAuctions();
 }

@@ -79,26 +79,40 @@
 }
 
 mat-card {
-  .featured {
+  .auction-buttons {
     margin: 0.75rem;
   }
 }
 
 
-.featured {
+.auction-buttons {
   position: absolute;
+  display: flex;
   top: 0;
   right: 0;
   font-size: 1rem;
   margin: 0.25rem;
-  width: 24px;
-  height: 24px;
+  gap: 0.25rem;
   z-index: 3;
-  padding: 4px;
   text-align: center;
-  background-color: #ffd740;
-  color: rgba(0, 0, 0, .87);
-  border-radius: 100px;
+  span {
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    border-radius: 100px;
+
+  }
+
+  .favorite {
+    background-color: #ececec;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .featured {
+    background-color: #ffd740;
+    color: rgba(0, 0, 0, .87);
+  }
 }
 
 .state {
@@ -108,12 +122,14 @@ mat-card {
       padding-top: 0;
       padding-bottom: 0;
     }
+
     .countdown-timer {
       padding-top: 0px;
       padding-bottom: 0;
       font-size: 1.25rem;
     }
   }
+
   .countdown-title {
     color: #673ab7;
     font-weight: bold;
@@ -133,7 +149,7 @@ mat-card {
   }
 }
 
-.auction-button {
+.auction-value {
   align-self: flex-end;
 }
 
