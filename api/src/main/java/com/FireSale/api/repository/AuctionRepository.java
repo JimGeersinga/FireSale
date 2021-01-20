@@ -20,10 +20,11 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
         @Query(value = "SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp  order by a.endDate asc", countQuery = "SELECT COUNT(a) FROM Auction a WHERE a.status = 'READY' AND a.startDate <= current_timestamp AND a.endDate > current_timestamp")
         Page<Auction> findActiveAuctions(Pageable pageable);
 
-        @Query("SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND a.isFeatured = false order by a.endDate asc")
+        @Query(value = "SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND a.isFeatured = false order by a.endDate asc",
+                countQuery = "SELECT COUNT(a) FROM Auction a WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND a.isFeatured = false")
         Page<Auction> findActiveAuctionsByIsFeaturedFalse(Pageable pageable);
 
-        @Query("SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND a.isFeatured = true  order by a.endDate asc")
+        @Query(value = "SELECT a FROM Auction a LEFT JOIN FETCH a.bids b WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND a.isFeatured = true  order by a.endDate asc")
         List<Auction> findActiveAuctionsByIsFeaturedTrue();
 
         @Query("SELECT distinct a FROM Auction a LEFT JOIN FETCH a.bids b join a.categories c WHERE a.status = 'READY' AND a.isDeleted = false AND a.startDate <= current_timestamp AND a.endDate > current_timestamp AND c.id in :categories  order by a.endDate asc")
