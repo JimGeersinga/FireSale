@@ -15,11 +15,14 @@ import com.FireSale.api.security.Guard;
 import com.FireSale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
-import org.springframework.data.domain.Pageable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -90,9 +93,9 @@ public class AuctionService {
 
     @LogDuration
     public Collection<Auction> filterAuctions(AuctionFilterDTO dto) {
-        if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getTags() != null && dto.getTags().length > 0 && dto.getName() != null ) {
+        if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getTags() != null && dto.getTags().length > 0 && dto.getName() != null) {
             return auctionRepository.findAuctionsByTagsLikeAndCategoriesANDNameLike(dto.getTags(), dto.getCategories(), dto.getName());
-        } else if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getTags() != null && dto.getTags().length > 0 ) {
+        } else if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getTags() != null && dto.getTags().length > 0) {
             return auctionRepository.findAuctionsByTagsLikeAndCategoriesLike(dto.getTags(), dto.getCategories());
         } else if (dto.getCategories() != null && dto.getCategories().length > 0 && dto.getName() != null) {
             return auctionRepository.findAuctionsByCategoriesLikeAndNameLike(dto.getCategories(), dto.getName());
@@ -213,13 +216,12 @@ public class AuctionService {
     @Transactional(readOnly = false)
     public void toggleFavourite(long auction, Long user, boolean favourite) {
         favouriteAuctionRepository.findByAuctionIdAndUserId(auction, user).ifPresentOrElse(fa -> {
-            if(!favourite){
+            if (!favourite) {
                 favouriteAuctionRepository.delete(fa);
             }
 
-        }, ()->{
-            if(favourite)
-            {
+        }, () -> {
+            if (favourite) {
                 var fav = new FavouriteAuction();
                 fav.setUser(userRepository.getOne(user));
                 fav.setAuction(auctionRepository.getOne(auction));
@@ -247,7 +249,7 @@ public class AuctionService {
 
     @LogDuration
     @Transactional(readOnly = true)
-    public Boolean isFavourite(Long auctionId, Long userId){
-        return  favouriteAuctionRepository.findByAuctionIdAndUserId(auctionId, userId).isPresent();
+    public Boolean isFavourite(Long auctionId, Long userId) {
+        return favouriteAuctionRepository.findByAuctionIdAndUserId(auctionId, userId).isPresent();
     }
 }

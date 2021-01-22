@@ -42,8 +42,7 @@ public class ImageService {
 
     public Image saveImage(CreateImageDTO imageDTO) {
         Image newImage = new Image();
-        if(imageDTO.getId() != null)
-        {
+        if (imageDTO.getId() != null) {
             newImage = this.imageRepository.findById(imageDTO.getId()).orElseThrow(() ->
                     new ResourceNotFoundException(String.format("Image should be in the database but it is not"), ErrorTypes.IMAGE_NOT_FOUND));
         }
@@ -61,8 +60,7 @@ public class ImageService {
         Set<Image> images = new HashSet<>();
         for (CreateImageDTO image : imageDTOs) {
             var newImage = saveImage(image);
-            if(newImage != null)
-            {
+            if (newImage != null) {
                 images.add(newImage);
             }
         }
@@ -74,8 +72,7 @@ public class ImageService {
     @Transactional(readOnly = false)
     public void storeAvatar(CreateImageDTO imageDTO, Long userId) {
         var avatar = saveImage(imageDTO);
-        if(avatar != null)
-        {
+        if (avatar != null) {
             User user = userService.findUserById(userId);
             user.setAvatar(avatar);
             userRepository.save(user);

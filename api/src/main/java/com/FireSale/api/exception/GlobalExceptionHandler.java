@@ -16,14 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse(ErrorTypes.UNKNOWN,"Server Error", details);
+        ErrorResponse error = new ErrorResponse(ErrorTypes.UNKNOWN, "Server Error", details);
         return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -46,10 +46,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> details = new ArrayList<>();
-        for(ObjectError error : ex.getBindingResult().getAllErrors()) {
+        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
             details.add(error.getDefaultMessage());
         }
-        ErrorResponse error = new ErrorResponse(ErrorTypes.VALIDATION_FAILED,"Validation Failed", details);
+        ErrorResponse error = new ErrorResponse(ErrorTypes.VALIDATION_FAILED, "Validation Failed", details);
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleUserRegistrationException(UserRegistrationException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse(ErrorTypes.UNKNOWN,"Registration Failed", details);
+        ErrorResponse error = new ErrorResponse(ErrorTypes.UNKNOWN, "Registration Failed", details);
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleCreateBidException(CreateBidException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse(ex.getErrorType(),"Bidding Failed", details);
+        ErrorResponse error = new ErrorResponse(ex.getErrorType(), "Bidding Failed", details);
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleInvalidResetTokenException(InvalidResetTokenException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse(ex.getErrorType(),"Invalid reset token", details);
+        ErrorResponse error = new ErrorResponse(ex.getErrorType(), "Invalid reset token", details);
         return new ResponseEntity(error, HttpStatus.UNAUTHORIZED);
     }
 }

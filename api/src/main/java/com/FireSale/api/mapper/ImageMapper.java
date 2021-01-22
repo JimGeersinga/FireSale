@@ -2,8 +2,8 @@ package com.FireSale.api.mapper;
 
 import com.FireSale.api.dto.auction.ImageDTO;
 import com.FireSale.api.model.Image;
-import com.FireSale.api.util.UrlUtil;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)

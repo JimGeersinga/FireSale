@@ -1,12 +1,14 @@
 package com.FireSale.api.dto;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class WebsocketAuctionMessage<T>{
+public class WebsocketAuctionMessage<T> {
     private ResponseType responseType;
     private T data;
     private Long userId;

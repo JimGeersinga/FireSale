@@ -1,35 +1,21 @@
 package com.FireSale.api.mapper;
 
-import com.FireSale.api.dto.address.AddressDTO;
 import com.FireSale.api.dto.auction.AuctionDTO;
 import com.FireSale.api.dto.auction.AuctionWinningInfoDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
-import com.FireSale.api.dto.auction.ImageDTO;
-import com.FireSale.api.dto.category.CategoryDTO;
-import com.FireSale.api.dto.user.*;
+import com.FireSale.api.dto.user.PersonInfoDTO;
 import com.FireSale.api.model.Auction;
-import com.FireSale.api.model.Image;
 import com.FireSale.api.model.User;
-import com.FireSale.api.repository.AuctionRepository;
-import com.FireSale.api.repository.FavouriteAuctionRepository;
 import com.FireSale.api.service.AuctionService;
-import com.FireSale.api.service.UserService;
 import com.FireSale.api.util.SecurityUtil;
-import com.FireSale.api.util.UrlUtil;
-import org.aspectj.lang.annotation.After;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = { BidMapper.class, UserMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {BidMapper.class, UserMapper.class})
 public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
     @Mapping(target = "images", ignore = true)
-    @Mapping(target="categories", ignore = true)
+    @Mapping(target = "categories", ignore = true)
     Auction toModel(CreateAuctionDTO createAuctionDTO);
 
     @Override
@@ -42,11 +28,11 @@ public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
 
     @AfterMapping
     default void toDTOAfterMapping(@MappingTarget AuctionDTO target, Auction auction, @Context AuctionService service) {
-        if(SecurityUtil.getSecurityContextUser().getUser() != null) {
+        if (SecurityUtil.getSecurityContextUser().getUser() != null) {
             var userId = SecurityUtil.getSecurityContextUser().getUser().getId();
             boolean isFavourite = service.isFavourite(auction.getId(), userId);
             target.setIsFavourite(isFavourite);
-        }else{
+        } else {
             target.setIsFavourite(false);
         }
 
@@ -66,7 +52,7 @@ public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
         winnerDto.setName(winner.getFirstName() + " " + winner.getLastName());
         winnerDto.setEmail(winner.getEmail());
 
-        if(winner.getShippingAddress() != null) {
+        if (winner.getShippingAddress() != null) {
             AddressMapper addressMapper = Mappers.getMapper(AddressMapper.class);
             winnerDto.setAddress(addressMapper.toDTO(winner.getAddress()));
         }

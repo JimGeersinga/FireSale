@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +18,8 @@ public class FileController {
             value = "/image/{id}",
             produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public @ResponseBody byte[] getImageBytes(@PathVariable Long id) {
+    public @ResponseBody
+    byte[] getImageBytes(@PathVariable Long id) {
         return imageService.getFileBytes(id);
     }
 
