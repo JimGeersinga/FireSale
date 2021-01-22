@@ -31,7 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse(ErrorTypes.NOT_FOUND, "Resource not found", details);
+        ErrorResponse error = new ErrorResponse(ex.getErrorType(), "Resource not found", details);
         return new ResponseEntity(error, HttpStatus.NOT_FOUND);
     }
 
@@ -65,7 +65,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleCreateBidException(CreateBidException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse(ErrorTypes.VALIDATION_FAILED,"Bidding Failed", details);
+        ErrorResponse error = new ErrorResponse(ex.getErrorType(),"Bidding Failed", details);
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidResetTokenException.class)
+    protected ResponseEntity<Object> handleInvalidResetTokenException(InvalidResetTokenException ex, WebRequest request) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse(ex.getErrorType(),"Invalid reset token", details);
+        return new ResponseEntity(error, HttpStatus.UNAUTHORIZED);
     }
 }

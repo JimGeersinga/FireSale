@@ -42,8 +42,10 @@ export class LoginComponent implements OnInit {
       this.dialog.open(OkDialogComponent, { data: { title: 'Loginformulier', message: 'Loginformulier is niet correct ingevuld' } });
     }
     else {
-      this.userService.login(data).subscribe(_ => this.router.navigate([this.returnUrl]));
-      this.snackbar.open('U bent ingelogd.');
+      this.userService.login(data).subscribe(_ => {
+        this.router.navigate([this.returnUrl]);
+        this.snackbar.open('U bent ingelogd.');
+      });      
     }
   }
 }

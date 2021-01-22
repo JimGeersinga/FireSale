@@ -5,6 +5,7 @@ import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.exception.UnAuthorizedException;
 import com.FireSale.api.exception.UserRegistrationException;
 import com.FireSale.api.model.Address;
+import com.FireSale.api.model.ErrorTypes;
 import com.FireSale.api.model.Role;
 import com.FireSale.api.model.User;
 import com.FireSale.api.repository.AddressRepository;
@@ -35,13 +36,13 @@ public class UserService {
     @LogDuration
     public User findUserByEmail(final String email) {
         return userRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("No user exists for email: %s", email), User.class));
+                () -> new ResourceNotFoundException(String.format("No user exists for email: %s", email), ErrorTypes.USER_NOT_FOUND));
     }
 
     @LogDuration
     public User findUserById(final long userId) {
         return userRepository.findById(userId).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("No user exists for id: %d", userId), User.class));
+                () -> new ResourceNotFoundException(String.format("No user exists for id: %d", userId), ErrorTypes.USER_NOT_FOUND));
     }
 
     @LogDuration
@@ -130,7 +131,7 @@ public class UserService {
     @Transactional(readOnly = false)
     public void delete(User user) {
         var userToDelete = userRepository.findById(user.getId()).orElseThrow(() -> new ResourceNotFoundException(
-                String.format("No user exists for id: %s", user.getId()), User.class));
+                String.format("No user exists for id: %s", user.getId()), ErrorTypes.USER_NOT_FOUND));
         var bids = bidRepository.findByUserId(userToDelete.getId());
         var auctions = auctionRepository.findByUserIdAndIsDeletedFalseOrderByEndDateDesc(user.getId());
         if (bids.isEmpty() && auctions.isEmpty()) {
