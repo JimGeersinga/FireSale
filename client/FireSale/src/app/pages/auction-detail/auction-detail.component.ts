@@ -14,6 +14,7 @@ import { YesNoDialogComponent } from 'src/app/shared/components/yes-no-dialog/ye
 import { AuctionUtil } from 'src/app/shared/auctionUtil';
 import { WebSocketService } from 'src/app/shared/services/websocket.service';
 import { AuctionMessageResponseType } from 'src/app/shared/models/webSocketAuctionMessage';
+import { WinningInformationDTO } from 'src/app/shared/models/winningInformationDto';
 
 
 @Component({
@@ -23,8 +24,10 @@ import { AuctionMessageResponseType } from 'src/app/shared/models/webSocketAucti
 })
 export class AuctionDetailComponent implements OnInit {
   public auction: AuctionDTO;
+  public winningInformation: WinningInformationDTO;
   public isAdmin = false;
   public isOwner = false;
+  public isWinner = false;
 
   public auctionState = AuctionState;
   public state: AuctionState;
@@ -61,16 +64,25 @@ export class AuctionDetailComponent implements OnInit {
     });
   }
 
+  public getAuctionWinnerInformation(): void {
+    this.auctionService.getWinningInformation(this.auctionId).subscribe(response => {
+      this.winningInformation = response.data;
+    });
+  }
+
   public checkAuctionState(): void {
+    this.state = AuctionUtil.getState(this.auction);
     this.userService.currentUser$.subscribe(currentUser => {
       if (!currentUser) {
         return;
       }
       this.isAdmin = this.userService.userIsAdmin$.value;
       this.isOwner = currentUser.id === this.auction.user.id;
+      this.isWinner = currentUser.id === this.auction.finalBid?.userId;
+      if (this.isWinner || this.isOwner && this.state === AuctionState.CLOSED) {
+        this.getAuctionWinnerInformation();
+      }
     });
-
-    this.state = AuctionUtil.getState(this.auction);
   }
 
   public cancelAuction(): void {

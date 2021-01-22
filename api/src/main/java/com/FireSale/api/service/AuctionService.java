@@ -210,6 +210,7 @@ public class AuctionService {
         return categoryRepository.findAll();
     }
 
+    @Transactional(readOnly = false)
     public void toggleFavourite(long auction, Long user, boolean favourite) {
         favouriteAuctionRepository.findByAuctionIdAndUserId(auction, user).ifPresentOrElse(fa -> {
             if(!favourite){
@@ -239,7 +240,14 @@ public class AuctionService {
         return auctionRepository.findActiveByUserBid(id);
     }
 
+    @LogDuration
     public Collection<Auction> getWonAuction(Long id) {
         return auctionRepository.findWonByUserBid(id);
+    }
+
+    @LogDuration
+    @Transactional(readOnly = true)
+    public Boolean isFavourite(Long auctionId, Long userId){
+        return  favouriteAuctionRepository.findByAuctionIdAndUserId(auctionId, userId).isPresent();
     }
 }

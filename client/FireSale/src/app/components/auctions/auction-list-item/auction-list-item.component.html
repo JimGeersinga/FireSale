@@ -40,7 +40,7 @@
         <ng-container *ngTemplateOutlet="auctionStateTemplate"></ng-container>
       </div>
     </div>
-    <span class="favorite" [class.active]="isFavorite">
+    <span class="favorite" [class.active]="model.isFavourite">
       <mat-icon>favorite</mat-icon>
     </span>
     <span class="featured" *ngIf="model.isFeatured">
@@ -67,8 +67,8 @@
       </div>
     </div>
     <div class="auction-buttons">
-      <span class="favorite" (click)="toggleFavorite($event)" *ngIf="currentUser$ | async">
-        <mat-icon>{{isFavorite ? 'favorite' : 'favorite_border'}}</mat-icon>
+      <span class="favorite" (click)="toggleFavourite($event)" *ngIf="currentUser$ | async">
+        <mat-icon>{{model.isFavourite ? 'favorite' : 'favorite_border'}}</mat-icon>
       </span>
       <span class="featured" *ngIf="model.isFeatured">
         <mat-icon>star</mat-icon>

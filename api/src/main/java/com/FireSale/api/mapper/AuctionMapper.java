@@ -1,21 +1,24 @@
 package com.FireSale.api.mapper;
 
+import com.FireSale.api.dto.address.AddressDTO;
 import com.FireSale.api.dto.auction.AuctionDTO;
+import com.FireSale.api.dto.auction.AuctionWinningInfoDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.dto.auction.ImageDTO;
 import com.FireSale.api.dto.category.CategoryDTO;
-import com.FireSale.api.dto.user.PatchUserDTO;
-import com.FireSale.api.dto.user.RegisterDTO;
-import com.FireSale.api.dto.user.UpdateUserDTO;
-import com.FireSale.api.dto.user.UserProfileDTO;
+import com.FireSale.api.dto.user.*;
 import com.FireSale.api.model.Auction;
 import com.FireSale.api.model.Image;
 import com.FireSale.api.model.User;
+import com.FireSale.api.repository.AuctionRepository;
+import com.FireSale.api.repository.FavouriteAuctionRepository;
+import com.FireSale.api.service.AuctionService;
+import com.FireSale.api.service.UserService;
+import com.FireSale.api.util.SecurityUtil;
 import com.FireSale.api.util.UrlUtil;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import org.aspectj.lang.annotation.After;
+import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -23,9 +26,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = { BidMapper.class, UserMapper.class})
 public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
-
     @Mapping(target = "images", ignore = true)
     @Mapping(target="categories", ignore = true)
     Auction toModel(CreateAuctionDTO createAuctionDTO);
@@ -34,7 +36,43 @@ public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
     @Mapping(target = "user", ignore = true)
     Auction toModel(AuctionDTO auction);
 
-    @Override
-    @Mapping(target = "user.image", source = "user.avatar.path")
-    AuctionDTO toDTO(Auction auction);
+    @Mapping(target = "isFavourite", ignore = true)
+    AuctionDTO toDTO(Auction auction, @Context AuctionService service);
+
+
+    @AfterMapping
+    default void toDTOAfterMapping(@MappingTarget AuctionDTO target, Auction auction, @Context AuctionService service) {
+        if(SecurityUtil.getSecurityContextUser().getUser() != null) {
+            var userId = SecurityUtil.getSecurityContextUser().getUser().getId();
+            boolean isFavourite = service.isFavourite(auction.getId(), userId);
+            target.setIsFavourite(isFavourite);
+        }else{
+            target.setIsFavourite(false);
+        }
+
+    }
+
+    default AuctionWinningInfoDTO toWinningInfo(Auction auction) {
+        var dto = new AuctionWinningInfoDTO();
+
+        User owner = auction.getUser();
+        PersonInfoDTO ownerDto = new PersonInfoDTO();
+        ownerDto.setName(owner.getFirstName() + " " + owner.getLastName());
+        ownerDto.setEmail(owner.getEmail());
+        dto.setOwner(ownerDto);
+
+        User winner = auction.getFinalBid().getUser();
+        PersonInfoDTO winnerDto = new PersonInfoDTO();
+        winnerDto.setName(winner.getFirstName() + " " + winner.getLastName());
+        winnerDto.setEmail(winner.getEmail());
+
+        if(winner.getShippingAddress() != null) {
+            AddressMapper addressMapper = Mappers.getMapper(AddressMapper.class);
+            winnerDto.setAddress(addressMapper.toDTO(winner.getAddress()));
+        }
+
+        dto.setWinner(winnerDto);
+
+        return dto;
+    }
 }

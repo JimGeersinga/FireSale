@@ -1,15 +1,14 @@
 package com.FireSale.api.controller;
 
 import com.FireSale.api.dto.ApiResponse;
-import com.FireSale.api.dto.auction.AuctionDTO;
-import com.FireSale.api.dto.auction.AuctionFilterDTO;
+import com.FireSale.api.dto.auction.*;
 import com.FireSale.api.dto.bid.BidDTO;
 import com.FireSale.api.dto.bid.CreateBidDTO;
-import com.FireSale.api.dto.auction.CreateAuctionDTO;
-import com.FireSale.api.dto.auction.CreateImageDTO;
+import com.FireSale.api.exception.UnAuthorizedException;
 import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.mapper.BidMapper;
 import com.FireSale.api.model.Auction;
+import com.FireSale.api.model.AuctionStatus;
 import com.FireSale.api.model.Bid;
 import com.FireSale.api.service.*;
 import com.FireSale.api.util.SecurityUtil;
@@ -82,7 +81,7 @@ public class AuctionController {
     @GetMapping
     public ResponseEntity<?> all() {
         final Collection<Auction> auctions = auctionService.getAuctions();
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
                 HttpStatus.OK);
     }
 
@@ -91,21 +90,21 @@ public class AuctionController {
             @RequestParam(value = "size", required = false) Integer pageSize) {
         final Collection<Auction> auctions = auctionService.getActiveAuctions(
                 PageRequest.of(pageIndex == null ? 0 : pageIndex, pageSize == null ? 100 : pageSize));
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
                 HttpStatus.OK);
     }
 
     @GetMapping("/featured")
     public ResponseEntity featured() {
         final Collection<Auction> auctions = auctionService.getFeatured();
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
                 HttpStatus.OK);
     }
 
     @PostMapping("/filter")
     public ResponseEntity filter(@RequestBody AuctionFilterDTO filter) {
         final Collection<Auction> auctions = auctionService.filterAuctions(filter);
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
                 HttpStatus.OK);
     }
 
@@ -113,7 +112,7 @@ public class AuctionController {
     @GetMapping("/favourite")
     public ResponseEntity favourite() {
         final Collection<Auction> auctions = auctionService.getFavourites(SecurityUtil.getSecurityContextUser().getUser().getId());
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
                 HttpStatus.OK);
     }
 
@@ -121,7 +120,7 @@ public class AuctionController {
     @GetMapping("/won")
     public ResponseEntity won() {
         final Collection<Auction> auctions = auctionService.getWonAuction(SecurityUtil.getSecurityContextUser().getUser().getId());
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
                 HttpStatus.OK);
     }
 
@@ -130,14 +129,26 @@ public class AuctionController {
     @GetMapping("/bidded")
     public ResponseEntity bidded() {
         final Collection<Auction> auctions = auctionService.getByUserBid(SecurityUtil.getSecurityContextUser().getUser().getId());
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
                 HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable("id") final long id) {
         final Auction auction = auctionService.findAuctionById(id);
-        return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction, auctionService)), HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{id}/winningInformation")
+    public ResponseEntity<?> getWinningInformation(@PathVariable("id") final long id) {
+        final Auction auction = auctionService.findAuctionById(id);
+        Long loggedInUserId = SecurityUtil.getSecurityContextUser().getUser().getId();
+        if(auction.getStatus() == AuctionStatus.CLOSED && (auction.getFinalBid().getUser().getId().equals(loggedInUserId) || auction.getUser().getId().equals(loggedInUserId))) {
+            return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toWinningInfo(auction)), HttpStatus.OK);
+        }
+        throw new UnAuthorizedException("Winning information may not yet be retrieved");
+
     }
 
     @PutMapping("/{id}")
@@ -150,8 +161,8 @@ public class AuctionController {
 
     @PostMapping("/{id}/favourite")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void favourite(@PathVariable("id") final long id,  @Valid @RequestBody boolean favourite) {
-        auctionService.toggleFavourite(id, SecurityUtil.getSecurityContextUser().getUser().getId(),favourite);
+    public void favourite(@PathVariable("id") final long id,  @Valid @RequestBody IsFavouriteDTO favourite) {
+        auctionService.toggleFavourite(id, SecurityUtil.getSecurityContextUser().getUser().getId(),favourite.getIsFavourite());
     }
 
     @PatchMapping("/{id}")

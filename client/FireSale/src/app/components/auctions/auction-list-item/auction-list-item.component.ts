@@ -10,6 +10,7 @@ import { AuctionState } from 'src/app/shared/enums/auction-state.enum';
 import { Observable } from 'rxjs';
 import { UserDTO } from 'src/app/shared/models/userDto';
 import { UserService } from 'src/app/shared/services/user.service';
+import { AuctionService } from 'src/app/shared/services/auction.service';
 
 @Component({
   selector: 'app-auction-list-item',
@@ -28,13 +29,13 @@ export class AuctionListItemComponent implements OnInit {
   public displayTypeEnum = DisplayType;
   public auctionState = AuctionState;
   public state: AuctionState;
-  public isFavorite: boolean;
 
   public currentUser$: Observable<UserDTO>;
 
   constructor(
     private webSocketService: WebSocketService,
-    private userService: UserService
+    private userService: UserService,
+    private auctionService: AuctionService
     ) { }
 
   ngOnInit(): void {
@@ -66,11 +67,11 @@ export class AuctionListItemComponent implements OnInit {
     });
   }
 
-  public toggleFavorite($event): void {
+  public toggleFavourite($event): void {
+    this.model.isFavourite = !this.model.isFavourite;
+    this.auctionService.toggleFavourite(this.model.id, this.model.isFavourite).subscribe();
     $event.preventDefault();
     $event.stopPropagation();
-    this.isFavorite = !this.isFavorite;
-
 
   }
 }

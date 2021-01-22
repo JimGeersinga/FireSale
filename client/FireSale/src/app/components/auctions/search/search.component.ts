@@ -46,6 +46,9 @@ export class SearchComponent implements OnInit {
 
   public autocompleteTag(event): void {
     const searchTerm = event.target.value;
+    if (!searchTerm) {
+      this.selectedTag = null;
+    }
     this.tags = this.tagService.searchTagsByName(searchTerm);
 
   }

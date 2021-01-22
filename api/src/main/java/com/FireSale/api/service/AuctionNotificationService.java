@@ -35,7 +35,7 @@ public class AuctionNotificationService {
     }
 
     @Scheduled(fixedDelay = 1000)
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = false)
     public void closeAuction() {
        var auctions = auctionRepository.getFinalizedAuctions();
         for (Auction auction : auctions) {

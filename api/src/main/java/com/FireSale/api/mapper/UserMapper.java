@@ -8,7 +8,7 @@ import org.mapstruct.*;
 
 import java.util.Arrays;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = AddressMapper.class)
 public interface UserMapper extends ModelToDTOMapper<User, UserDTO> {
 
     @Override
