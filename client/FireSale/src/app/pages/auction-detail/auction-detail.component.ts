@@ -79,7 +79,7 @@ export class AuctionDetailComponent implements OnInit {
       this.isAdmin = this.userService.userIsAdmin$.value;
       this.isOwner = currentUser.id === this.auction.user.id;
       this.isWinner = currentUser.id === this.auction.finalBid?.userId;
-      if (this.isWinner || this.isOwner && this.state === AuctionState.CLOSED) {
+      if ((this.isWinner || this.isOwner) && this.state === AuctionState.CLOSED && this.auction.finalBid) {
         this.getAuctionWinnerInformation();
       }
     });

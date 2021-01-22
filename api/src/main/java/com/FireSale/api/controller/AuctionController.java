@@ -144,7 +144,7 @@ public class AuctionController {
     public ResponseEntity<?> getWinningInformation(@PathVariable("id") final long id) {
         final Auction auction = auctionService.findAuctionById(id);
         Long loggedInUserId = SecurityUtil.getSecurityContextUser().getUser().getId();
-        if(auction.getStatus() == AuctionStatus.CLOSED && (auction.getFinalBid().getUser().getId().equals(loggedInUserId) || auction.getUser().getId().equals(loggedInUserId))) {
+        if(auction.getStatus() == AuctionStatus.CLOSED && auction.getFinalBid() != null && (auction.getFinalBid().getUser().getId().equals(loggedInUserId) || auction.getUser().getId().equals(loggedInUserId))) {
             return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toWinningInfo(auction)), HttpStatus.OK);
         }
         throw new UnAuthorizedException("Winning information may not yet be retrieved");
