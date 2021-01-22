@@ -13,7 +13,7 @@ import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  private errorMessages = { 
+  private errorMessages = {
     'LOGIN_FAILED': { title: 'Login mislukt', message: 'Je gebruikersnaam of wachtwoord is onjuist.' },
     'ACCOUNT_IS_LOCKED': { title: 'Account is geblokkeerd', message: 'Je account is geblokkeerd door een administrator.' },
     'VALIDATION_FAILED': { title: 'Validatie mislukt', message: 'Validatie mislukt.' },
@@ -36,21 +36,28 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(catchError(err => {
+      const error = err.error.errorMessage || err.statusText || 'Er is iets fout gegaan.';
+
       if (err.status === 401 && window.location.pathname !== '/login' && err.error.errorCode === 'LOGIN_FAILED') {
         // auto logout if 401 response returned from api
         this.userService.logout();
         location.reload();
-      }
-      else if (err.error.errorCode === 'USER_NOT_FOUND' && window.location.pathname !== '/forgotpassword') {
+      } else if (err.error.errorCode === 'USER_NOT_FOUND' && window.location.pathname !== '/forgotpassword') {
         // to prevent the 'user not found' dialog to pop up
         return null;
-      }
-      else {
-        this.dialog.open(OkDialogComponent, {         
-          data: this.errorMessages[err.error.errorCode]
+      } else {
+        let data = {
+          title: 'Fout',
+          message: error
+        };
+        if (err.error.errorCode in this.errorMessages) {
+          data = this.errorMessages[err.error.errorCode];
+        }
+        this.dialog.open(OkDialogComponent, {
+          data
         });
       }
-      const error = err.error.errorMessage || err.statusText;
+
       return throwError(error);
     }));
   }
