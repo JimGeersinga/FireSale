@@ -26,20 +26,20 @@ public class AuctionNotificationService {
     final private SimpMessagingTemplate template;
     final private AuctionRepository auctionRepository;
 
-    public void sendBidNotification(@DestinationVariable("auctionId")long auctionId, BidDTO bid) {
-        template.convertAndSend("/rt-auction/updates/"+ auctionId, new WebsocketAuctionMessage<>(ResponseType.BID_PLACED, bid,bid.getUserId(), bid.getCreated()));
+    public void sendBidNotification(@DestinationVariable("auctionId") long auctionId, BidDTO bid) {
+        template.convertAndSend("/rt-auction/updates/" + auctionId, new WebsocketAuctionMessage<>(ResponseType.BID_PLACED, bid, bid.getUserId(), bid.getCreated()));
     }
 
-    public void sendStatusNotification(@DestinationVariable("auctionId")long auctionId, AuctionStatus auctionStatus) {
-        template.convertAndSend("/rt-auction/updates/"+ auctionId, new WebsocketAuctionMessage<>(ResponseType.UPDATED, auctionStatus, null, LocalDateTime.now()));
+    public void sendStatusNotification(@DestinationVariable("auctionId") long auctionId, AuctionStatus auctionStatus) {
+        template.convertAndSend("/rt-auction/updates/" + auctionId, new WebsocketAuctionMessage<>(ResponseType.UPDATED, auctionStatus, null, LocalDateTime.now()));
     }
 
     @Scheduled(fixedDelay = 1000)
     @Transactional(readOnly = false)
     public void closeAuction() {
-       var auctions = auctionRepository.getFinalizedAuctions();
+        var auctions = auctionRepository.getFinalizedAuctions();
         for (Auction auction : auctions) {
-            if(auction.getBids().size() > 0) {
+            if (auction.getBids().size() > 0) {
                 var finalBid = Collections.max(auction.getBids(), Comparator.comparing(b -> b.getValue()));
                 auction.setFinalBid(finalBid);
             }

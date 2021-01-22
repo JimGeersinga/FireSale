@@ -14,7 +14,7 @@ public class UpdateAddressDTO {
     private String houseNumber;
 
     @NotEmpty(message = "Postal code must have a value")
-    @Pattern(regexp = "[0-9]{4}(\s?)[a-zA-Z]{2}", message = "Postal code is not valid" )
+    @Pattern(regexp = "[0-9]{4}(\s?)[a-zA-Z]{2}", message = "Postal code is not valid")
     private String postalCode;
 
     @NotEmpty(message = "City must have a value")

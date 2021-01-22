@@ -9,7 +9,7 @@ public class PatchAddressDTO {
     private String street;
     private String houseNumber;
 
-    @Pattern(regexp = "[0-9]{4}(\s?)[a-zA-Z]{2}", message = "Postal code is not valid" )
+    @Pattern(regexp = "[0-9]{4}(\s?)[a-zA-Z]{2}", message = "Postal code is not valid")
     private String postalCode;
 
     private String city;

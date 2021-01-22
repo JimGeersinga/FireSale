@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ApiResponse<T> {
-    private boolean success;
+    private final boolean success;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private T data;
+    private final T data;
 }
 

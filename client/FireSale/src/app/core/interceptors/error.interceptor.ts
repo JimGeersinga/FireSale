@@ -14,21 +14,21 @@ import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   private errorMessages = {
-    'LOGIN_FAILED': { title: 'Login mislukt', message: 'Je gebruikersnaam of wachtwoord is onjuist.' },
-    'ACCOUNT_IS_LOCKED': { title: 'Account is geblokkeerd', message: 'Je account is geblokkeerd door een administrator.' },
-    'VALIDATION_FAILED': { title: 'Validatie mislukt', message: 'Validatie mislukt.' },
-    'UNAUTHORIZED': { title: 'Niet geautoriseerd', message: 'Je bent niet geautoriseerd om deze handeling uit te voeren of pagina te bekijken.' },
-    'NOT_FOUND': { title: 'Niet gevonden', message: 'De data die je probeert te op te halen is niet gevonden.' },
-    'AUCTION_NOT_FOUND': { title: 'Veiling niet gevonden', message: 'De veiling die je probeert op te halen is niet gevonden.' },
-    'USER_NOT_FOUND': { title: 'Gebruiker niet gevonden', message: 'De gebruiker die je probeert op te halen is niet gevonden.' },
-    'EXPIRED_RESET_TOKEN': { title: 'Reset token verlopen', message: 'Vraag opnieuw een wachtwoord reset aan.' },
-    'INVALID_RESET_TOKEN': { title: 'Ongeldige reset token', message: 'Vraag opnieuw een wachtwoord reset aan.' },
-    'TAG_NOT_FOUND': { title: 'Tag niet gevonden', message: 'De tag die je probeert op te halen is niet gevonden.' },
-    'CATEGORY_NOT_FOUND': { title: 'Categorie niet gevonden', message: 'De categorie die je probeert op te halen is niet gevonden.' },
-    'IMAGE_NOT_FOUND': { title: 'Afbeelding niet gevonden', message: 'De afbeelding die je probeert op te halen is niet gevonden.' },
-    'BID_TOO_LOW': { title: 'Bieding mislukt', message: 'De bieding die je probeert te plaatsen is te laag.' },
-    'AUCTION_ALREADY_COMPLETED': { title: 'Bieding mislukt', message: 'De veiling waarop je probeert te bieden is niet meer actief.' },
-  }
+    LOGIN_FAILED: { title: 'Login mislukt', message: 'Je gebruikersnaam of wachtwoord is onjuist.' },
+    ACCOUNT_IS_LOCKED: { title: 'Account is geblokkeerd', message: 'Je account is geblokkeerd door een administrator.' },
+    VALIDATION_FAILED: { title: 'Validatie mislukt', message: 'Validatie mislukt.' },
+    UNAUTHORIZED: { title: 'Niet geautoriseerd', message: 'Je bent niet geautoriseerd om deze handeling uit te voeren of pagina te bekijken.' },
+    NOT_FOUND: { title: 'Niet gevonden', message: 'De data die je probeert te op te halen is niet gevonden.' },
+    AUCTION_NOT_FOUND: { title: 'Veiling niet gevonden', message: 'De veiling die je probeert op te halen is niet gevonden.' },
+    USER_NOT_FOUND: { title: 'Gebruiker niet gevonden', message: 'De gebruiker die je probeert op te halen is niet gevonden.' },
+    EXPIRED_RESET_TOKEN: { title: 'Reset token verlopen', message: 'Vraag opnieuw een wachtwoord reset aan.' },
+    INVALID_RESET_TOKEN: { title: 'Ongeldige reset token', message: 'Vraag opnieuw een wachtwoord reset aan.' },
+    TAG_NOT_FOUND: { title: 'Tag niet gevonden', message: 'De tag die je probeert op te halen is niet gevonden.' },
+    CATEGORY_NOT_FOUND: { title: 'Categorie niet gevonden', message: 'De categorie die je probeert op te halen is niet gevonden.' },
+    IMAGE_NOT_FOUND: { title: 'Afbeelding niet gevonden', message: 'De afbeelding die je probeert op te halen is niet gevonden.' },
+    BID_TOO_LOW: { title: 'Bieding mislukt', message: 'De bieding die je probeert te plaatsen is te laag.' },
+    AUCTION_ALREADY_COMPLETED: { title: 'Bieding mislukt', message: 'De veiling waarop je probeert te bieden is niet meer actief.' },
+  };
   constructor(
     private userService: UserService,
     private dialog: MatDialog,

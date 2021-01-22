@@ -46,7 +46,7 @@ public class AuctionController {
         Auction auction = auctionService.create(createAuctionDTO);
         imageService.storeAuctionImages(images, auction);
         auction = auctionService.findAuctionById(auction.getId()); // retrieves the auction after the images have been
-                                                                   // added
+        // added
         return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction)), HttpStatus.CREATED);
     }
 
@@ -60,7 +60,7 @@ public class AuctionController {
     @PostMapping("/{auctionId}/bids")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> placeBid(@PathVariable("auctionId") final long auctionId,
-            @Valid @RequestBody CreateBidDTO createBidDTO) {
+                                      @Valid @RequestBody CreateBidDTO createBidDTO) {
         Bid bid = bidMapper.toModel(createBidDTO);
         bid.setAuction(auctionService.findAuctionById(auctionId));
         bid.setUser(userService.findUserById(SecurityUtil.getSecurityContextUser().getUser().getId()));
@@ -87,7 +87,7 @@ public class AuctionController {
 
     @GetMapping("/active")
     public ResponseEntity started(@RequestParam(value = "page", required = false) Integer pageIndex,
-            @RequestParam(value = "size", required = false) Integer pageSize) {
+                                  @RequestParam(value = "size", required = false) Integer pageSize) {
         final Collection<Auction> auctions = auctionService.getActiveAuctions(
                 PageRequest.of(pageIndex == null ? 0 : pageIndex, pageSize == null ? 100 : pageSize));
         return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
@@ -144,7 +144,7 @@ public class AuctionController {
     public ResponseEntity<?> getWinningInformation(@PathVariable("id") final long id) {
         final Auction auction = auctionService.findAuctionById(id);
         Long loggedInUserId = SecurityUtil.getSecurityContextUser().getUser().getId();
-        if(auction.getStatus() == AuctionStatus.CLOSED && auction.getFinalBid() != null && (auction.getFinalBid().getUser().getId().equals(loggedInUserId) || auction.getUser().getId().equals(loggedInUserId))) {
+        if (auction.getStatus() == AuctionStatus.CLOSED && auction.getFinalBid() != null && (auction.getFinalBid().getUser().getId().equals(loggedInUserId) || auction.getUser().getId().equals(loggedInUserId))) {
             return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toWinningInfo(auction)), HttpStatus.OK);
         }
         throw new UnAuthorizedException("Winning information may not yet be retrieved");
@@ -161,8 +161,8 @@ public class AuctionController {
 
     @PostMapping("/{id}/favourite")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void favourite(@PathVariable("id") final long id,  @Valid @RequestBody IsFavouriteDTO favourite) {
-        auctionService.toggleFavourite(id, SecurityUtil.getSecurityContextUser().getUser().getId(),favourite.getIsFavourite());
+    public void favourite(@PathVariable("id") final long id, @Valid @RequestBody IsFavouriteDTO favourite) {
+        auctionService.toggleFavourite(id, SecurityUtil.getSecurityContextUser().getUser().getId(), favourite.getIsFavourite());
     }
 
     @PatchMapping("/{id}")

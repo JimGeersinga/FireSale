@@ -26,10 +26,9 @@ public class TagService {
     }
 
     public Tag getTagByName(String name) {
-        if (tagRepository.findByName(name).isEmpty()){
+        if (tagRepository.findByName(name).isEmpty()) {
             return null;
-        }
-        else{
+        } else {
             return tagRepository.findByName(name)
                     .orElseThrow(() -> new ResourceNotFoundException(String.format("No tag exists with name: {0}", name), ErrorTypes.TAG_NOT_FOUND));
         }
@@ -49,7 +48,7 @@ public class TagService {
     @Transactional(readOnly = false)
     public void deleteTag(String name) {
         final Tag existing = tagRepository.findByName(name)
-            .orElseThrow(() -> new ResourceNotFoundException(String.format("No tag exists with name: {0}", name), ErrorTypes.TAG_NOT_FOUND));
-            tagRepository.delete(existing);
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("No tag exists with name: {0}", name), ErrorTypes.TAG_NOT_FOUND));
+        tagRepository.delete(existing);
     }
 }

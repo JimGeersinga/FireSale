@@ -21,7 +21,8 @@ export class CategoriesComponent implements OnInit {
           archived: false
         });
       }
-      this.categoryService.getArchived().subscribe((response) => {
+    });
+    this.categoryService.getArchived().subscribe((response) => {
       for (const item of response.data) {
         this.categories.push({
           id: item.id,
@@ -30,28 +31,20 @@ export class CategoriesComponent implements OnInit {
         });
       }
       this.data = this.categories;
-      console.log(this.data);
-      console.log(this.categories);
     });
-    });
-    
-
   }
+
   delete(id: number): void {
     const model = this.categories.find(x => x.id === id);
     model.archived = !model.archived;
-    this.categoryService.put(model).subscribe(_ => {
-    });
+    this.categoryService.put(model).subscribe();
   }
-  edit(id: number, e: any)
-  {
+
+  edit(id: number, e: any): void {
     const newVal = e.target.value;
-    const model = this.categories.find(x => x.id === id); 
+    const model = this.categories.find(x => x.id === id);
     model.name = newVal;
 
-
-     this.categoryService.put(model).subscribe(_ => {
-    });
-
+    this.categoryService.put(model).subscribe();
   }
 }

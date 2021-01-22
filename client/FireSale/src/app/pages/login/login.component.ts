@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
       this.userService.login(data).subscribe(_ => {
         this.router.navigate([this.returnUrl]);
         this.snackbar.open('U bent ingelogd.');
-      });      
+      });
     }
   }
 }

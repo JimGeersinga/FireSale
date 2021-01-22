@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { TagService } from 'src/app/shared/services/tag.service';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnChanges {
 
   @Input() public categories: CategoryDTO[];
 
@@ -38,7 +38,7 @@ export class SearchComponent implements OnInit {
         this.selectedCategory = this.categories.find(c => c.id === +params.c);
         this.searchValue = params.q;
         if (params.t) {
-          this.tags = this.tagService.searchTagsByName(params.t).pipe(tap(x => { this.selectedTag = x.data[0] }));
+          this.tags = this.tagService.searchTagsByName(params.t).pipe(tap(x => { this.selectedTag = x.data[0]; }));
         }
       }
     });

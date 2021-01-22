@@ -12,7 +12,7 @@ interface DataObject {
   name: string;
 }
 
-interface GetTagResponse{
+interface GetTagResponse {
   success: boolean;
   data: DataObject[];
 }
@@ -31,9 +31,9 @@ export class TagService {
     return this.api.get(`${this.baseUrl}`);
   }
 
-  public searchTagsByName(searchterm : string) : Observable<ApiResponse<TagDTO[]>> {
+  public searchTagsByName(searchterm: string): Observable<ApiResponse<TagDTO[]>> {
     const param = new URLSearchParams();
-    param.append("searchterm",searchterm);
+    param.append('searchterm', searchterm);
     return this.api.get(`${this.baseUrl}?${param}`);
   }
 
