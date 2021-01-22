@@ -75,7 +75,7 @@ public class UserServiceTests {
         Exception exception = assertThrows(ResourceNotFoundException.class, () ->
                 userService.findUserByEmail("admin@firesale.nl"));
 
-        assertThat(exception.getMessage()).isEqualTo("Resource of type [User] was not found: [No user exists for email: admin@firesale.nl]");
+        assertThat(exception.getMessage()).isEqualTo("Resource was not found: [No user exists for email: admin@firesale.nl]");
 
         verify(userRepository).findByEmail(any(String.class));
     }
@@ -99,7 +99,7 @@ public class UserServiceTests {
             userService.findUserById(5l);
         });
 
-        assertThat(exception.getMessage()).isEqualTo("Resource of type [User] was not found: [No user exists for id: 5]");
+        assertThat(exception.getMessage()).isEqualTo("Resource was not found: [No user exists for id: 5]");
 
         verify(userRepository).findById(any(Long.class));
     }

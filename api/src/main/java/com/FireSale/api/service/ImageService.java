@@ -3,6 +3,7 @@ package com.FireSale.api.service;
 import com.FireSale.api.dto.auction.CreateImageDTO;
 import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.model.Auction;
+import com.FireSale.api.model.ErrorTypes;
 import com.FireSale.api.model.Image;
 import com.FireSale.api.model.User;
 import com.FireSale.api.repository.AuctionRepository;
@@ -35,7 +36,7 @@ public class ImageService {
 
     public byte[] getFileBytes(long id) {
         var image = this.imageRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(String.format("Image should be in the database but it is not"),Image.class));
+                new ResourceNotFoundException(String.format("Image should be in the database but it is not"), ErrorTypes.IMAGE_NOT_FOUND));
         return Base64.getDecoder().decode(image.getPath());
     }
 
@@ -44,7 +45,7 @@ public class ImageService {
         if(imageDTO.getId() != null)
         {
             newImage = this.imageRepository.findById(imageDTO.getId()).orElseThrow(() ->
-            new ResourceNotFoundException(String.format("Image should be in the database but it is not"),Image.class));
+                    new ResourceNotFoundException(String.format("Image should be in the database but it is not"), ErrorTypes.IMAGE_NOT_FOUND));
         }
 
         newImage.setPath(imageDTO.getPath());

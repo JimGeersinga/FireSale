@@ -2,6 +2,7 @@ package com.FireSale.api.service;
 
 import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.model.Address;
+import com.FireSale.api.model.ErrorTypes;
 import com.FireSale.api.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ public class AddressService {
 
     public Address findAddressById(final long addressId) {
         return addressRepository.findById(addressId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("No address exists for id: %d", addressId), Address.class));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("No address exists for id: %d", addressId), ErrorTypes.ADDRESS_NOT_FOUND));
     }
 
     @Transactional(readOnly = false)

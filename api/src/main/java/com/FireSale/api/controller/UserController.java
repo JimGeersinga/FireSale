@@ -9,6 +9,7 @@ import com.FireSale.api.dto.auction.CreateImageDTO;
 import com.FireSale.api.dto.user.*;
 import com.FireSale.api.dto.usersecurity.ChangepasswordDTO;
 import com.FireSale.api.dto.usersecurity.EmailaddressDTO;
+import com.FireSale.api.exception.InvalidResetTokenException;
 import com.FireSale.api.mapper.AddressMapper;
 import com.FireSale.api.mapper.AuctionMapper;
 import com.FireSale.api.mapper.UserMapper;
@@ -31,10 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -54,7 +52,6 @@ public class UserController {
     private final JavaMailSender mailSender;
     private final UserSecurityService userSecurityService;
     private final MailUtil mailUtil;
-
 
     @PostMapping("/authenticate")
     public ResponseEntity authenticate(@Valid @RequestBody final LoginDTO loginRequest) {
@@ -92,7 +89,6 @@ public class UserController {
         final UserPrincipal user = SecurityUtil.getSecurityContextUser();
         userService.delete(user.getUser());
     }
-
 
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserProfileDTO>> getUser(@PathVariable("userId") final long userId) {
@@ -163,17 +159,15 @@ public class UserController {
 
     @PostMapping(value = "/changepassword")
     public ResponseEntity changePassword(@RequestBody final ChangepasswordDTO changepasswordDTO) {
-        String result = userSecurityService.validatePasswordResetToken(changepasswordDTO.getToken().toString());
-        if (result != null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+        userSecurityService.validatePasswordResetToken(changepasswordDTO.getToken());
+        Optional<User> user = userSecurityService.getUserByPasswordResetToken(changepasswordDTO.getToken());
+        if (user.isPresent()) {
+            userSecurityService.changeUserPassword(user.get(), changepasswordDTO.getPassword());
+            return new ResponseEntity(HttpStatus.OK);
         } else {
-            Optional<User> user = userSecurityService.getUserByPasswordResetToken(changepasswordDTO.getToken().toString());
-            if (user.isPresent()) {
-                userSecurityService.changeUserPassword(user.get(), changepasswordDTO.getPassword());
-                return new ResponseEntity(HttpStatus.OK);
-            } else {
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
-            }
+            throw new InvalidResetTokenException(String.format("No user exists for reset token: %d", changepasswordDTO.getToken()), ErrorTypes.USER_NOT_FOUND);
         }
     }
 }
+

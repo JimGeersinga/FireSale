@@ -6,15 +6,16 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
+@ResponseStatus(HttpStatus.UNAUTHORIZED)
 @Getter
 @Setter
-public class CreateBidException extends RuntimeException{
+public class InvalidResetTokenException extends RuntimeException{
 
     private ErrorTypes errorType;
 
-    public CreateBidException(String message, ErrorTypes errorType) {
-        super(message);
+    public InvalidResetTokenException(String message, ErrorTypes errorType) {
+        super(String.format("Password reset token is invalid: [%s]", message));
         this.errorType = errorType;
     }
 }
+

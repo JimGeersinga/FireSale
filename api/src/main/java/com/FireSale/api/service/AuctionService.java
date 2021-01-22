@@ -1,7 +1,6 @@
 package com.FireSale.api.service;
 
 import com.FireSale.api.aspect.LogDuration;
-import com.FireSale.api.dto.TagDTO;
 import com.FireSale.api.dto.auction.AuctionFilterDTO;
 import com.FireSale.api.dto.auction.CreateAuctionDTO;
 import com.FireSale.api.exception.ResourceNotFoundException;
@@ -112,7 +111,7 @@ public class AuctionService {
     @LogDuration
     public Auction findAuctionById(final long id) {
         return auctionRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("No auction exists for id: %d", id), Auction.class));
+                () -> new ResourceNotFoundException(String.format("No auction exists for id: %d", id), ErrorTypes.AUCTION_NOT_FOUND));
     }
 
     @LogDuration
