@@ -47,7 +47,8 @@ public class Auction extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "auction")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "auction")
     private Collection<Bid> bids;
 
     @LazyCollection(LazyCollectionOption.FALSE)

@@ -28,7 +28,7 @@ public interface AuctionMapper extends ModelToDTOMapper<Auction, AuctionDTO> {
 
     @AfterMapping
     default void toDTOAfterMapping(@MappingTarget AuctionDTO target, Auction auction, @Context AuctionService service) {
-        if (SecurityUtil.getSecurityContextUser().getUser() != null) {
+        if (SecurityUtil.getSecurityContextUser() != null) {
             var userId = SecurityUtil.getSecurityContextUser().getUser().getId();
             boolean isFavourite = service.isFavourite(auction.getId(), userId);
             target.setIsFavourite(isFavourite);
