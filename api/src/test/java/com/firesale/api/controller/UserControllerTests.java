@@ -1,5 +1,5 @@
 package com.firesale.api.controller;
 
-public class UserControllerTests {
+class UserControllerTests {
     // TODO: User controller tests
 }

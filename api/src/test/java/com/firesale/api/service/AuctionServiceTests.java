@@ -25,7 +25,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-public class AuctionServiceTests {
+class AuctionServiceTests {
     @Autowired
     private AuctionService auctionService;
 
@@ -67,7 +67,7 @@ public class AuctionServiceTests {
         // Execute service call
         Collection<?> returnedAuction = auctionService.getActiveAuctions(PageRequest.of(0, 10));
         // Assert response
-        Assertions.assertTrue(returnedAuction != null, "Auction was not found");
+        Assertions.assertNotNull(returnedAuction, "Auction was not found");
         Assertions.assertSame(returnedAuction.toArray()[0], a, "The auction returned was not the same as the mock");
         verify(auctionRepository).findActiveAuctions(any(Pageable.class));
     }
@@ -90,7 +90,7 @@ public class AuctionServiceTests {
         // Execute service call
         var returnedAuction = auctionService.getAuctionsByUserId(1l);
         // Assert response
-        Assertions.assertTrue(returnedAuction != null, "Auction was not found");
+        Assertions.assertNotNull(returnedAuction, "Auction was not found");
         Assertions.assertSame(returnedAuction.toArray()[0], a, "The auction returned was not the same as the mock");
         verify(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(any(Long.class));
     }
