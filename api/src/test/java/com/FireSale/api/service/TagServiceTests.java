@@ -40,6 +40,20 @@ public class TagServiceTests {
         verify(tagRepository, times(2)).findByName(any(String.class));
     }
 
+    @Test
+    void shouldCreateTagSuccessfully() {
+        final Tag tag = getTag();
+        tag.setId(null);
+
+        when(tagRepository.save(any(Tag.class))).thenReturn(tag);
+
+        Tag savedTag = tagService.createTag("Boot");
+
+        assertThat(savedTag).isNotNull();
+
+        verify(tagRepository).save(any(Tag.class));
+    }
+
     private Tag getTag(){
         final Tag tag = new Tag();
         tag.setId(1L);
