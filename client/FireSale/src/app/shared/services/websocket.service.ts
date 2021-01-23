@@ -3,8 +3,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { WebSocketAuctionMessage } from 'src/app/shared/models/webSocketAuctionMessage';
 import { ConfigService } from '../../core/services/config.service';
 
-declare var SockJS;
-declare var Stomp;
+declare var SockJS: any;
+declare var Stomp: any;
+
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,11 @@ export class WebSocketService {
   }
 
   private initializeConnection(): void {
+    if (!window['SockJS'] || !window['Stomp']) {
+      console.log('Websocket is not available');
+      return;
+    }
+
     console.log('Initializing websocket connection');
     const ws = new SockJS(this.webSocketRoot);
     this.stompClient = Stomp.over(ws);

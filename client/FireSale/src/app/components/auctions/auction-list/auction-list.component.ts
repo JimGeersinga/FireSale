@@ -15,7 +15,7 @@ export class AuctionListComponent implements OnInit {
   public displayTypeEnum = DisplayType;
   public displayType: DisplayType = DisplayType.LIST;
 
-  private toolbarHeight = document.querySelector('.mat-toolbar').clientHeight;
+  private toolbarHeight = document.querySelector('.mat-toolbar')?.clientHeight ?? 0;
   private sectionPadding = 25;
 
   constructor() {}

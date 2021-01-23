@@ -39,7 +39,7 @@ export class AuctionListItemComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    if (this.model === null) { return; }
+    if (!this.model) { return; }
 
     this.currentUser$ = this.userService.currentUser$;
 

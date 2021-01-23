@@ -19,7 +19,6 @@ export class CategoryListItemComponent implements OnInit {
 
   delete(): void {
     this.model.archived = !this.model.archived;
-    this.categoryService.put(this.model).subscribe(_ => {
-    });
+    this.categoryService.put(this.model).subscribe();
   }
 }

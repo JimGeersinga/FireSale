@@ -50,7 +50,7 @@ export class ProfileEditComponent implements OnInit {
             city: [user?.shippingAddress?.city],
             country: [user?.shippingAddress?.country]
           }),
-          displayName: [user.displayName],
+          displayName: [user?.displayName],
           password: [null, []],
           passwordVerify: [null, []]
         },

@@ -1,4 +1,5 @@
-<mat-list-item>{{ model.name}}
+<mat-list-item *ngIf="model">
+  {{ model.name}}
     <button mat-button (click)="delete()">
         {{(model.archived ? "Activeer" : "Archiveer")}}
     </button>

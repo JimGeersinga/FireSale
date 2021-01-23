@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { ApiResponse } from 'src/app/core/services/apiResponse';
-import { OkDialogComponent } from 'src/app/shared/components/ok-dialog/ok-dialog.component';
 import { AuctionDTO } from 'src/app/shared/models/auctionDto';
-import { CreateAuctionDTO } from 'src/app/shared/models/createAuctionDto';
 import { AuctionService } from 'src/app/shared/services/auction.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { AuctionState } from 'src/app/shared/enums/auction-state.enum';
-import { ThrowStmt } from '@angular/compiler';
 import { YesNoDialogComponent } from 'src/app/shared/components/yes-no-dialog/yes-no-dialog.component';
 import { AuctionUtil } from 'src/app/shared/auctionUtil';
 import { WebSocketService } from 'src/app/shared/services/websocket.service';
@@ -99,7 +94,7 @@ export class AuctionDetailComponent implements OnInit {
 
   public deleteAuction(): void {
     const dialog = this.dialog.open(YesNoDialogComponent, { data: { title: 'Veiling verwijderen', message: 'Weet u zeker dat u de veiling wilt verwijderen?' } });
-    dialog.afterClosed().subscribe((result) => {
+    dialog.afterClosed().subscribe(() => {
       this.auctionService.delete(this.auctionId).subscribe(() => {
         this.router.navigate(['/auctions']);
       });
