@@ -9,11 +9,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -26,6 +26,15 @@ public class TagServiceTests {
 
     @InjectMocks
     TagService tagService;
+
+    @Test
+    void shouldFindAllTagsSuccessfully(){
+
+        List<Tag> givenAllTags = tagService.getAllTags();
+        assertNotNull(givenAllTags);
+
+        verify(tagRepository).findAll();
+    }
 
     @Test
     void shouldFindTagByNameSuccessfully(){
