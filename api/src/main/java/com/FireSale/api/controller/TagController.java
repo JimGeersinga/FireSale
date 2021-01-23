@@ -25,9 +25,8 @@ public class TagController {
         List<Tag> tags;
         if (searchTerm == null) {
             tags = tagService.getAllTags();
-        }
-        else {
-             tags = tagService.searchTagsByName(searchTerm);
+        } else {
+            tags = tagService.searchTagsByName(searchTerm);
         }
         return new ResponseEntity<>(new ApiResponse<>(true, tags.stream().map(tagMapper::toDTO)), HttpStatus.OK);
     }

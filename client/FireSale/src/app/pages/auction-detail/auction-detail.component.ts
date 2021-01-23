@@ -12,6 +12,9 @@ import { AuctionState } from 'src/app/shared/enums/auction-state.enum';
 import { ThrowStmt } from '@angular/compiler';
 import { YesNoDialogComponent } from 'src/app/shared/components/yes-no-dialog/yes-no-dialog.component';
 import { AuctionUtil } from 'src/app/shared/auctionUtil';
+import { WebSocketService } from 'src/app/shared/services/websocket.service';
+import { AuctionMessageResponseType } from 'src/app/shared/models/webSocketAuctionMessage';
+import { WinningInformationDTO } from 'src/app/shared/models/winningInformationDto';
 
 
 @Component({
@@ -21,8 +24,10 @@ import { AuctionUtil } from 'src/app/shared/auctionUtil';
 })
 export class AuctionDetailComponent implements OnInit {
   public auction: AuctionDTO;
+  public winningInformation: WinningInformationDTO;
   public isAdmin = false;
   public isOwner = false;
+  public isWinner = false;
 
   public auctionState = AuctionState;
   public state: AuctionState;
@@ -34,7 +39,8 @@ export class AuctionDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private auctionService: AuctionService,
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private webSocketService: WebSocketService
   ) {
   }
 
@@ -49,19 +55,34 @@ export class AuctionDetailComponent implements OnInit {
     this.auctionService.getSingle(this.auctionId).subscribe(response => {
       this.auction = response.data;
       this.checkAuctionState();
+
+      this.webSocketService.listenForAuctionUpdate<AuctionState>(this.auction.id).subscribe((message) => {
+        if (message.responseType === AuctionMessageResponseType.UPDATED) {
+          this.state = message.data;
+        }
+      });
+    });
+  }
+
+  public getAuctionWinnerInformation(): void {
+    this.auctionService.getWinningInformation(this.auctionId).subscribe(response => {
+      this.winningInformation = response.data;
     });
   }
 
   public checkAuctionState(): void {
+    this.state = AuctionUtil.getState(this.auction);
     this.userService.currentUser$.subscribe(currentUser => {
       if (!currentUser) {
         return;
       }
       this.isAdmin = this.userService.userIsAdmin$.value;
       this.isOwner = currentUser.id === this.auction.user.id;
+      this.isWinner = currentUser.id === this.auction.finalBid?.userId;
+      if ((this.isWinner || this.isOwner) && this.state === AuctionState.CLOSED && this.auction.finalBid) {
+        this.getAuctionWinnerInformation();
+      }
     });
-
-    this.state = AuctionUtil.getState(this.auction);
   }
 
   public cancelAuction(): void {

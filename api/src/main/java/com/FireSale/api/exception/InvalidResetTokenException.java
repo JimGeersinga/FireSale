@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 @Getter
 @Setter
-public class InvalidResetTokenException extends RuntimeException{
+public class InvalidResetTokenException extends RuntimeException {
 
     private ErrorTypes errorType;
 

@@ -7,6 +7,21 @@
   <a *ngIf="isAdmin$ | async" mat-list-item routerLink="/categories" routerLinkActive="mat-accent"
     [routerLinkActiveOptions]="{ exact: true }">
     <mat-icon mat-list-icon>list</mat-icon>
-    <span>Veilingen</span>
+    <span>Categorieën</span>
   </a>
+
+  <ng-container *ngIf="currentUser$ | async">
+    <a mat-list-item [routerLink]="['/auctions/my-auctions']">
+      <mat-icon mat-list-icon>view_module</mat-icon>
+      <span>Mijn veilingen</span>
+    </a>
+    <a mat-list-item [routerLink]="['/auctions/my-favourites']">
+      <mat-icon mat-list-icon>favorite</mat-icon>
+      <span>Mijn favorieten</span>
+    </a>
+    <a mat-list-item [routerLink]="['/auctions/my-bids']">
+      <mat-icon mat-list-icon>view_module</mat-icon>
+      <span>Mijn biedingen</span>
+    </a>
+  </ng-container>
 </mat-nav-list>

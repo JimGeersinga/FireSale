@@ -7,7 +7,7 @@
 <ng-container *ngIf="state === auctionState.RUNNING">
   <countdown class="countdown" [config]="{ stopTime: timeLeft, formatDate: util.formatDate}"></countdown>
 
-  <div class="place-bid" *ngIf="!isOwner">
+  <div class="place-bid" *ngIf="!isOwner && isLoggedIn">
     <div class="custom-input">
       <span matPrefix>€&nbsp;</span>
       <input matInput class="right-align" type="number" [(ngModel)]="minimumValue">

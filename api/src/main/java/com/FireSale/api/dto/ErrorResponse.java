@@ -4,13 +4,12 @@ import com.FireSale.api.model.ErrorTypes;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 public class ErrorResponse extends ApiResponse {
-    private String errorCode;
-    private String errorMessage;
-    private List<String> errorDetails;
+    private final String errorCode;
+    private final String errorMessage;
+    private final List<String> errorDetails;
 
     public ErrorResponse(ErrorTypes error, String message) {
         this(error, message, null);

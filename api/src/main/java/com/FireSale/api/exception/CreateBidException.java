@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 @Getter
 @Setter
-public class CreateBidException extends RuntimeException{
+public class CreateBidException extends RuntimeException {
 
     private ErrorTypes errorType;
 

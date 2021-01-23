@@ -59,6 +59,60 @@
     </mat-card>
   </section>
 
+  <section class="auction-winning-info">
+    <mat-card *ngIf="winningInformation && isWinner">
+      <mat-card-title>U heeft gewonnen!</mat-card-title>
+      <br />
+      <mat-card-subtitle>Wat nu?</mat-card-subtitle>
+      <div>
+        U heeft de veiling gewonnen voor een bedrag van €{{auction.finalBid.value}},-. <br />
+        De contactgegevens van de veiler vindt u hieronder. <br />
+        Neem contact op om de betaling en levering samen af te ronden.
+      </div>
+      <br />
+      <mat-card-subtitle>Veiler informatie</mat-card-subtitle>
+      <div class="info-field">
+        <label>Naam: </label>
+        <span class="value">{{winningInformation.owner.name}}</span>
+      </div>
+      <div class="info-field">
+        <label>E-mailadres: </label>
+        <span class="value">{{winningInformation.owner.email}}</span>
+      </div>
+    </mat-card>
+
+    <mat-card *ngIf="winningInformation && isOwner">
+      <mat-card-title>{{winningInformation.winner.name}}</mat-card-title>
+      <br />
+      <mat-card-subtitle>Wat nu?</mat-card-subtitle>
+      <div>
+        {{winningInformation.winner.name}} heeft de veiling gewonnen voor een bedrag van €{{auction.finalBid.value}},-.
+        <br />
+        De gegevens van de winnaar vindt u hieronder.
+        Neem contact op om de betaling en levering samen af te ronden.
+      </div>
+      <br />
+      <mat-card-subtitle>Winnaar informatie</mat-card-subtitle>
+      <div>
+        <div class="info-field">
+          <label>Naam: </label>
+          <span class="value">{{winningInformation.winner.name}}</span>
+        </div>
+        <div class="info-field">
+          <label>E-mailadres: </label>
+          <span class="value">{{winningInformation.winner.email}}</span>
+        </div>
+        <div class="info-field">
+          <label>Adres: </label>
+          <span class="value">{{winningInformation.winner.address.street}} {{winningInformation.winner.address.houseNumber}},
+            {{winningInformation.winner.address.postalCode}}, {{winningInformation.winner.address.city}}</span>
+        </div>
+      </div>
+    </mat-card>
+  </section>
+
+
+
   <section class="auction-description">
     <mat-card>
       <mat-card-title>Veilinginformatie</mat-card-title>
