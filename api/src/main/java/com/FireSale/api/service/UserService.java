@@ -138,9 +138,10 @@ public class UserService {
         if (bids.isEmpty() && auctions.isEmpty()) {
             userRepository.delete(userToDelete);
         } else {
-            user.setEmail("removed");
-            user.setFirstName("removed");
-            user.setLastName("removed");
+            String removed = "removed";
+            user.setEmail(removed);
+            user.setFirstName(removed);
+            user.setLastName(removed);
             user.setAddress(new Address());
             user.setPassword("xxx");
         }

@@ -41,7 +41,7 @@ public class AuctionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity create(@Valid @RequestBody CreateAuctionDTO createAuctionDTO) {
+    public ResponseEntity<ApiResponse<AuctionDTO>> create(@Valid @RequestBody CreateAuctionDTO createAuctionDTO) {
         Collection<CreateImageDTO> images = createAuctionDTO.getImages();
         Auction auction = auctionService.create(createAuctionDTO);
         imageService.storeAuctionImages(images, auction);
@@ -51,15 +51,15 @@ public class AuctionController {
     }
 
     @PostMapping("/{id}/images")
-    public ResponseEntity uploadAuctionImages(@RequestBody List<CreateImageDTO> imageDTOs, @PathVariable Long id) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadAuctionImages(@RequestBody List<CreateImageDTO> imageDTOs, @PathVariable Long id) {
         Auction auction = auctionService.findAuctionById(id);
         imageService.storeAuctionImages(imageDTOs, auction);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/{auctionId}/bids")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity placeBid(@PathVariable("auctionId") final long auctionId,
+    public ResponseEntity<ApiResponse<BidDTO>> placeBid(@PathVariable("auctionId") final long auctionId,
                                       @Valid @RequestBody CreateBidDTO createBidDTO) {
         Bid bid = bidMapper.toModel(createBidDTO);
         bid.setAuction(auctionService.findAuctionById(auctionId));
@@ -71,7 +71,8 @@ public class AuctionController {
     }
 
     @GetMapping("/{auctionId}/bids")
-    public ResponseEntity getBids(@PathVariable("auctionId") final long auctionId) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<List<BidDTO>>> getBids(@PathVariable("auctionId") final long auctionId) {
         final List<Bid> bids = bidService.getForAuction(auctionId);
         return new ResponseEntity<>(
                 new ApiResponse<>(true, bids.stream().map(bidMapper::toDTO).collect(Collectors.toList())),
@@ -79,69 +80,77 @@ public class AuctionController {
     }
 
     @GetMapping
-    public ResponseEntity all() {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<List<AuctionDTO>>> all() {
         final Collection<Auction> auctions = auctionService.getAuctions();
         return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService)).collect(Collectors.toList())),
                 HttpStatus.OK);
     }
 
     @GetMapping("/active")
-    public ResponseEntity started(@RequestParam(value = "page", required = false) Integer pageIndex,
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<List<AuctionDTO>>> started(@RequestParam(value = "page", required = false) Integer pageIndex,
                                   @RequestParam(value = "size", required = false) Integer pageSize) {
         final Collection<Auction> auctions = auctionService.getActiveAuctions(
                 PageRequest.of(pageIndex == null ? 0 : pageIndex, pageSize == null ? 100 : pageSize));
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService)).collect(Collectors.toList())),
                 HttpStatus.OK);
     }
 
     @GetMapping("/featured")
-    public ResponseEntity featured() {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<List<AuctionDTO>>> featured() {
         final Collection<Auction> auctions = auctionService.getFeatured();
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService)).collect(Collectors.toList())),
                 HttpStatus.OK);
     }
 
     @PostMapping("/filter")
-    public ResponseEntity filter(@RequestBody AuctionFilterDTO filter) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<List<AuctionDTO>>> filter(@RequestBody AuctionFilterDTO filter) {
         final Collection<Auction> auctions = auctionService.filterAuctions(filter);
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService)).collect(Collectors.toList())),
                 HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/favourite")
-    public ResponseEntity favourite() {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<List<AuctionDTO>>> favourite() {
         final Collection<Auction> auctions = auctionService.getFavourites(SecurityUtil.getSecurityContextUser().getUser().getId());
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService)).collect(Collectors.toList())),
                 HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/won")
-    public ResponseEntity won() {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<List<AuctionDTO>>> won() {
         final Collection<Auction> auctions = auctionService.getWonAuction(SecurityUtil.getSecurityContextUser().getUser().getId());
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService)).collect(Collectors.toList())),
                 HttpStatus.OK);
     }
 
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/bidded")
-    public ResponseEntity bidded() {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<List<AuctionDTO>>> bidded() {
         final Collection<Auction> auctions = auctionService.getByUserBid(SecurityUtil.getSecurityContextUser().getUser().getId());
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService))),
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(x -> auctionMapper.toDTO(x, auctionService)).collect(Collectors.toList())),
                 HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") final long id) {
+    public ResponseEntity<ApiResponse<AuctionDTO>> get(@PathVariable("id") final long id) {
         final Auction auction = auctionService.findAuctionById(id);
         return new ResponseEntity<>(new ApiResponse<>(true, auctionMapper.toDTO(auction, auctionService)), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/winningInformation")
-    public ResponseEntity getWinningInformation(@PathVariable("id") final long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<AuctionWinningInfoDTO>> getWinningInformation(@PathVariable("id") final long id) {
         final Auction auction = auctionService.findAuctionById(id);
         Long loggedInUserId = SecurityUtil.getSecurityContextUser().getUser().getId();
         if (auction.getStatus() == AuctionStatus.CLOSED && auction.getFinalBid() != null && (auction.getFinalBid().getUser().getId().equals(loggedInUserId) || auction.getUser().getId().equals(loggedInUserId))) {

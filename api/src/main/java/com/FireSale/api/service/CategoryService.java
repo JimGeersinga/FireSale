@@ -36,14 +36,13 @@ public class CategoryService {
         final Category existing = getCategoryById(id);
         existing.setName(category.getName());
         existing.setArchived(category.getArchived());
-        Category c = categoryRepository.save(existing);
-        return c;
+        return categoryRepository.save(existing);
     }
 
     @Transactional(readOnly = false)
     public void deleteCategory(Long id) {
         final Category existing = getCategoryById(id);
-        if (existing.getAuctions().size() != 0) {
+        if (!existing.getAuctions().isEmpty()) {
             existing.setArchived(true);
             categoryRepository.save(existing);
         } else {

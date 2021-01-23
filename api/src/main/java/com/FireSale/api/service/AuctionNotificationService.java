@@ -6,6 +6,7 @@ import com.firesale.api.model.AuctionStatus;
 import com.firesale.api.dto.ResponseType;
 import com.firesale.api.dto.WebsocketAuctionMessage;
 import com.firesale.api.dto.bid.BidDTO;
+import com.firesale.api.model.Bid;
 import com.firesale.api.repository.AuctionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -23,8 +24,8 @@ import java.util.Comparator;
 @EnableScheduling
 @Service
 public class AuctionNotificationService {
-    final private SimpMessagingTemplate template;
-    final private AuctionRepository auctionRepository;
+    private final SimpMessagingTemplate template;
+    private final AuctionRepository auctionRepository;
 
     public void sendBidNotification(@DestinationVariable("auctionId") long auctionId, BidDTO bid) {
         template.convertAndSend("/rt-auction/updates/" + auctionId, new WebsocketAuctionMessage<>(ResponseType.BID_PLACED, bid, bid.getUserId(), bid.getCreated()));
@@ -40,8 +41,8 @@ public class AuctionNotificationService {
         var auctions = auctionRepository.getFinalizedAuctions();
         if(auctions != null) {
             for (Auction auction : auctions) {
-                if (auction.getBids().size() > 0) {
-                    var finalBid = Collections.max(auction.getBids(), Comparator.comparing(b -> b.getValue()));
+                if (!auction.getBids().isEmpty()) {
+                    var finalBid = Collections.max(auction.getBids(), Comparator.comparing(Bid::getValue));
                     auction.setFinalBid(finalBid);
                 }
 

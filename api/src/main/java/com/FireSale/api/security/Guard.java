@@ -2,19 +2,23 @@ package com.firesale.api.security;
 
 import com.firesale.api.model.Role;
 import com.firesale.api.util.SecurityUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class Guard {
+    private Guard() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static boolean isAdmin() {
-        return SecurityUtil.getSecurityContextUser().getUser().getRole() == Role.ADMIN;
+        return Objects.requireNonNull(SecurityUtil.getSecurityContextUser()).getUser().getRole() == Role.ADMIN;
     }
 
     public static boolean isSelf(final Long id) {
-        return SecurityUtil.getSecurityContextUser().getUser().getId() == id;
+        return Objects.requireNonNull(SecurityUtil.getSecurityContextUser()).getUser().getId().equals(id);
     }
 }

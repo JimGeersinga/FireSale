@@ -30,7 +30,7 @@ public class TagService {
             return null;
         } else {
             return tagRepository.findByName(name)
-                    .orElseThrow(() -> new ResourceNotFoundException(String.format("No tag exists with name: {0}", name), ErrorTypes.TAG_NOT_FOUND));
+                    .orElseThrow(() -> new ResourceNotFoundException(String.format("No tag exists with name: %s", name), ErrorTypes.TAG_NOT_FOUND));
         }
     }
 
@@ -48,7 +48,7 @@ public class TagService {
     @Transactional(readOnly = false)
     public void deleteTag(String name) {
         final Tag existing = tagRepository.findByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("No tag exists with name: {0}", name), ErrorTypes.TAG_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("No tag exists with name: %s", name), ErrorTypes.TAG_NOT_FOUND));
         tagRepository.delete(existing);
     }
 }

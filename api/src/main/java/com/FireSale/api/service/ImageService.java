@@ -36,7 +36,7 @@ public class ImageService {
 
     public byte[] getFileBytes(long id) {
         var image = this.imageRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(String.format("Image should be in the database but it is not"), ErrorTypes.IMAGE_NOT_FOUND));
+                new ResourceNotFoundException("Image should be in the database but it is not", ErrorTypes.IMAGE_NOT_FOUND));
         return Base64.getDecoder().decode(image.getPath());
     }
 
@@ -44,7 +44,7 @@ public class ImageService {
         Image newImage = new Image();
         if (imageDTO.getId() != null) {
             newImage = this.imageRepository.findById(imageDTO.getId()).orElseThrow(() ->
-                    new ResourceNotFoundException(String.format("Image should be in the database but it is not"), ErrorTypes.IMAGE_NOT_FOUND));
+                    new ResourceNotFoundException("Image should be in the database but it is not", ErrorTypes.IMAGE_NOT_FOUND));
         }
 
         newImage.setPath(imageDTO.getPath());

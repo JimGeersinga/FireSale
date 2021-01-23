@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Setter
 public class ResourceNotFoundException extends RuntimeException {
 
-    private ErrorTypes errorType;
+    private final ErrorTypes errorType;
 
     public ResourceNotFoundException(String message, ErrorTypes errorType) {
         super(String.format("Resource was not found: [%s]", message));

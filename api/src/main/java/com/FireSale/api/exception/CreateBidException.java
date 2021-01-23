@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Setter
 public class CreateBidException extends RuntimeException {
 
-    private ErrorTypes errorType;
+    private final ErrorTypes errorType;
 
     public CreateBidException(String message, ErrorTypes errorType) {
         super(message);

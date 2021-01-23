@@ -3,6 +3,7 @@ package com.firesale.api.controller;
 
 import com.firesale.api.service.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class FileController {
             produces = MediaType.IMAGE_JPEG_VALUE
     )
     public @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
     byte[] getImageBytes(@PathVariable Long id) {
         return imageService.getFileBytes(id);
     }

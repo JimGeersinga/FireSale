@@ -29,10 +29,6 @@ public class UserSecurityService {
     public Boolean validatePasswordResetToken(String token) {
         final PasswordResetToken passToken = passwordResetTokenRepository.findByToken(token);
 
-//        return !isTokenFound(passToken) ? "invalidToken"
-//                : isTokenExpired(passToken) ? "expired"
-//                : null;
-
         if (!isTokenFound(passToken)) {
             throw new InvalidResetTokenException("Password reset token is invalid", ErrorTypes.INVALID_RESET_TOKEN);
         } else if (isTokenExpired(passToken)) {
@@ -40,10 +36,6 @@ public class UserSecurityService {
         }
 
         return true;
-
-//        return !isTokenFound(passToken) ? throw new InvalidResetTokenException("Password reset token is invalid", ErrorTypes.INVALID_RESET_TOKEN);
-//                : isTokenExpired(passToken) ? throw new InvalidResetTokenException("Password reset token is expired", ErrorTypes.EXPIRED_RESET_TOKEN);
-//                : null;
     }
 
     private boolean isTokenFound(PasswordResetToken passToken) {
@@ -65,9 +57,9 @@ public class UserSecurityService {
     }
 
     @Transactional(readOnly = false)
-    public User changeUserPassword(User user, String password) {
+    public void changeUserPassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         passwordResetTokenRepository.delete(passwordResetTokenRepository.findByUser(user));
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 }

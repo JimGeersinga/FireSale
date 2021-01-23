@@ -63,7 +63,6 @@ public class AuctionService {
 
         // Alle tags voor auction ophalen en setten bij de auction
         auction.setTags(tags);
-        var t = auction.getTags();
         return auctionRepository.save(auction);
     }
 
@@ -129,10 +128,6 @@ public class AuctionService {
         final Auction existing = findAuctionById(id);
         final Collection<Category> categories = categoryRepository.findByIdIn(createAuctionDTO.getCategories());
 
-        // if (Guard.isSelf(existing.getUser().getId())) {
-        // throw new UnAuthorizedException("Cannot update the auction");
-        // }
-
         if (existing.getStartDate().isBefore(LocalDateTime.now()))
             throw new UnAuthorizedException("Cannot change a running auction");
         existing.setName(createAuctionDTO.getName());
@@ -141,7 +136,6 @@ public class AuctionService {
         existing.setEndDate(createAuctionDTO.getEndDate());
         existing.setMinimalBid(createAuctionDTO.getMinimalBid());
         existing.setCategories(categories);
-        // existing.setTags(createAuctionDTO.getTags());
         // Nog niet bestaande tags wegschrijven naar de database
         List<Tag> tags = new ArrayList<>();
         createAuctionDTO.getTags().stream().forEach(tag -> {

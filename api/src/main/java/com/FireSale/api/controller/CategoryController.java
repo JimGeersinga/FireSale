@@ -1,6 +1,7 @@
 package com.firesale.api.controller;
 
 import com.firesale.api.dto.ApiResponse;
+import com.firesale.api.dto.category.CategoryDTO;
 import com.firesale.api.dto.category.UpsertCategoryDTO;
 import com.firesale.api.mapper.CategoryMapper;
 import com.firesale.api.model.Category;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,22 +28,22 @@ public class CategoryController {
     private final CategoryMapper categoryMapper;
 
     @GetMapping
-    public ResponseEntity available() {
+    public ResponseEntity<ApiResponse<List<CategoryDTO>>> available() {
         final Collection<Category> auctions = categoryService.getAvailableCategories();
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(categoryMapper::toDTO)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(categoryMapper::toDTO).collect(Collectors.toList())), HttpStatus.OK);
     }
 
     @GetMapping("archived")
     @PreAuthorize("isAuthenticated() and @guard.isAdmin()")
-    public ResponseEntity archived() {
+    public ResponseEntity<ApiResponse<List<CategoryDTO>>> archived() {
         final Collection<Category> auctions = categoryService.getArchivedCategories();
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(categoryMapper::toDTO)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(categoryMapper::toDTO).collect(Collectors.toList())), HttpStatus.OK);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated() and @guard.isAdmin()")
-    public ResponseEntity create(@Valid @RequestBody UpsertCategoryDTO upsertCategoryDTO) {
+    public ResponseEntity<ApiResponse<CategoryDTO>> create(@Valid @RequestBody UpsertCategoryDTO upsertCategoryDTO) {
         final Category category = categoryService.create(categoryMapper.toModel(upsertCategoryDTO));
         return new ResponseEntity<>(new ApiResponse<>(true, categoryMapper.toDTO(category)), HttpStatus.CREATED);
     }
@@ -53,6 +56,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("isAuthenticated() and @guard.isAdmin()")
     public void delete(@PathVariable("id") final long id) {
         categoryService.deleteCategory(id);

@@ -10,7 +10,7 @@ import java.util.Properties;
 @Configuration
 public class MailConfig {
 
-    public static final String from = System.getenv("FIRESALE_MAILSERVER_FROM");
+    public static final String FROM = System.getenv("FIRESALE_MAILSERVER_FROM");
 
     @Bean
     public JavaMailSender javaMailSender() {

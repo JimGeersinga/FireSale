@@ -24,7 +24,7 @@ public interface UserMapper extends ModelToDTOMapper<User, UserDTO> {
     UserProfileDTO toProfile(User user);
 
     default byte[] map(Image value) {
-        if (value == null) return null;
+        if (value == null) return new byte[0];
         return value.getPath();
     }
 }
