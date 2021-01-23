@@ -35,6 +35,7 @@ import { SearchComponent } from './components/auctions/search/search.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -77,6 +78,6 @@ import { ChangePasswordComponent } from './pages/change-password/change-password
     FlexLayoutModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

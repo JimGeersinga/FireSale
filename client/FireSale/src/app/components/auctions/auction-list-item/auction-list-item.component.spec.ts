@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AuctionUtil } from 'src/app/shared/auctionUtil';
+import { AuctionState } from 'src/app/shared/enums/auction-state.enum';
 
 import { AuctionListItemComponent } from './auction-list-item.component';
 
@@ -8,9 +11,11 @@ describe('AuctionListItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AuctionListItemComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule],
+      declarations: [AuctionListItemComponent]
+    }).compileComponents();
+
+    spyOn(AuctionUtil, 'getState').and.returnValue(AuctionState.CLOSED);
   });
 
   beforeEach(() => {

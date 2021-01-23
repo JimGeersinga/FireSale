@@ -1,24 +1,22 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { AuctionsSearchComponent } from './auctions-search.component';
+import { AuctionsFilteredComponent } from './auctions-filtered.component';
 
-describe('AuctionsSearchComponent', () => {
-  let component: AuctionsSearchComponent;
-  let fixture: ComponentFixture<AuctionsSearchComponent>;
+describe('AuctionsFilteredComponent', () => {
+  let component: AuctionsFilteredComponent;
+  let fixture: ComponentFixture<AuctionsFilteredComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
-      declarations: [ AuctionsSearchComponent ]
-    })
-    .compileComponents();
+      declarations: [ AuctionsFilteredComponent ]
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AuctionsSearchComponent);
+    fixture = TestBed.createComponent(AuctionsFilteredComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

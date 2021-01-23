@@ -43,6 +43,8 @@ export class BidComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (!this.auction) { return; }
+
     if (this.state === AuctionState.SCHEDULED) {
       this.timeLeft = new Date(this.startDate).getTime();
     }

@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BlobToImagePipe } from 'src/app/core/pipes/blob-to-image.pipe';
 
 import { ImageViewerComponent } from './image-viewer.component';
 
@@ -8,9 +10,14 @@ describe('ImageViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImageViewerComponent ]
-    })
-    .compileComponents();
+      imports: [
+        MatDialogModule
+      ],
+      declarations: [
+        ImageViewerComponent,
+        BlobToImagePipe
+      ]
+    }).compileComponents();
   });
 
   beforeEach(() => {

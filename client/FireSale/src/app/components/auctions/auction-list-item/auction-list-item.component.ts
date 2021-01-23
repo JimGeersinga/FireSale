@@ -33,7 +33,7 @@ export class AuctionListItemComponent implements OnInit {
   constructor(private webSocketService: WebSocketService) { }
 
   ngOnInit(): void {
-    if (this.model === null) { return; }
+    if (!this.model) { return; }
 
     this.state = AuctionUtil.getState(this.model);
     if (this.state === AuctionState.SCHEDULED) {

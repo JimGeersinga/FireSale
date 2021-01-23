@@ -50,9 +50,15 @@ export class ProfileEditComponent implements OnInit {
             city: [user?.shippingAddress?.city],
             country: [user?.shippingAddress?.country]
           }),
+<<<<<<< Updated upstream
           displayName: [user.displayName],
           password: [null, ],
           passwordVerify: [null, ]
+=======
+          displayName: [user?.displayName],
+          password: [null, []],
+          passwordVerify: [null, []]
+>>>>>>> Stashed changes
         },
           { validators: this.checkPasswords }
         );
