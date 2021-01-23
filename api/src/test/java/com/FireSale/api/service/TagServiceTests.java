@@ -15,8 +15,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TagServiceTests {
@@ -31,14 +30,14 @@ public class TagServiceTests {
     void shouldFindTagByNameSuccessfully(){
 
         final Tag givenTag = getTag();
-        givenTag.setName("Fiets");
+        givenTag.setName("Auto");
 
-        when(tagRepository.findByName(eq("Fiets"))).thenReturn(Optional.of(givenTag));
+        when(tagRepository.findByName(eq("Auto"))).thenReturn(Optional.of(givenTag));
 
-        final Tag tag = tagService.getTagByName("Fiets");
+        final Tag tag = tagService.getTagByName("Auto");
         assertThat(tag.getName()).isEqualTo(givenTag.getName());
 
-        verify(tagRepository).findByName(any(String.class));
+        verify(tagRepository, times(2)).findByName(any(String.class));
     }
 
     private Tag getTag(){
