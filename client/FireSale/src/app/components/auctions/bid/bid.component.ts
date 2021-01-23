@@ -31,6 +31,7 @@ export class BidComponent implements OnInit {
 
   public isWinner = false;
   public isOwner = false;
+  public isLoggedIn = false;
 
   public timeLeft = 0;
   public util = Util;
@@ -54,9 +55,10 @@ export class BidComponent implements OnInit {
 
     this.userService.currentUser$.subscribe(currentUser => {
       if (!currentUser) {
+        this.isLoggedIn = false;
         return;
       }
-
+      this.isLoggedIn = true;
       this.isWinner = currentUser.id === this.auction.finalBid?.userId;
       this.isOwner = currentUser.id === this.auction.user.id;
     });

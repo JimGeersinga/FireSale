@@ -9,6 +9,7 @@ export interface AuctionDTO {
   name: string;
   description: string;
   isFeatured: boolean;
+  isFavourite: boolean;
   minimalBid: number;
   finalBid: BidDTO;
   startDate: Date;

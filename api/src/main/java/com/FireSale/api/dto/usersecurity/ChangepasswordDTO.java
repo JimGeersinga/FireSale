@@ -1,12 +1,10 @@
 package com.FireSale.api.dto.usersecurity;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.UUID;
 
 @Getter
 @Setter

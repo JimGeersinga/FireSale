@@ -30,8 +30,7 @@ public class BidService {
 
         var bids = bidRepository.findByAuctionId(bid.getAuction().getId());
         bids.stream().forEach(b -> {
-            if(b.getValue() >= bid.getValue())
-            {
+            if (b.getValue() >= bid.getValue()) {
                 throw new CreateBidException("Bid to low", ErrorTypes.BID_TOO_LOW);
             }
         });

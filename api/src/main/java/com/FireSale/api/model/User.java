@@ -2,15 +2,10 @@ package com.FireSale.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter

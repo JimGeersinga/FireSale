@@ -23,28 +23,39 @@ export class AuctionService {
     if (pageSize) { params.push(`pageSize=${pageSize}`); }
     url += params.join('&');
 
-    const response = this.api.get(url);
-    return response;
+    return this.api.get(url);
   }
 
   public getAllActive(): Observable<any> {
-    const response = this.api.get(`${this.baseUrl}/active`);
-    return response;
+    return this.api.get(`${this.baseUrl}/active`);
   }
 
   public getFeatured(): Observable<any> {
-    const response = this.api.get(`${this.baseUrl}/featured`);
-    return response;
+    return this.api.get(`${this.baseUrl}/featured`);
+  }
+
+  public getFavourite(): Observable<any> {
+    return this.api.get(`${this.baseUrl}/favourite`);
+  }
+
+  public getWinnings(): Observable<any> {
+    return this.api.get(`${this.baseUrl}/won`);
+  }
+
+  public getBidded(): Observable<any> {
+    return this.api.get(`${this.baseUrl}/bidded`);
   }
 
   public getFiltered(filter: FilterDTO): Observable<any> {
-    const response = this.api.post(`${this.baseUrl}/filter`, filter);
-    return response;
+    return this.api.post(`${this.baseUrl}/filter`, filter);
   }
 
   public getSingle(id: number): Observable<any> {
-    const response = this.api.get(`${this.baseUrl}/${id}`);
-    return response;
+    return this.api.get(`${this.baseUrl}/${id}`);
+  }
+
+  public getWinningInformation(id: number): Observable<any> {
+    return this.api.get(`${this.baseUrl}/${id}/winningInformation`);
   }
 
   public post(auction: CreateAuctionDTO): Observable<any> {
@@ -68,7 +79,12 @@ export class AuctionService {
       value
     });
   }
+
   public getBids(auctionId: number): Observable<any> {
     return this.api.get(`${this.baseUrl}/${auctionId}/bids`);
+  }
+
+  public toggleFavourite(auctionId: number, isFavourite: boolean): Observable<any> {
+    return this.api.post(`${this.baseUrl}/${auctionId}/favourite`, { isFavourite });
   }
 }

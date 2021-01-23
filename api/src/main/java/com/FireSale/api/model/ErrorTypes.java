@@ -21,7 +21,7 @@ public enum ErrorTypes {
     BID_TOO_LOW("BID_TOO_LOW"),
     AUCTION_ALREADY_COMPLETED("AUCTION_ALREADY_COMPLETED");
 
-    private String code;
+    private final String code;
 
     ErrorTypes(String code) {
         this.code = code;

@@ -1,0 +1,20 @@
+:host {
+  display: block;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+
+
+  >section {
+    padding: 25px 25px 25px 25px;
+  }
+}
+
+.search-section {
+  background: white;
+  display: flex;
+  padding: 15px 25px;
+  align-items: center;
+}

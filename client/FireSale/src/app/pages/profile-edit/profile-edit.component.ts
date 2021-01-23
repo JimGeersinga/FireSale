@@ -50,15 +50,9 @@ export class ProfileEditComponent implements OnInit {
             city: [user?.shippingAddress?.city],
             country: [user?.shippingAddress?.country]
           }),
-<<<<<<< Updated upstream
-          displayName: [user.displayName],
-          password: [null, ],
-          passwordVerify: [null, ]
-=======
           displayName: [user?.displayName],
           password: [null, []],
           passwordVerify: [null, []]
->>>>>>> Stashed changes
         },
           { validators: this.checkPasswords }
         );
@@ -69,7 +63,7 @@ export class ProfileEditComponent implements OnInit {
   private checkPasswords(group: FormGroup): any {
     const pass = group.get('password').value;
     const confirmPass = group.get('passwordVerify').value;
-    return !pass || pass == confirmPass ? null : { notSame: true };
+    return !pass || pass === confirmPass ? null : { notSame: true };
   }
 
   private requiredIfValidator(predicate: any): ValidationErrors | null {

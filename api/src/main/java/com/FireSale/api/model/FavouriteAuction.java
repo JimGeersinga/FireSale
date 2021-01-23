@@ -14,7 +14,7 @@ public class FavouriteAuction extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "auction_id")
     private Auction auction;
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private User user;

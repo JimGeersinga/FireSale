@@ -1,0 +1,11 @@
+<section class="search-section">
+  <a mat-flat-button color="accent" class="new-auction" [routerLink]="['/auctions/edit']" href="">
+    <mat-icon>add</mat-icon>
+    Veiling starten
+  </a>
+</section>
+
+<section class="other-section">
+  <app-auction-list class="auction-list" [auctions]="filteredAuctions" [title]="categoryName"></app-auction-list>
+</section>
+

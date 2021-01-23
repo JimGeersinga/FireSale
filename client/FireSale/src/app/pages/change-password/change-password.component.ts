@@ -50,7 +50,7 @@ export class ChangePasswordComponent implements OnInit {
   private checkPasswords(group: FormGroup): any {
     const pass = group.get('password').value;
     const confirmPass = group.get('passwordVerify').value;
-    return !pass || pass == confirmPass ? null : { notSame: true };
+    return !pass || pass === confirmPass ? null : { notSame: true };
   }
 
   submitChangepasswordform(formdata: ChangepasswordDTO): void {
@@ -66,7 +66,7 @@ export class ChangePasswordComponent implements OnInit {
         .changePassword({ password: formdata.password, token: formdata.token })
         .subscribe(response => {
           if (!response.success) {
-            console.log("entered error dialog body")
+            console.log('entered error dialog body');
             const dialogRef = this.dialog.open(OkDialogComponent, {
               data: {
                 title: response.errorMessage,

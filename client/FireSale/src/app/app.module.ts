@@ -34,6 +34,7 @@ import { ProfileEditComponent } from './pages/profile-edit/profile-edit.componen
 import { SearchComponent } from './components/auctions/search/search.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
+import { AuctionsFilteredComponent } from './pages/auctions-filtered/auctions-filtered.component';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { ChangePasswordComponent } from './pages/change-password/change-password
     AuctionsSearchComponent,
     SearchComponent,
     ForgotPasswordComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    AuctionsFilteredComponent
   ],
   imports: [
     BrowserModule,

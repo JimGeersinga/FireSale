@@ -1,6 +1,5 @@
 package com.FireSale.api.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
@@ -9,8 +8,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -50,7 +47,8 @@ public class Auction extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "auction")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "auction")
     private Collection<Bid> bids;
 
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -61,8 +59,8 @@ public class Auction extends BaseEntity {
     @ManyToMany
     @JoinTable(
             name = "auction_categories",
-            joinColumns = { @JoinColumn(name = "auction_id") },
-            inverseJoinColumns = { @JoinColumn(name = "categories_id") }
+            joinColumns = {@JoinColumn(name = "auction_id")},
+            inverseJoinColumns = {@JoinColumn(name = "categories_id")}
     )
     private Collection<Category> categories;
 
@@ -70,8 +68,8 @@ public class Auction extends BaseEntity {
     @ManyToMany
     @JoinTable(
             name = "auction_tags",
-            joinColumns = { @JoinColumn(name = "auction_id") },
-            inverseJoinColumns = { @JoinColumn(name = "tags_id") }
+            joinColumns = {@JoinColumn(name = "auction_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tags_id")}
     )
     private Collection<Tag> tags;
 }

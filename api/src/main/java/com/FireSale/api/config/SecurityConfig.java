@@ -4,7 +4,6 @@ import com.FireSale.api.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,11 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -26,26 +20,27 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
-    public void configure(WebSecurity web)  {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v3/api-docs",
                 "/swagger-ui.html",
                 "/swagger-ui/**");
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf()
+                .csrf()
                 .disable()
-            .cors()
-            .and()
+                .cors()
+                .and()
                 .authorizeRequests()
-                    .antMatchers("/users/**").permitAll()
-            .and()
+                .antMatchers("/users/**").permitAll()
+                .and()
                 .httpBasic()
-            .and()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+                .and()
                 .headers().frameOptions().sameOrigin();
 
     }

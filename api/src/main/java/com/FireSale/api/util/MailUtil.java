@@ -13,11 +13,11 @@ public class MailUtil {
     private final MailConfig mailConfig;
 
     public SimpleMailMessage constructEmail(User user, String subject, String body) {
-        final SimpleMailMessage email = new SimpleMailMessage();
-        email.setSubject(subject);
-        email.setText(body);
-        email.setTo(user.getEmail());
-        email.setFrom(mailConfig.from);
-        return email;
+        final SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setSubject(subject);
+        simpleMailMessage.setText(body);
+        simpleMailMessage.setTo(user.getEmail());
+        simpleMailMessage.setFrom(mailConfig.from);
+        return simpleMailMessage;
     }
 }

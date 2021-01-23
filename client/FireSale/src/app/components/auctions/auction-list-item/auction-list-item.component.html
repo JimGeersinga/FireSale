@@ -40,6 +40,9 @@
         <ng-container *ngTemplateOutlet="auctionStateTemplate"></ng-container>
       </div>
     </div>
+    <span class="favorite" [class.active]="model.isFavourite">
+      <mat-icon>favorite</mat-icon>
+    </span>
     <span class="featured" *ngIf="model.isFeatured">
       <mat-icon>star</mat-icon>
     </span>
@@ -57,15 +60,20 @@
         {{ model.description }}
       </div>
       <div class="bidding">
-        <a class="auction-button" mat-flat-button fullWidth color="primary" [routerLink]="['/auctions', model.id]"
+        <a class="auction-value" mat-flat-button fullWidth color="primary" [routerLink]="['/auctions', model.id]"
           queryParamsHandling="merge">€ {{ auctionValue }}</a>
         <div class="spacer"></div>
         <ng-container *ngTemplateOutlet="auctionStateTemplate"></ng-container>
       </div>
     </div>
-    <span class="featured" *ngIf="model.isFeatured">
-      <mat-icon>star</mat-icon>
-    </span>
+    <div class="auction-buttons">
+      <span class="favorite" (click)="toggleFavourite($event)" *ngIf="currentUser$ | async">
+        <mat-icon>{{model.isFavourite ? 'favorite' : 'favorite_border'}}</mat-icon>
+      </span>
+      <span class="featured" *ngIf="model.isFeatured">
+        <mat-icon>star</mat-icon>
+      </span>
+    </div>
   </ng-container>
 </ng-template>
 
