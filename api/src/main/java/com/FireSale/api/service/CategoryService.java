@@ -2,6 +2,7 @@ package com.FireSale.api.service;
 
 import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.model.Category;
+import com.FireSale.api.model.ErrorTypes;
 import com.FireSale.api.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class CategoryService {
 
     public Category getCategoryById(final long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("No category exists for id: %d", id), Category.class));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("No category exists for id: %d", id), ErrorTypes.CATEGORY_NOT_FOUND));
     }
 
     @Transactional(readOnly = false)

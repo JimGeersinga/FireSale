@@ -1,5 +1,8 @@
 package com.FireSale.api.service;
 
+import com.FireSale.api.exception.InvalidResetTokenException;
+import com.FireSale.api.exception.ResourceNotFoundException;
+import com.FireSale.api.model.ErrorTypes;
 import com.FireSale.api.model.PasswordResetToken;
 import com.FireSale.api.model.User;
 import com.FireSale.api.repository.PasswordResetTokenRepository;
@@ -10,8 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.lang.model.type.ErrorType;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,12 +28,27 @@ public class UserSecurityService {
     private final PasswordEncoder passwordEncoder;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
 
-    public String validatePasswordResetToken(String token) {
+    public Boolean validatePasswordResetToken(String token) {
         final PasswordResetToken passToken = passwordResetTokenRepository.findByToken(token);
 
-        return !isTokenFound(passToken) ? "invalidToken"
-                : isTokenExpired(passToken) ? "expired"
-                : null;
+//        return !isTokenFound(passToken) ? "invalidToken"
+//                : isTokenExpired(passToken) ? "expired"
+//                : null;
+
+        if (!isTokenFound(passToken))
+        {
+            throw new InvalidResetTokenException("Password reset token is invalid", ErrorTypes.INVALID_RESET_TOKEN);
+        }
+        else if (isTokenExpired(passToken))
+        {
+            throw new InvalidResetTokenException("Password reset token is expired", ErrorTypes.EXPIRED_RESET_TOKEN);
+        }
+
+        return true;
+
+//        return !isTokenFound(passToken) ? throw new InvalidResetTokenException("Password reset token is invalid", ErrorTypes.INVALID_RESET_TOKEN);
+//                : isTokenExpired(passToken) ? throw new InvalidResetTokenException("Password reset token is expired", ErrorTypes.EXPIRED_RESET_TOKEN);
+//                : null;
     }
 
     private boolean isTokenFound(PasswordResetToken passToken) {
@@ -38,7 +56,6 @@ public class UserSecurityService {
     }
 
     private boolean isTokenExpired(PasswordResetToken passToken) {
-        final Calendar cal = Calendar.getInstance();
         return passToken.getExpiryDate().isBefore(LocalDateTime.now());
     }
 

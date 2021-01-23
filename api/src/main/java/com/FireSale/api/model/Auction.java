@@ -1,6 +1,5 @@
 package com.FireSale.api.model;
 
-import com.FireSale.api.dto.TagDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
