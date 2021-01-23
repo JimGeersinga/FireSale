@@ -35,7 +35,7 @@ export class ProfileComponent implements OnInit {
       this.userService.getUserAuctions(this.id).subscribe(response => this.usersAuctions = response.data);
       this.user$ = this.userService.getUserProfile(params.id);
       this.userService.currentUser$.subscribe(user => {
-        this.isCurrentUser = user.id === +params.id;
+        this.isCurrentUser = user?.id === +params.id;
       });
     });
   }

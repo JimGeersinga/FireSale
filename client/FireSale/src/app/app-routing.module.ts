@@ -15,6 +15,7 @@ import { CategoriesComponent } from './pages/categories/categories.component';
 import { AuctionsSearchComponent } from './pages/auctions-search/auctions-search.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
+import { AuctionsFilteredComponent } from './pages/auctions-filtered/auctions-filtered.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,10 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent},
 
   { path: 'auctions', component: AuctionsComponent},
+  { path: 'auctions/my-bids', component: AuctionsFilteredComponent, data: {routeName: 'myBids'}},
+  { path: 'auctions/my-winnings', component: AuctionsFilteredComponent, data: {routeName: 'myWinnings'}},
+  { path: 'auctions/my-favourites', component: AuctionsFilteredComponent, data: {routeName: 'myFavourites'}},
+  { path: 'auctions/my-auctions', component: AuctionsFilteredComponent, data: {routeName: 'myAuctions'}},
   { path: 'auctions/search', component: AuctionsSearchComponent },
   { path: 'auctions/create', component: AuctionEditComponent, canActivate: [AuthGuard]  },
   { path: 'auctions/:id', component: AuctionDetailComponent },

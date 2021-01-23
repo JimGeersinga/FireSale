@@ -22,6 +22,7 @@ public class AuctionDTO extends BaseDTO {
     private LocalDateTime endDate;
     private Double minimalBid;
     private Boolean isFeatured;
+    private Boolean isFavourite;
     private AuctionStatus status;
     private BidDTO finalBid;
     private UserProfileDTO user;

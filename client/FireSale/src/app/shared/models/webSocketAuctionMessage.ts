@@ -5,5 +5,6 @@ export interface WebSocketAuctionMessage<T> {
   messageTime: Date;
 }
 export enum AuctionMessageResponseType {
-  BID_PLACED = 'BID_PLACED'
+  BID_PLACED = 'BID_PLACED',
+  UPDATED = 'UPDATED'
 }

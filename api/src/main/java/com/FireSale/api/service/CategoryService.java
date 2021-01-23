@@ -46,7 +46,7 @@ public class CategoryService {
         if (existing.getAuctions().size() != 0) {
             existing.setArchived(true);
             categoryRepository.save(existing);
-        }else{
+        } else {
             categoryRepository.delete(existing);
         }
     }

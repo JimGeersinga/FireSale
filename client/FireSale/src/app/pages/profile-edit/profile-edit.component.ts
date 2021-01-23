@@ -51,8 +51,8 @@ export class ProfileEditComponent implements OnInit {
             country: [user?.shippingAddress?.country]
           }),
           displayName: [user.displayName],
-          password: [null, ],
-          passwordVerify: [null, ]
+          password: [null, []],
+          passwordVerify: [null, []]
         },
           { validators: this.checkPasswords }
         );
@@ -63,7 +63,7 @@ export class ProfileEditComponent implements OnInit {
   private checkPasswords(group: FormGroup): any {
     const pass = group.get('password').value;
     const confirmPass = group.get('passwordVerify').value;
-    return !pass || pass == confirmPass ? null : { notSame: true };
+    return !pass || pass === confirmPass ? null : { notSame: true };
   }
 
   private requiredIfValidator(predicate: any): ValidationErrors | null {

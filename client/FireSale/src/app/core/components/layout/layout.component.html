@@ -1,45 +1,43 @@
 <div class="layout-container">
   <mat-toolbar color="primary" class="layout-toolbar">
-    <button
-      mat-icon-button
-      (click)="sidenav.toggle()"
-      fxShow="true"
-      fxHide.gt-sm="true"
-    >
+    <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm="true">
       <mat-icon>menu</mat-icon>
     </button>
-    <h1 class="app-name"  [routerLink]="['']">FireSale</h1>
+    <h1 class="app-name" [routerLink]="['']">FireSale</h1>
     <div class="menu" fxShow="true" fxHide.lt-md="true">
-      <a mat-button [routerLink]="['/auctions']">
+      <a mat-button [routerLink]="['/auctions']"  >
         <span>Veilingen</span>
       </a>
-
       <a mat-button [routerLink]="['/categories']" *ngIf="isAdmin$ | async">
         <span>Categorieën</span>
       </a>
     </div>
     <span class="spacer"></span>
+    <button mat-icon-button [routerLink]="['/auctions/my-favourites']" class="menu-item">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <div class="profile" [matMenuTriggerFor]="profileMenu" *ngIf="currentUser$ | async as user">
 
-    <div
-      class="profile"
-      [matMenuTriggerFor]="profileMenu"
-      *ngIf="currentUser$ | async as user"
-    >
       <span class="displayname">{{ user.displayName }}</span>
-      <img
-        [src]="user.avatar  | blobToImage"
-        class="profile-picture"
-      />
+      <img [src]="user.avatar  | blobToImage" class="profile-picture" />
       <mat-menu #profileMenu="matMenu">
         <a mat-menu-item [routerLink]="['/profile', user.id]">Profiel</a>
+        <a mat-menu-item [routerLink]="['/auctions/my-auctions']">
+          <span>Mijn veilingen</span>
+        </a>
+        <a mat-menu-item [routerLink]="['/auctions/my-favourites']">
+          <span>Mijn favorieten</span>
+        </a>
+        <a mat-menu-item [routerLink]="['/auctions/my-winnings']">
+          <span>Mijn gewonnen veilingen</span>
+        </a>
+        <a mat-menu-item [routerLink]="['/auctions/my-bids']">
+          <span>Mijn biedingen</span>
+        </a>
         <button mat-menu-item (click)="logout()">Uitloggen</button>
       </mat-menu>
     </div>
-    <a
-      mat-button
-      [routerLink]="['/login']"
-      *ngIf="(currentUser$ | async) == null"
-    >
+    <a mat-button [routerLink]="['/login']" *ngIf="(currentUser$ | async) == null">
       <span>Login</span>
     </a>
   </mat-toolbar>

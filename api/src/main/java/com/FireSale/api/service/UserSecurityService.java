@@ -1,7 +1,6 @@
 package com.FireSale.api.service;
 
 import com.FireSale.api.exception.InvalidResetTokenException;
-import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.model.ErrorTypes;
 import com.FireSale.api.model.PasswordResetToken;
 import com.FireSale.api.model.User;
@@ -13,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.lang.model.type.ErrorType;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,12 +33,9 @@ public class UserSecurityService {
 //                : isTokenExpired(passToken) ? "expired"
 //                : null;
 
-        if (!isTokenFound(passToken))
-        {
+        if (!isTokenFound(passToken)) {
             throw new InvalidResetTokenException("Password reset token is invalid", ErrorTypes.INVALID_RESET_TOKEN);
-        }
-        else if (isTokenExpired(passToken))
-        {
+        } else if (isTokenExpired(passToken)) {
             throw new InvalidResetTokenException("Password reset token is expired", ErrorTypes.EXPIRED_RESET_TOKEN);
         }
 

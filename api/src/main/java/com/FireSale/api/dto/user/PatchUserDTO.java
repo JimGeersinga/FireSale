@@ -8,7 +8,6 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 public class PatchUserDTO {
