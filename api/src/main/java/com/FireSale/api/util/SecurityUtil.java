@@ -1,6 +1,6 @@
-package com.FireSale.api.util;
+package com.firesale.api.util;
 
-import com.FireSale.api.security.UserPrincipal;
+import com.firesale.api.security.UserPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class SecurityUtil {

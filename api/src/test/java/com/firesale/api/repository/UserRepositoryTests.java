@@ -1,4 +1,4 @@
-package com.FireSale.api.repository;
+package com.firesale.api.repository;
 
 public class UserRepositoryTests {
     //TODO: User repository tests

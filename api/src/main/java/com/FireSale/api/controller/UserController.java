@@ -1,26 +1,25 @@
-package com.FireSale.api.controller;
+package com.firesale.api.controller;
 
-import com.FireSale.api.dto.ApiResponse;
-import com.FireSale.api.dto.ErrorResponse;
-import com.FireSale.api.dto.address.AddressDTO;
-import com.FireSale.api.dto.address.PatchAddressDTO;
-import com.FireSale.api.dto.address.UpdateAddressDTO;
-import com.FireSale.api.dto.auction.CreateImageDTO;
-import com.FireSale.api.dto.user.*;
-import com.FireSale.api.dto.usersecurity.ChangepasswordDTO;
-import com.FireSale.api.dto.usersecurity.EmailaddressDTO;
-import com.FireSale.api.exception.InvalidResetTokenException;
-import com.FireSale.api.mapper.AddressMapper;
-import com.FireSale.api.mapper.AuctionMapper;
-import com.FireSale.api.mapper.UserMapper;
-import com.FireSale.api.model.Address;
-import com.FireSale.api.model.Auction;
-import com.FireSale.api.model.ErrorTypes;
-import com.FireSale.api.model.User;
-import com.FireSale.api.security.UserPrincipal;
-import com.FireSale.api.service.*;
-import com.FireSale.api.util.MailUtil;
-import com.FireSale.api.util.SecurityUtil;
+import com.firesale.api.dto.ApiResponse;
+import com.firesale.api.dto.ErrorResponse;
+import com.firesale.api.dto.address.PatchAddressDTO;
+import com.firesale.api.dto.address.UpdateAddressDTO;
+import com.firesale.api.dto.auction.CreateImageDTO;
+import com.firesale.api.dto.user.*;
+import com.firesale.api.dto.usersecurity.ChangepasswordDTO;
+import com.firesale.api.dto.usersecurity.EmailaddressDTO;
+import com.firesale.api.exception.InvalidResetTokenException;
+import com.firesale.api.mapper.AddressMapper;
+import com.firesale.api.mapper.AuctionMapper;
+import com.firesale.api.mapper.UserMapper;
+import com.firesale.api.model.Address;
+import com.firesale.api.model.Auction;
+import com.firesale.api.model.ErrorTypes;
+import com.firesale.api.model.User;
+import com.firesale.api.security.UserPrincipal;
+import com.firesale.api.service.*;
+import com.firesale.api.util.MailUtil;
+import com.firesale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -80,7 +79,7 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<UserProfileDTO>>> allUsers() {
+    public ResponseEntity allUsers() {
         final List<User> users = userService.getAll();
         return new ResponseEntity<>(new ApiResponse<>(true, users.stream().map(userMapper::toProfile).collect(Collectors.toList())), HttpStatus.OK);
     }
@@ -93,7 +92,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponse<UserProfileDTO>> getUser(@PathVariable("userId") final long userId) {
+    public ResponseEntity getUser(@PathVariable("userId") final long userId) {
         final User user = userService.findUserById(userId);
         return new ResponseEntity<>(new ApiResponse<>(true, userMapper.toProfile(user)), HttpStatus.OK);
     }
@@ -117,7 +116,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/address/{addressId}")
-    public ResponseEntity<ApiResponse<AddressDTO>> getAddress(@PathVariable("userId") final long userId, @PathVariable("addressId") final long addressId) {
+    public ResponseEntity getAddress(@PathVariable("userId") final long userId, @PathVariable("addressId") final long addressId) {
         final Address address = addressService.findAddressById(addressId);
         return new ResponseEntity<>(new ApiResponse<>(true, addressMapper.toDTO(address)), HttpStatus.OK);
     }
@@ -161,7 +160,6 @@ public class UserController {
 
     @PostMapping(value = "/changepassword")
     public ResponseEntity changePassword(@RequestBody final ChangepasswordDTO changepasswordDTO) {
-
         userSecurityService.validatePasswordResetToken(changepasswordDTO.getToken());
         Optional<User> user = userSecurityService.getUserByPasswordResetToken(changepasswordDTO.getToken());
         if (user.isPresent()) {

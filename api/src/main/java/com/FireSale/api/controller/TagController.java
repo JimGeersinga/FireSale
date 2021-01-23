@@ -1,9 +1,9 @@
-package com.FireSale.api.controller;
+package com.firesale.api.controller;
 
-import com.FireSale.api.dto.ApiResponse;
-import com.FireSale.api.mapper.TagMapper;
-import com.FireSale.api.model.Tag;
-import com.FireSale.api.service.TagService;
+import com.firesale.api.dto.ApiResponse;
+import com.firesale.api.mapper.TagMapper;
+import com.firesale.api.model.Tag;
+import com.firesale.api.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

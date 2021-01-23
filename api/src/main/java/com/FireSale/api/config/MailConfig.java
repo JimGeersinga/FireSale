@@ -1,4 +1,4 @@
-package com.FireSale.api.config;
+package com.firesale.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,21 +10,18 @@ import java.util.Properties;
 @Configuration
 public class MailConfig {
 
-    public String from = "";
+    public static final String from = System.getenv("FIRESALE_MAILSERVER_FROM");
 
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-
-        Properties javaMailProperties = javaMailSender.getJavaMailProperties();
-
-        from = System.getenv("FIRESALE_MAILSERVER_FROM");
 
         javaMailSender.setHost(System.getenv("FIRESALE_MAILSERVER_HOST"));
         javaMailSender.setPort(587);
         javaMailSender.setUsername(System.getenv("FIRESALE_MAILSERVER_USER"));
         javaMailSender.setPassword(System.getenv("FIRESALE_MAILSERVER_PASS"));
 
+        Properties javaMailProperties = javaMailSender.getJavaMailProperties();
         javaMailProperties.put("mail.transport.protocol", "smtp");
         javaMailProperties.put("mail.smtp.auth", "true");
         javaMailProperties.put("mail.smtp.starttls.enable", "true");

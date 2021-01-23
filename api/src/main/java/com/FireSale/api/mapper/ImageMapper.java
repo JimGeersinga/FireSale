@@ -1,7 +1,7 @@
-package com.FireSale.api.mapper;
+package com.firesale.api.mapper;
 
-import com.FireSale.api.dto.auction.ImageDTO;
-import com.FireSale.api.model.Image;
+import com.firesale.api.dto.auction.ImageDTO;
+import com.firesale.api.model.Image;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

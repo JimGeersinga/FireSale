@@ -1,7 +1,7 @@
-package com.FireSale.api.mapper;
+package com.firesale.api.mapper;
 
-import com.FireSale.api.dto.TagDTO;
-import com.FireSale.api.model.Tag;
+import com.firesale.api.dto.TagDTO;
+import com.firesale.api.model.Tag;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

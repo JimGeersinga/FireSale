@@ -1,4 +1,4 @@
-package com.FireSale.api.aspect;
+package com.firesale.api.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,7 +16,6 @@ public class DurationAspect {
         final long start = System.currentTimeMillis();
         Object proceed = joinPoint.proceed();
         final long executionTime = System.currentTimeMillis() - start;
-        System.out.println(joinPoint.getSignature() + " executed in " + executionTime + "ms");
         log.trace(joinPoint.getSignature() + " executed in " + executionTime + "ms");
         return proceed;
     }

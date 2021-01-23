@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { first, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { CategoryDTO } from 'src/app/shared/models/categoryDto';
 import { TagDTO } from 'src/app/shared/models/tagDto';

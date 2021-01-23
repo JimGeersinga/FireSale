@@ -1,6 +1,6 @@
-package com.FireSale.api.repository;
+package com.firesale.api.repository;
 
-import com.FireSale.api.model.FavouriteAuction;
+import com.firesale.api.model.FavouriteAuction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,9 +1,9 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.exception.ResourceNotFoundException;
-import com.FireSale.api.model.Auction;
-import com.FireSale.api.model.AuctionStatus;
-import com.FireSale.api.repository.AuctionRepository;
+import com.firesale.api.exception.ResourceNotFoundException;
+import com.firesale.api.model.Auction;
+import com.firesale.api.model.AuctionStatus;
+import com.firesale.api.repository.AuctionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -107,7 +107,7 @@ public class AuctionServiceTests {
         });
 
         // Assert response
-        assertThat(exception.getMessage()).isEqualTo("Resource of type [Auction] was not found: [No auction exists for id: 1]");
+        assertThat(exception.getMessage()).isEqualTo("Resource was not found: [No auction exists for id: 1]");
         verify(auctionRepository).findById(any(Long.class));
     }
 }

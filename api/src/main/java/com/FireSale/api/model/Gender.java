@@ -1,4 +1,4 @@
-package com.FireSale.api.model;
+package com.firesale.api.model;
 
 public enum Gender {
     MALE,

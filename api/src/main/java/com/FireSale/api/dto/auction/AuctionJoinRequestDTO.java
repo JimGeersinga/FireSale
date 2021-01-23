@@ -1,4 +1,4 @@
-package com.FireSale.api.dto.auction;
+package com.firesale.api.dto.auction;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.FireSale.api.model;
+package com.firesale.api.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

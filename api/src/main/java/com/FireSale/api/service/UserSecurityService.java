@@ -1,11 +1,11 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.exception.InvalidResetTokenException;
-import com.FireSale.api.model.ErrorTypes;
-import com.FireSale.api.model.PasswordResetToken;
-import com.FireSale.api.model.User;
-import com.FireSale.api.repository.PasswordResetTokenRepository;
-import com.FireSale.api.repository.UserRepository;
+import com.firesale.api.exception.InvalidResetTokenException;
+import com.firesale.api.model.ErrorTypes;
+import com.firesale.api.model.PasswordResetToken;
+import com.firesale.api.model.User;
+import com.firesale.api.repository.UserRepository;
+import com.firesale.api.repository.PasswordResetTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

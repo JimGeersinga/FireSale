@@ -1,7 +1,7 @@
-package com.FireSale.api.security;
+package com.firesale.api.security;
 
-import com.FireSale.api.model.Role;
-import com.FireSale.api.util.SecurityUtil;
+import com.firesale.api.model.Role;
+import com.firesale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
