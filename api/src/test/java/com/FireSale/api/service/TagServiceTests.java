@@ -1,19 +1,19 @@
 package com.FireSale.api.service;
 
-import com.FireSale.api.model.Address;
+import com.FireSale.api.exception.ResourceNotFoundException;
 import com.FireSale.api.model.Tag;
-import com.FireSale.api.model.User;
 import com.FireSale.api.repository.TagRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -64,6 +64,19 @@ public class TagServiceTests {
         tagService.deleteTag(tag.getName());
 
         verify(tagRepository).delete(tag);
+    }
+
+    @Test
+    void exceptionShouldBeThrownWhenTryingToDeleteNonExistingTag() {
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> tagService.deleteTag("Scooter"));
+
+        String expectedMessage = "Resource was not found: [No tag exists with name: {0}]";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+        verify(tagRepository).findByName(any(String.class));
+        verify(tagRepository, times(0)).delete(any(Tag.class));
     }
 
     private Tag getTag(){
