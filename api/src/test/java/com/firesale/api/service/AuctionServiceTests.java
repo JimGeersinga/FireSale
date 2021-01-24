@@ -4,11 +4,13 @@ import com.firesale.api.dto.TagDTO;
 import com.firesale.api.dto.auction.AuctionFilterDTO;
 import com.firesale.api.dto.auction.CreateAuctionDTO;
 import com.firesale.api.exception.ResourceNotFoundException;
+import com.firesale.api.exception.UnAuthorizedException;
 import com.firesale.api.mapper.AuctionMapper;
 import com.firesale.api.model.*;
 import com.firesale.api.model.Tag;
 import com.firesale.api.repository.AuctionRepository;
 import com.firesale.api.repository.CategoryRepository;
+import com.firesale.api.repository.FavouriteAuctionRepository;
 import com.firesale.api.repository.UserRepository;
 import com.firesale.api.security.Guard;
 import com.firesale.api.security.UserPrincipal;
@@ -53,6 +55,10 @@ class AuctionServiceTests {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private FavouriteAuctionRepository favouriteAuctionRepository;
+
     private static MockedStatic<Guard> mockedGuard;
 
     @BeforeAll
@@ -263,9 +269,59 @@ class AuctionServiceTests {
         // Setup mock repository
         AuctionFilterDTO filter = new AuctionFilterDTO();
         Page<Auction> auctionPage = Mockito.mock(Page.class);
-        long[] ar = {1L, 2L, 3L};
-        String[] ars = {"1L", "2L", "3L"};
+        long[] ar = {};
+        String[] ars = {};
+        filter.setCategories(ar);
+        filter.setTags(ars);
+        filter.setName(null);
+
+        var auctions = getEmptyAuctions();
+
+        doReturn(auctionPage).when(auctionRepository).findActiveAuctions(any());
+        doReturn(auctions).when(auctionPage).getContent();
+        // Execute service call
+        var returnedAuctions = auctionService.filterAuctions(filter);
+
+        // Assert response
+        Assertions.assertTrue(!returnedAuctions.isEmpty(), "Auctions not found");
+        Assertions.assertSame(auctions, returnedAuctions, "The auction returned was not the same as the mock");
+        verify(auctionRepository).findActiveAuctions(any());
+    }
+
+    @Test
+    @DisplayName("Test filterAuctions 9 Success")
+    void filterAuctions9() {
+        // Setup mock repository
+        AuctionFilterDTO filter = new AuctionFilterDTO();
+        Page<Auction> auctionPage = Mockito.mock(Page.class);
+        long[] ar = {};
+        String[] ars = {};
         filter.setCategories(null);
+        filter.setTags(ars);
+        filter.setName(null);
+
+        var auctions = getEmptyAuctions();
+
+        doReturn(auctionPage).when(auctionRepository).findActiveAuctions(any());
+        doReturn(auctions).when(auctionPage).getContent();
+        // Execute service call
+        var returnedAuctions = auctionService.filterAuctions(filter);
+
+        // Assert response
+        Assertions.assertTrue(!returnedAuctions.isEmpty(), "Auctions not found");
+        Assertions.assertSame(auctions, returnedAuctions, "The auction returned was not the same as the mock");
+        verify(auctionRepository).findActiveAuctions(any());
+    }
+
+    @Test
+    @DisplayName("Test filterAuctions 10 Success")
+    void filterAuctions10() {
+        // Setup mock repository
+        AuctionFilterDTO filter = new AuctionFilterDTO();
+        Page<Auction> auctionPage = Mockito.mock(Page.class);
+        long[] ar = {};
+        String[] ars = {};
+        filter.setCategories(ar);
         filter.setTags(null);
         filter.setName(null);
 
@@ -280,6 +336,103 @@ class AuctionServiceTests {
         Assertions.assertTrue(!returnedAuctions.isEmpty(), "Auctions not found");
         Assertions.assertSame(auctions, returnedAuctions, "The auction returned was not the same as the mock");
         verify(auctionRepository).findActiveAuctions(any());
+    }
+
+    @Test
+    @DisplayName("Test getAuctions Success")
+    void getAuctions() {
+        // Setup mock repository
+        var auctions = getEmptyAuctions();
+        doReturn(auctions).when(auctionRepository).findAll();
+        // Execute service call
+        var returnedAuctions = auctionService.getAuctions();
+
+        // Assert response
+        Assertions.assertTrue(!returnedAuctions.isEmpty(), "Auctions not found");
+        Assertions.assertSame(auctions, returnedAuctions, "The auction returned was not the same as the mock");
+        verify(auctionRepository).findAll();
+    }
+
+    @Test
+    @DisplayName("Test getFavourites Success")
+    void getFavourites() {
+        // Setup mock repository
+        var auctions = getEmptyAuctions();
+        doReturn(auctions).when(auctionRepository).findAuctionsByFavourite(1L);
+        // Execute service call
+        var returnedAuctions = auctionService.getFavourites(1L);
+
+        // Assert response
+        Assertions.assertTrue(!returnedAuctions.isEmpty(), "Auctions not found");
+        Assertions.assertSame(auctions, returnedAuctions, "The auction returned was not the same as the mock");
+        verify(auctionRepository).findAuctionsByFavourite(1L);
+    }
+
+    @Test
+    @DisplayName("Test getByUserBid Success")
+    void getByUserBid() {
+        // Setup mock repository
+        var auctions = getEmptyAuctions();
+        doReturn(auctions).when(auctionRepository).findActiveByUserBid(1L);
+        // Execute service call
+        var returnedAuctions = auctionService.getByUserBid(1L);
+
+        // Assert response
+        Assertions.assertTrue(!returnedAuctions.isEmpty(), "Auctions not found");
+        Assertions.assertSame(auctions, returnedAuctions, "The auction returned was not the same as the mock");
+        verify(auctionRepository).findActiveByUserBid(1L);
+    }
+
+    @Test
+    @DisplayName("Test getWonAuction Success")
+    void getWonAuction() {
+        // Setup mock repository
+        var auctions = getEmptyAuctions();
+        doReturn(auctions).when(auctionRepository).findWonByUserBid(1L);
+        // Execute service call
+        var returnedAuctions = auctionService.getWonAuction(1L);
+
+        // Assert response
+        Assertions.assertTrue(!returnedAuctions.isEmpty(), "Auctions not found");
+        Assertions.assertSame(auctions, returnedAuctions, "The auction returned was not the same as the mock");
+        verify(auctionRepository).findWonByUserBid(1L);
+    }
+
+    @Test
+    @DisplayName("Test isFavourite Success")
+    void isFavourite() {
+        // Setup mock repository
+        var auctions = getEmptyAuction(1L);
+        doReturn(Optional.of(auctions)).when(favouriteAuctionRepository).findByAuctionIdAndUserId(1L, 1L);
+        // Execute service call
+        var returnedAuctions = auctionService.isFavourite(1L, 1L);
+
+        // Assert response
+        Assertions.assertTrue(returnedAuctions, "Auctions not found");
+        verify(favouriteAuctionRepository).findByAuctionIdAndUserId(1L, 1L);
+    }
+
+    @Test
+    @DisplayName("Test getFeatured Success")
+    void getFeatured() {
+        // Setup mock repository
+        var auctions = getFiveAuctions();
+        doReturn(auctions).when(auctionRepository).findActiveAuctionsByIsFeaturedTrue();
+        Page<Auction> auctionPage = Mockito.mock(Page.class);
+
+        doReturn(auctionPage).when(auctionRepository).findActiveAuctionsByIsFeaturedFalse(any());
+        doReturn(auctions).when(auctionPage).getContent();
+
+        // Execute service call
+        var returnedAuctions = auctionService.getFeatured();
+
+        // Assert response
+        Assertions.assertTrue(!returnedAuctions.isEmpty(), "Auctions not found");
+        Assertions.assertTrue(returnedAuctions.stream().count() == 10, "Auctions not found");
+
+        verify(auctionRepository).findActiveAuctionsByIsFeaturedTrue();
+        verify(auctionRepository).findActiveAuctionsByIsFeaturedFalse(any());
+
     }
 
 
@@ -337,16 +490,81 @@ class AuctionServiceTests {
     void testFindByIdNotFound() {
         // Setup mock repository
         doReturn(Optional.empty()).when(auctionRepository).findById(1L);
-
         // Execute service call
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
             auctionService.findAuctionById(1l);
         });
-
         // Assert response
         assertThat(exception.getMessage()).isEqualTo("Resource was not found: [No auction exists for id: 1]");
         verify(auctionRepository).findById(any(Long.class));
     }
+
+    @Test
+    @DisplayName("Test deleteAuctionNotCancelled Not Found")
+    void deleteAuctionNotCancelled() {
+        // Setup mock repository
+        mockedGuard.when(Guard::isAdmin).thenReturn(true);
+        mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(false);
+        var auction = getEmptyAuction(1L);
+        var user = new User();
+        user.setId(1L);
+        auction.setUser(user);
+        auction.setStatus(AuctionStatus.READY);
+        doReturn(Optional.of(auction)).when(auctionRepository).findById(1L);
+        // Execute service call
+        Exception exception = assertThrows(UnAuthorizedException.class, () -> {
+            auctionService.deleteAuction(1l);
+        });
+        // Assert response
+        assertThat(exception.getMessage()).isEqualTo("User is not authorized for: [Cannot delete the auction]");
+        verify(auctionRepository).findById(any(Long.class));
+    }
+
+    @Test
+    @DisplayName("Test deleteAuctionNotAllowedNot Found")
+    void deleteAuctionNotAllowed() {
+        // Setup mock repository
+        mockedGuard.when(Guard::isAdmin).thenReturn(false);
+        mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(false);
+        var auction = getEmptyAuction(1L);
+        var user = new User();
+        user.setId(1L);
+        auction.setUser(user);
+        auction.setStatus(AuctionStatus.CANCELLED);
+        doReturn(Optional.of(auction)).when(auctionRepository).findById(1L);
+        // Execute service call
+        Exception exception = assertThrows(UnAuthorizedException.class, () -> {
+            auctionService.deleteAuction(1l);
+        });
+        // Assert response
+        assertThat(exception.getMessage()).isEqualTo("User is not authorized for: [Cannot delete the auction]");
+        verify(auctionRepository).findById(any(Long.class));
+    }
+
+    @Test
+    @DisplayName("Test deleteAuction Success")
+    void deleteAuction() {
+        // Setup mock repository
+        mockedGuard.when(Guard::isAdmin).thenReturn(false);
+        mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(true);
+        var auction = getEmptyAuction(1L);
+        var user = new User();
+        user.setId(1L);
+        auction.setUser(user);
+        auction.setStatus(AuctionStatus.CANCELLED);
+        doReturn(Optional.of(auction)).when(auctionRepository).findById(1L);
+        doNothing().when(auctionNotificationService).sendStatusNotification(anyLong(), any(AuctionStatus.class));
+        when(auctionRepository.save(any(Auction.class))).thenAnswer((answer) -> {
+            return (Auction)answer.getArguments()[0];
+        });
+        // Execute service call
+        var returnedAuction = auctionService.deleteAuction(1l);
+        // Assert response
+        assertThat(returnedAuction.getStatus()).isEqualTo(AuctionStatus.CLOSED);
+        verify(auctionRepository).findById(any(Long.class));
+    }
+
+
 
     @Test
     @DisplayName("Test create Success")
@@ -407,6 +625,26 @@ class AuctionServiceTests {
         // Assert response
         Assertions.assertTrue(returnedAuction != null, "Auction was not found");
         Assertions.assertSame(auction.getId(), returnedAuction.getId(), "The auction returned was not the same as the mock");
+
+    }
+
+    @Test
+    @DisplayName("Test patch empty Failure")
+    void testPatchFailure() {
+        // Setup mock repository
+        mockedGuard.when(Guard::isAdmin).thenReturn(false);
+        mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(false);
+        Auction auction = this.getEmptyAuction(1L);
+        User u = new User();
+        u.setId(1L);
+        auction.setUser(u);
+        doReturn(Optional.of(auction)).when(auctionRepository).findById(anyLong());
+
+        String expected = "User is not authorized for: [You are not allowed to cancel this auction]";
+        // Execute service call
+        var returnedException = Assertions.assertThrows(UnAuthorizedException.class, () -> auctionService.patchAuction(1L, auction));
+        // Assert response
+        Assertions.assertEquals(expected, returnedException.getMessage(), "Exception is not correct");
 
     }
 
@@ -493,6 +731,17 @@ class AuctionServiceTests {
     {
         ArrayList<Auction> auctions = new ArrayList<>();
         for(int i = 1; i <= 10; i++)
+        {
+            var auction = getEmptyAuction(Long.valueOf(i));
+            auctions.add(auction);
+        }
+        return auctions;
+    }
+
+    private List<Auction> getFiveAuctions()
+    {
+        ArrayList<Auction> auctions = new ArrayList<>();
+        for(int i = 1; i <= 5; i++)
         {
             var auction = getEmptyAuction(Long.valueOf(i));
             auctions.add(auction);

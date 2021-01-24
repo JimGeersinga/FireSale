@@ -47,6 +47,36 @@ public class CategoryServiceTests {
     }
 
     @Test
+    @DisplayName("Test getAvailableCategories Success")
+    void getAvailableCategories() {
+        // Setup mock repository
+        var categories = this.getEmptyCategories();
+        doReturn(categories).when(categoryRepository).findByArchived(false);
+
+        // Execute service call
+        var returned = categoryService.getAvailableCategories();
+
+        // Assert response
+        verify(categoryRepository).findByArchived(false);
+        Assertions.assertTrue(returned == categories, "Incorrect categories returned");
+    }
+
+    @Test
+    @DisplayName("Test getArchivedCategories Success")
+    void getArchivedCategories() {
+        // Setup mock repository
+        var categories = this.getEmptyCategories();
+        doReturn(categories).when(categoryRepository).findByArchived(true);
+
+        // Execute service call
+        var returned = categoryService.getArchivedCategories();
+
+        // Assert response
+        verify(categoryRepository).findByArchived(true);
+        Assertions.assertTrue(returned == categories, "Incorrect categories returned");
+    }
+
+    @Test
     @DisplayName("Test getCategoryById Success")
     void getCategoryById() {
         // Setup mock repository

@@ -49,9 +49,9 @@ public class UserDetailServiceTests {
         user.setId(1L);
         doReturn(Optional.ofNullable(user)).when(userRepository).findByEmail(email);
         // Execute service call
-        var returned = userRepository.findByEmail(email);
+        var returned = userDetailService.loadUserByUsername(email);
         // Assert response
         verify(userRepository).findByEmail(email);
-        Assertions.assertTrue(returned.get().getId().equals(1L), "Incorrect user");
+        Assertions.assertTrue(returned != null, "Incorrect user");
     }
 }

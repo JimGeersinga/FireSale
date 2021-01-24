@@ -49,8 +49,10 @@ public class BidServiceTests {
     void create() {
         // Setup mock repository
         var bid = this.getBidCorrect();
-        when(bidRepository.save(any(Bid.class))).thenAnswer((answer) -> answer.getArguments()[0]);
+        var bids = this.getBids();
 
+        when(bidRepository.save(any(Bid.class))).thenAnswer((answer) -> answer.getArguments()[0]);
+        doReturn(bids).when(bidRepository).findByAuctionId(any(Long.class));
         // Execute service call
         var returned = bidService.create(bid);
 
