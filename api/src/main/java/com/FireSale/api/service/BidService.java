@@ -34,7 +34,6 @@ public class BidService {
                 throw new CreateBidException("Bid to low", ErrorTypes.BID_TOO_LOW);
             }
         });
-
         return bidRepository.save(bid);
     }
 
@@ -42,11 +41,5 @@ public class BidService {
     @Transactional(readOnly = true)
     public List<Bid> getForAuction(long auction) {
         return bidRepository.findByAuctionId(auction);
-    }
-
-    @LogDuration
-    @Transactional(readOnly = true)
-    public List<Bid> getForUser(long user) {
-        return bidRepository.findByUserId(user);
     }
 }
