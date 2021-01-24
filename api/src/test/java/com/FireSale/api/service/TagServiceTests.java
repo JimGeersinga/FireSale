@@ -79,7 +79,7 @@ public class TagServiceTests {
     void exceptionShouldBeThrownWhenTryingToDeleteNonExistingTag() {
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> tagService.deleteTag("Scooter"));
 
-        String expectedMessage = "Resource was not found: [No tag exists with name: {0}]";
+        String expectedMessage = String.format("Resource was not found: [No tag exists with name: %s]","Scooter");
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));

@@ -1,11 +1,11 @@
-package com.firesale.api.controller;
+package com.FireSale.api.controller;
 
-import com.firesale.api.dto.ApiResponse;
-import com.firesale.api.dto.category.CategoryDTO;
-import com.firesale.api.dto.category.UpsertCategoryDTO;
-import com.firesale.api.mapper.CategoryMapper;
-import com.firesale.api.model.Category;
-import com.firesale.api.service.CategoryService;
+import com.FireSale.api.dto.ApiResponse;
+import com.FireSale.api.dto.category.CategoryDTO;
+import com.FireSale.api.mapper.CategoryMapper;
+import com.FireSale.api.model.Category;
+import com.FireSale.api.dto.category.UpsertCategoryDTO;
+import com.FireSale.api.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

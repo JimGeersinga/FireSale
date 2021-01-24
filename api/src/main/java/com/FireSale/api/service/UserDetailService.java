@@ -1,8 +1,8 @@
-package com.firesale.api.service;
+package com.FireSale.api.service;
 
 
-import com.firesale.api.repository.UserRepository;
-import com.firesale.api.security.UserPrincipal;
+import com.FireSale.api.repository.UserRepository;
+import com.FireSale.api.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

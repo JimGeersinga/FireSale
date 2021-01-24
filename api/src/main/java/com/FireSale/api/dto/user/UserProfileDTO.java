@@ -1,6 +1,6 @@
-package com.firesale.api.dto.user;
+package com.FireSale.api.dto.user;
 
-import com.firesale.api.dto.BaseDTO;
+import com.FireSale.api.dto.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.Data;
 

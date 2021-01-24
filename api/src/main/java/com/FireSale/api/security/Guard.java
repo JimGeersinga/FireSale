@@ -1,7 +1,7 @@
-package com.firesale.api.security;
+package com.FireSale.api.security;
 
-import com.firesale.api.model.Role;
-import com.firesale.api.util.SecurityUtil;
+import com.FireSale.api.model.Role;
+import com.FireSale.api.util.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import java.util.Objects;
 @Component
 public class Guard {
     private Guard() {
-        throw new IllegalStateException("Utility class");
+//        throw new IllegalStateException("Utility class");
     }
 
     public static boolean isAdmin() {

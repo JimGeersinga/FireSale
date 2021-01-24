@@ -1,4 +1,4 @@
-package com.firesale.api.aspect;
+package com.FireSale.api.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DurationAspect {
 
-    @Around("@annotation(LogDuration)")
+    @Around("@annotation(com.FireSale.api.aspect.LogDuration)")
     public Object measureDuration(ProceedingJoinPoint joinPoint) throws Throwable {
         final long start = System.currentTimeMillis();
         Object proceed = joinPoint.proceed();

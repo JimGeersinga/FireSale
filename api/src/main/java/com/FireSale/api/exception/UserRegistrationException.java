@@ -1,4 +1,4 @@
-package com.firesale.api.exception;
+package com.FireSale.api.exception;
 
 
 import org.springframework.http.HttpStatus;

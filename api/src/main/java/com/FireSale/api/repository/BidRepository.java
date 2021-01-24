@@ -1,6 +1,6 @@
-package com.firesale.api.repository;
+package com.FireSale.api.repository;
 
-import com.firesale.api.model.Bid;
+import com.FireSale.api.model.Bid;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

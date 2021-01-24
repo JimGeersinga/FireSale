@@ -1,6 +1,6 @@
-package com.firesale.api.dto.user;
+package com.FireSale.api.dto.user;
 
-import com.firesale.api.dto.address.UpdateAddressDTO;
+import com.FireSale.api.dto.address.UpdateAddressDTO;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;

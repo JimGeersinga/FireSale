@@ -1,4 +1,4 @@
-package com.firesale.api.controller;
+package com.FireSale.api.controller;
 
 class UserControllerTests {
     // TODO: User controller tests

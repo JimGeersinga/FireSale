@@ -1,4 +1,4 @@
-package com.firesale.api.dto.usersecurity;
+package com.FireSale.api.dto.usersecurity;
 
 import lombok.Getter;
 import lombok.Setter;

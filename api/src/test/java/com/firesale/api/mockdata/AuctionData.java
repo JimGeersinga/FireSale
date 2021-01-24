@@ -1,6 +1,6 @@
-package com.firesale.api.mockdata;
+package com.FireSale.api.mockdata;
 
-import com.firesale.api.model.Auction;
+import com.FireSale.api.model.Auction;
 
 import java.util.ArrayList;
 import java.util.List;

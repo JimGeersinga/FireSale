@@ -1,9 +1,9 @@
-package com.firesale.api.mapper;
+package com.FireSale.api.mapper;
 
-import com.firesale.api.dto.address.AddressDTO;
-import com.firesale.api.dto.address.PatchAddressDTO;
-import com.firesale.api.dto.address.UpdateAddressDTO;
-import com.firesale.api.model.Address;
+import com.FireSale.api.dto.address.AddressDTO;
+import com.FireSale.api.dto.address.PatchAddressDTO;
+import com.FireSale.api.dto.address.UpdateAddressDTO;
+import com.FireSale.api.model.Address;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

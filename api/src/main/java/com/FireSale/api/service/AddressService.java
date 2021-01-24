@@ -1,9 +1,9 @@
-package com.firesale.api.service;
+package com.FireSale.api.service;
 
-import com.firesale.api.exception.ResourceNotFoundException;
-import com.firesale.api.model.Address;
-import com.firesale.api.model.ErrorTypes;
-import com.firesale.api.repository.AddressRepository;
+import com.FireSale.api.exception.ResourceNotFoundException;
+import com.FireSale.api.model.Address;
+import com.FireSale.api.model.ErrorTypes;
+import com.FireSale.api.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,9 @@ public class AddressService {
     private final AddressRepository addressRepository;
 
     public Address findAddressById(final long addressId) {
-        return addressRepository.findById(addressId)
+        var result = addressRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("No address exists for id: %d", addressId), ErrorTypes.ADDRESS_NOT_FOUND));
+        return result;
     }
 
     @Transactional(readOnly = false)

@@ -1,11 +1,11 @@
-package com.firesale.api.dto.auction;
+package com.FireSale.api.dto.auction;
 
-import com.firesale.api.dto.bid.BidDTO;
-import com.firesale.api.dto.category.CategoryDTO;
-import com.firesale.api.dto.user.UserProfileDTO;
-import com.firesale.api.model.AuctionStatus;
-import com.firesale.api.dto.BaseDTO;
-import com.firesale.api.dto.TagDTO;
+import com.FireSale.api.dto.BaseDTO;
+import com.FireSale.api.dto.category.CategoryDTO;
+import com.FireSale.api.dto.user.UserProfileDTO;
+import com.FireSale.api.model.AuctionStatus;
+import com.FireSale.api.dto.bid.BidDTO;
+import com.FireSale.api.dto.TagDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 

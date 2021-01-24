@@ -1,4 +1,4 @@
-package com.firesale.api.exception;
+package com.FireSale.api.exception;
 
 public class StorageException extends RuntimeException {
 

@@ -1,6 +1,6 @@
-package com.firesale.api.dto;
+package com.FireSale.api.dto;
 
-import com.firesale.api.model.ErrorTypes;
+import com.FireSale.api.model.ErrorTypes;
 import lombok.Getter;
 
 import java.util.List;

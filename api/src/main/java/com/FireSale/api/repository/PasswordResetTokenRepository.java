@@ -1,7 +1,7 @@
-package com.firesale.api.repository;
+package com.FireSale.api.repository;
 
-import com.firesale.api.model.PasswordResetToken;
-import com.firesale.api.model.User;
+import com.FireSale.api.model.User;
+import com.FireSale.api.model.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

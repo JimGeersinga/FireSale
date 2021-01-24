@@ -1,6 +1,6 @@
-package com.firesale.api.dto.user;
+package com.FireSale.api.dto.user;
 
-import com.firesale.api.model.Gender;
+import com.FireSale.api.model.Gender;
 import lombok.Data;
 
 import javax.validation.constraints.Email;

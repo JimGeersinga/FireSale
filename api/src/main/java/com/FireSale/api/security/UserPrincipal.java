@@ -1,6 +1,6 @@
-package com.firesale.api.security;
+package com.FireSale.api.security;
 
-import com.firesale.api.model.User;
+import com.FireSale.api.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

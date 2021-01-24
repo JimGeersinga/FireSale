@@ -1,6 +1,6 @@
-package com.firesale.api.repository;
+package com.FireSale.api.repository;
 
-import com.firesale.api.model.Address;
+import com.FireSale.api.model.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

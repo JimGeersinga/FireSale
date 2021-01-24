@@ -1,7 +1,7 @@
-package com.firesale.api.exception;
+package com.FireSale.api.exception;
 
-import com.firesale.api.dto.ErrorResponse;
-import com.firesale.api.model.ErrorTypes;
+import com.FireSale.api.dto.ErrorResponse;
+import com.FireSale.api.model.ErrorTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

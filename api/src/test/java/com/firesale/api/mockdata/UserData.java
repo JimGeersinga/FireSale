@@ -1,8 +1,8 @@
-package com.firesale.api.mockdata;
+package com.FireSale.api.mockdata;
 
-import com.firesale.api.model.Address;
-import com.firesale.api.model.Image;
-import com.firesale.api.model.User;
+import com.FireSale.api.model.Address;
+import com.FireSale.api.model.Image;
+import com.FireSale.api.model.User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

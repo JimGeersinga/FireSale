@@ -1,4 +1,4 @@
-package com.firesale.api.dto.category;
+package com.FireSale.api.dto.category;
 
 import lombok.Data;
 

@@ -1,8 +1,8 @@
-package com.firesale.api.dto.user;
+package com.FireSale.api.dto.user;
 
-import com.firesale.api.model.Gender;
-import com.firesale.api.model.Role;
-import com.firesale.api.dto.auction.CreateImageDTO;
+import com.FireSale.api.model.Gender;
+import com.FireSale.api.model.Role;
+import com.FireSale.api.dto.auction.CreateImageDTO;
 import lombok.Data;
 
 import javax.validation.constraints.Email;

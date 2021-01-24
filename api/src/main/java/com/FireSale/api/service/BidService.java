@@ -1,11 +1,11 @@
-package com.firesale.api.service;
+package com.FireSale.api.service;
 
-import com.firesale.api.aspect.LogDuration;
-import com.firesale.api.exception.CreateBidException;
-import com.firesale.api.model.AuctionStatus;
-import com.firesale.api.model.Bid;
-import com.firesale.api.model.ErrorTypes;
-import com.firesale.api.repository.BidRepository;
+import com.FireSale.api.aspect.LogDuration;
+import com.FireSale.api.model.AuctionStatus;
+import com.FireSale.api.model.Bid;
+import com.FireSale.api.model.ErrorTypes;
+import com.FireSale.api.exception.CreateBidException;
+import com.FireSale.api.repository.BidRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
