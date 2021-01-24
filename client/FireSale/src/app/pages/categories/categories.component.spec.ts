@@ -1,6 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigService } from 'src/app/core/services/config.service';
 
 import { CategoriesComponent } from './categories.component';
 
@@ -14,8 +13,7 @@ describe('CategoriesComponent', () => {
         HttpClientTestingModule
       ],
       declarations: [ CategoriesComponent ]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

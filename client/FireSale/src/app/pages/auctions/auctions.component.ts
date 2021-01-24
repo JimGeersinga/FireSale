@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuctionDTO } from 'src/app/shared/models/auctionDto';
 import { CategoryDTO } from 'src/app/shared/models/categoryDto';
@@ -7,7 +6,6 @@ import { DisplayType } from 'src/app/shared/enums/display-type.enum';
 import { FilterDTO } from 'src/app/shared/models/filterDTO';
 import { AuctionService } from 'src/app/shared/services/auction.service';
 import { CategoryService } from 'src/app/shared/services/category.service';
-import { TagService } from 'src/app/shared/services/tag.service';
 
 @Component({
   selector: 'app-auctions',
@@ -29,7 +27,7 @@ export class AuctionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFeaturedAuctions();
-    this.loadCategories().subscribe((categories) => {
+    this.loadCategories().subscribe(() => {
       this.loadAuctions();
     });
   }

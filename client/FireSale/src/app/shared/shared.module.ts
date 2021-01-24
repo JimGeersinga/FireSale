@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,12 +17,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-// import {  MatNativeDateModule} from "@angular/material";
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
-// import {  MatRippleModule} from "@angular/material/r";
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
@@ -62,12 +60,10 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     MatInputModule,
     MatListModule,
     MatMenuModule,
-    // MatNativeDateModule,
     MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
-    // MatRippleModule,
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,
@@ -95,12 +91,10 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     MatInputModule,
     MatListModule,
     MatMenuModule,
-    // MatNativeDateModule,
     MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
-    // MatRippleModule,
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,

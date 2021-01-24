@@ -4,7 +4,6 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { HomeComponent } from './pages/home/home.component';
 import { CategoryEditComponent } from './pages/category-edit/category-edit.component';
 import { AdminGuard } from './core/guards/admin.guard';
 import { AuctionsComponent } from './pages/auctions/auctions.component';

@@ -1,4 +1,3 @@
-import { P } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuctionDTO } from 'src/app/shared/models/auctionDto';

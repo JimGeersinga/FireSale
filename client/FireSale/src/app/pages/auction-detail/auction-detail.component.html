@@ -145,7 +145,7 @@
       <mat-card-title>Verkoper</mat-card-title>
       <br />
       <mat-card-header [routerLink]="['/profile', auction.user.id]">
-        <img mat-card-avatar class="avatar-image" [src]="auction.user.avatar | blobToImage" />
+        <img mat-card-avatar class="avatar-image" [src]="auction.user.avatar | blobToImage" alt="profiel afbeelding" />
         <mat-card-title>{{auction.user.displayName}}</mat-card-title>
         <mat-card-subtitle> Actief sinds: {{auction.user.created | date:'dd MMMM yyyy'}}</mat-card-subtitle>
       </mat-card-header>

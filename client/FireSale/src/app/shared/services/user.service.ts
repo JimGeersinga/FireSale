@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/services/api.service';
 import { ChangepasswordDTO } from '../models/ChangepasswordDto';
-import { EmailaddressDTO} from '../models/emailaddressDto';
+import { EmailaddressDTO } from '../models/emailaddressDto';
 import { LoginDTO } from '../models/loginDto';
 import { RegisterDTO } from '../models/registerDto';
 import { UpdateUserDTO } from '../models/updateUserDto';
@@ -68,8 +68,7 @@ export class UserService {
   }
 
   public delete(): Observable<any> {
-    return this.api.delete(`${this.baseUrl}`);
-    this.logout();
+    return this.api.delete(`${this.baseUrl}`).pipe(finalize(() => this.logout()));
   }
 
   public requestPassword(emailaddress: EmailaddressDTO): Observable<any> {

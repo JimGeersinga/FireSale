@@ -30,7 +30,7 @@
 <ng-template #auctionBoxGrid>
   <ng-container *ngIf="model; else auctionSkeletonGrid">
     <div class="auction-image">
-      <img [src]="model.images[0]?.path | blobToImage" />
+      <img [src]="model.images[0]?.path | blobToImage" alt="product afbeelding" />
     </div>
     <div class="auction-info">
       <h3 class="title">{{ model.name }}</h3>
@@ -52,7 +52,7 @@
 <ng-template #auctionBoxList>
   <ng-container *ngIf="model; else auctionSkeletonList">
     <div class="auction-image">
-      <img [src]="(model.images[0]?.path | blobToImage )|| 'assets/images/NoImage.png'" />
+      <img [src]="(model.images[0]?.path | blobToImage )|| 'assets/images/NoImage.png'"  alt="product afbeelding" />
     </div>
     <div class="auction-info">
       <h3 class="title">{{ model.name }}</h3>

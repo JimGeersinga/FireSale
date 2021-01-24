@@ -1,7 +1,5 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 import { CategoryDTO } from 'src/app/shared/models/categoryDto';
-import { CategoryService } from 'src/app/shared/services/category.service';
 
 @Component({
   selector: 'app-category-navigation-list',
@@ -9,7 +7,7 @@ import { CategoryService } from 'src/app/shared/services/category.service';
   styleUrls: ['./category-navigation-list.component.scss'],
 })
 export class CategoryNavigationListComponent implements OnInit {
-  constructor(private router: Router) { }
+  constructor() { }
 
   @Input() public categories: CategoryDTO[];
 

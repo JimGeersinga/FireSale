@@ -1,7 +1,3 @@
-/*
- *ngFor="let c of oneDimArray | sortBy:'asc'"
- *ngFor="let c of arrayOfObjects | sortBy:'asc':'propertyName'"
-*/
 import { Pipe, PipeTransform } from '@angular/core';
 import { orderBy } from 'lodash';
 
@@ -20,7 +16,9 @@ export class SortByPipe implements PipeTransform {
         return value.sort();
       }
       else {
-        return value.sort().reverse();
+        value.sort();
+        value.reverse();
+        return value;
       }
     }
     return orderBy(value, [column], [order]);

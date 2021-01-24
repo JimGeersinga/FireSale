@@ -146,7 +146,7 @@
             <br /><br />
             <input type="file" (change)="selectFile($event)">
             <br /><br />
-              <img *ngIf="selectedFile" [src]="selectedFile?.path | blobToImage"/>
+              <img *ngIf="selectedFile" [src]="selectedFile?.path | blobToImage" alt="profiel afbeelding"/>
           </div>
             <button mat-raised-button color="primary" type="submit">Update gegevens</button>
         </form>

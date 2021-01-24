@@ -19,7 +19,7 @@
     <div class="profile" [matMenuTriggerFor]="profileMenu" *ngIf="currentUser$ | async as user">
 
       <span class="displayname">{{ user.displayName }}</span>
-      <img [src]="user.avatar  | blobToImage" class="profile-picture" />
+      <img [src]="user.avatar  | blobToImage" class="profile-picture" alt="profiel afbeelding" />
       <mat-menu #profileMenu="matMenu">
         <a mat-menu-item [routerLink]="['/profile', user.id]">Profiel</a>
         <a mat-menu-item [routerLink]="['/auctions/my-auctions']">
