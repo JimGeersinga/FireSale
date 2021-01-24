@@ -1,8 +1,8 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.exception.ResourceNotFoundException;
-import com.FireSale.api.model.Address;
-import com.FireSale.api.repository.AddressRepository;
+import com.firesale.api.exception.ResourceNotFoundException;
+import com.firesale.api.model.Address;
+import com.firesale.api.repository.AddressRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,9 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.exception.ResourceNotFoundException;
-import com.FireSale.api.model.ErrorTypes;
-import com.FireSale.api.model.Tag;
-import com.FireSale.api.repository.TagRepository;
+import com.firesale.api.exception.ResourceNotFoundException;
+import com.firesale.api.model.ErrorTypes;
+import com.firesale.api.model.Tag;
+import com.firesale.api.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

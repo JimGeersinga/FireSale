@@ -1,9 +1,9 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.exception.ResourceNotFoundException;
-import com.FireSale.api.model.Address;
-import com.FireSale.api.model.ErrorTypes;
-import com.FireSale.api.repository.AddressRepository;
+import com.firesale.api.exception.ResourceNotFoundException;
+import com.firesale.api.model.Address;
+import com.firesale.api.model.ErrorTypes;
+import com.firesale.api.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

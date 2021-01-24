@@ -1,4 +1,4 @@
-package com.FireSale.api.dto;
+package com.firesale.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

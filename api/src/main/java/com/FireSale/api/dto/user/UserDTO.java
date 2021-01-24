@@ -1,9 +1,9 @@
-package com.FireSale.api.dto.user;
+package com.firesale.api.dto.user;
 
-import com.FireSale.api.dto.BaseDTO;
-import com.FireSale.api.model.Gender;
-import com.FireSale.api.model.Role;
-import com.FireSale.api.dto.address.AddressDTO;
+import com.firesale.api.dto.BaseDTO;
+import com.firesale.api.model.Gender;
+import com.firesale.api.model.Role;
+import com.firesale.api.dto.address.AddressDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 

@@ -1,13 +1,13 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
 
-import com.FireSale.api.dto.ResponseType;
-import com.FireSale.api.model.Auction;
-import com.FireSale.api.model.AuctionStatus;
-import com.FireSale.api.model.Bid;
-import com.FireSale.api.repository.AuctionRepository;
-import com.FireSale.api.dto.WebsocketAuctionMessage;
-import com.FireSale.api.dto.bid.BidDTO;
+import com.firesale.api.dto.ResponseType;
+import com.firesale.api.model.Auction;
+import com.firesale.api.model.AuctionStatus;
+import com.firesale.api.model.Bid;
+import com.firesale.api.repository.AuctionRepository;
+import com.firesale.api.dto.WebsocketAuctionMessage;
+import com.firesale.api.dto.bid.BidDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

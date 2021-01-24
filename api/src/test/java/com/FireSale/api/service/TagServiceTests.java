@@ -1,8 +1,8 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.exception.ResourceNotFoundException;
-import com.FireSale.api.model.Tag;
-import com.FireSale.api.repository.TagRepository;
+import com.firesale.api.exception.ResourceNotFoundException;
+import com.firesale.api.model.Tag;
+import com.firesale.api.repository.TagRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,6 +1,6 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.repository.UserRepository;
+import com.firesale.api.repository.UserRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

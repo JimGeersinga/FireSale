@@ -1,8 +1,8 @@
-package com.FireSale.api.mapper;
+package com.firesale.api.mapper;
 
-import com.FireSale.api.model.Bid;
-import com.FireSale.api.dto.bid.BidDTO;
-import com.FireSale.api.dto.bid.CreateBidDTO;
+import com.firesale.api.model.Bid;
+import com.firesale.api.dto.bid.BidDTO;
+import com.firesale.api.dto.bid.CreateBidDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
