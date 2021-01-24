@@ -26,3 +26,5 @@ hs_err_pid*
 #Custom
 public/
 !public/placeholder.png
+
+client/.scannerwork/
