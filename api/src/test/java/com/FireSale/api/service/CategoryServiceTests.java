@@ -210,17 +210,6 @@ public class CategoryServiceTests {
         return categories;
     }
 
-    private List<Category> getFilledCategories()
-    {
-        ArrayList<Category> categories = new ArrayList<>();
-        for(int i = 1; i <= 10; i++)
-        {
-            var c = getFilled(Long.valueOf(i));
-            categories.add(c);
-        }
-        return categories;
-    }
-
 
 
 }

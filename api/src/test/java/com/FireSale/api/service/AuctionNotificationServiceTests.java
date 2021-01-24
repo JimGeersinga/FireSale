@@ -68,8 +68,8 @@ public class AuctionNotificationServiceTests {
         // Execute service call
         auctionNotificationService.closeAuction();
         // Assert response
-        verify(template).convertAndSend(any(String.class), any(WebsocketAuctionMessage.class));
-        verify(auctionRepository).save(any(Auction.class));
+        verify(template, times(2)).convertAndSend(any(String.class), any(WebsocketAuctionMessage.class));
+        verify(auctionRepository, times(2)).save(any(Auction.class));
     }
 
 
@@ -92,6 +92,10 @@ public class AuctionNotificationServiceTests {
         auction.getBids().add(b);
         auction.setId(1L);
         auctions.add(auction);
+        Auction auction2 = new Auction();
+        auction2.setBids(new ArrayList<>());
+        auction2.setId(2L);
+        auctions.add(auction2);
         return auctions;
     }
 

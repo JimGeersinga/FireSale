@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +48,37 @@ public class TagServiceTests {
         final Tag tag = tagService.getTagByName("Auto");
         assertThat(tag.getName()).isEqualTo(givenTag.getName());
 
-        verify(tagRepository, times(2)).findByName(any(String.class));
+        verify(tagRepository).findByName(any(String.class));
     }
+
+    @Test
+    void shouldFindTagsByNameSuccessfully(){
+
+        final Tag givenTag = getTag();
+        givenTag.setName("Auto");
+
+        when(tagRepository.findByNameContaining(eq("Auto"))).thenReturn(Arrays.asList(givenTag));
+
+        var tags = tagService.searchTagsByName("Auto");
+        assertThat(tags.stream().count() == 1L);
+
+        verify(tagRepository).findByNameContaining(any(String.class));
+    }
+
+
+    @Test
+    void shouldFindTagByNameError(){
+
+        final Tag givenTag = getTag();
+        givenTag.setName("Auto");
+
+        when(tagRepository.findByName(eq("Auto"))).thenReturn(Optional.ofNullable(null));
+
+        var exc = assertThrows(ResourceNotFoundException.class, () ->tagService.getTagByName("Auto"));
+        assertThat(exc.getMessage().length() > 0);
+
+    }
+
 
     @Test
     void shouldCreateTagSuccessfully() {

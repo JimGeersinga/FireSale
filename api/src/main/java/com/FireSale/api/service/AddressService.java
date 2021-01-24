@@ -37,11 +37,16 @@ public class AddressService {
     @Transactional(readOnly = false)
     public Address patchAddress(Long addressId, Address address) {
         final Address existing = findAddressById(addressId);
-        if (!address.getStreet().isEmpty()) existing.setStreet(address.getStreet());
-        if (!address.getHouseNumber().isEmpty()) existing.setHouseNumber(address.getHouseNumber());
-        if (!address.getPostalCode().isEmpty()) existing.setPostalCode(address.getPostalCode());
-        if (!address.getCity().isEmpty()) existing.setCity(address.getCity());
-        if (!address.getCountry().isEmpty()) existing.setCountry(address.getCountry());
+        if (!address.getStreet().isEmpty())
+            existing.setStreet(address.getStreet());
+        if (!address.getHouseNumber().isEmpty())
+            existing.setHouseNumber(address.getHouseNumber());
+        if (!address.getPostalCode().isEmpty())
+            existing.setPostalCode(address.getPostalCode());
+        if (!address.getCity().isEmpty())
+            existing.setCity(address.getCity());
+        if (!address.getCountry().isEmpty())
+            existing.setCountry(address.getCountry());
         return addressRepository.save(existing);
     }
 }

@@ -39,19 +39,17 @@ public class AuctionNotificationService {
     @Transactional(readOnly = false)
     public void closeAuction() {
         var auctions = auctionRepository.getFinalizedAuctions();
-        if(auctions != null) {
-            for (Auction auction : auctions) {
-                if (!auction.getBids().isEmpty()) {
-                    var finalBid = Collections.max(auction.getBids(), Comparator.comparing(Bid::getValue));
-                    auction.setFinalBid(finalBid);
-                }
-
-                auction.setStatus(AuctionStatus.CLOSED);
-
-                auctionRepository.save(auction);
-
-                sendStatusNotification(auction.getId(), auction.getStatus());
+        for (Auction auction : auctions) {
+            if (!auction.getBids().isEmpty()) {
+                var finalBid = Collections.max(auction.getBids(), Comparator.comparing(Bid::getValue));
+                auction.setFinalBid(finalBid);
             }
+
+            auction.setStatus(AuctionStatus.CLOSED);
+
+            auctionRepository.save(auction);
+
+            sendStatusNotification(auction.getId(), auction.getStatus());
         }
     }
 }

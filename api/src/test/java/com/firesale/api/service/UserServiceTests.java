@@ -253,7 +253,6 @@ class  UserServiceTests {
         user.setFirstName("John");
         user.setLastName("Doe");
         user.setDateOfBirth(LocalDate.now());
-        // TODO: Test password patch
 
         when(userRepository.findById(1l)).thenReturn(Optional.of(user));
 

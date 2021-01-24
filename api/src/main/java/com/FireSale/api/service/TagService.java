@@ -26,16 +26,8 @@ public class TagService {
     }
 
     public Tag getTagByName(String name) {
-        if (tagRepository.findByName(name).isEmpty()) {
-            return null;
-        } else {
-            return tagRepository.findByName(name)
-                    .orElseThrow(() -> new ResourceNotFoundException(String.format("No tag exists with name: %s", name), ErrorTypes.TAG_NOT_FOUND));
-        }
-    }
-
-    public List<Tag> findByNameIn(List<String> names) {
-        return tagRepository.findByNameIn(names);
+        return tagRepository.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("No tag exists with name: %s", name), ErrorTypes.TAG_NOT_FOUND));
     }
 
     @Transactional(readOnly = false)
