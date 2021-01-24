@@ -1,4 +1,4 @@
-package com.FireSale.api.dto;
+package com.firesale.api.dto;
 
 public enum ResponseType {
     BID_PLACED,

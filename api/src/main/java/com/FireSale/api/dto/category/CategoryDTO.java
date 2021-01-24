@@ -1,6 +1,6 @@
-package com.FireSale.api.dto.category;
+package com.firesale.api.dto.category;
 
-import com.FireSale.api.dto.BaseDTO;
+import com.firesale.api.dto.BaseDTO;
 import lombok.Data;
 
 @Data

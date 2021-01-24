@@ -1,4 +1,4 @@
-package com.FireSale.api.dto.address;
+package com.firesale.api.dto.address;
 
 import lombok.Data;
 

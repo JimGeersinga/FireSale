@@ -1,4 +1,4 @@
-package com.FireSale.api.util;
+package com.firesale.api.util;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

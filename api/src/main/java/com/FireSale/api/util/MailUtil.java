@@ -1,7 +1,7 @@
-package com.FireSale.api.util;
+package com.firesale.api.util;
 
-import com.FireSale.api.config.MailConfig;
-import com.FireSale.api.model.User;
+import com.firesale.api.config.MailConfig;
+import com.firesale.api.model.User;
 import org.springframework.mail.SimpleMailMessage;
 
 public class MailUtil {

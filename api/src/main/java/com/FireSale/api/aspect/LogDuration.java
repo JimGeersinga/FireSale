@@ -1,4 +1,4 @@
-package com.FireSale.api.aspect;
+package com.firesale.api.aspect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

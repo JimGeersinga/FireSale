@@ -1,4 +1,4 @@
-package com.FireSale.api.util;
+package com.firesale.api.util;
 
 class SecurityUtilTests {
     //TODO: Security util tests

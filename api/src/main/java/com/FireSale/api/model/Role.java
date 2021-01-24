@@ -1,4 +1,4 @@
-package com.FireSale.api.model;
+package com.firesale.api.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

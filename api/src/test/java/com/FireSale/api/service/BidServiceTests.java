@@ -1,10 +1,10 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.exception.CreateBidException;
-import com.FireSale.api.model.Auction;
-import com.FireSale.api.model.AuctionStatus;
-import com.FireSale.api.model.Bid;
-import com.FireSale.api.repository.BidRepository;
+import com.firesale.api.exception.CreateBidException;
+import com.firesale.api.model.Auction;
+import com.firesale.api.model.AuctionStatus;
+import com.firesale.api.model.Bid;
+import com.firesale.api.repository.BidRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.FireSale.api.dto;
+package com.firesale.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

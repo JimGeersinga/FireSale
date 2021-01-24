@@ -1,4 +1,4 @@
-package com.FireSale.api.config;
+package com.firesale.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import java.util.*;
 
 @Configuration
 public class SwaggerConfig {
-    protected static final Contact CONTACT = new Contact("Astrid-HR, Carlo Ligthart, Jim Geersinga, Mike van Leeuwen, 0548643,", "https://github.com/mikevanl/FireSale", "");
+    protected static final Contact CONTACT = new Contact("Astrid-HR, Carlo Ligthart, Jim Geersinga, Mike van Leeuwen, 0548643,", "https://github.com/mikevanl/firesale", "");
     protected static final ApiInfo DEFAULT_API = new ApiInfo("swagger", "Swagger Documentation", "1.0", "urn:tos", CONTACT,
             "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0", new ArrayList<>());
     protected static final Set<String> consumes = new HashSet<>(Arrays.asList("application/json"));

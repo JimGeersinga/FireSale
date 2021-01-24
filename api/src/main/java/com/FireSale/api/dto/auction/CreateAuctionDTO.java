@@ -1,7 +1,7 @@
-package com.FireSale.api.dto.auction;
+package com.firesale.api.dto.auction;
 
-import com.FireSale.api.dto.BaseDTO;
-import com.FireSale.api.dto.TagDTO;
+import com.firesale.api.dto.BaseDTO;
+import com.firesale.api.dto.TagDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
