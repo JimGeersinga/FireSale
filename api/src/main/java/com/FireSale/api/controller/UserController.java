@@ -2,39 +2,34 @@ package com.firesale.api.controller;
 
 import com.firesale.api.dto.ApiResponse;
 import com.firesale.api.dto.ErrorResponse;
-import com.firesale.api.dto.usersecurity.ChangepasswordDTO;
-import com.firesale.api.dto.usersecurity.EmailaddressDTO;
-import com.firesale.api.model.Address;
-import com.firesale.api.model.Auction;
-import com.firesale.api.model.ErrorTypes;
-import com.firesale.api.model.User;
-import com.firesale.api.util.SecurityUtil;
 import com.firesale.api.dto.address.AddressDTO;
 import com.firesale.api.dto.address.PatchAddressDTO;
 import com.firesale.api.dto.address.UpdateAddressDTO;
 import com.firesale.api.dto.auction.AuctionDTO;
 import com.firesale.api.dto.auction.CreateImageDTO;
 import com.firesale.api.dto.user.*;
-import com.firesale.api.exception.InvalidResetTokenException;
+import com.firesale.api.dto.usersecurity.ChangepasswordDTO;
+import com.firesale.api.dto.usersecurity.EmailaddressDTO;
 import com.firesale.api.mapper.AddressMapper;
 import com.firesale.api.mapper.AuctionMapper;
 import com.firesale.api.mapper.UserMapper;
+import com.firesale.api.model.Address;
+import com.firesale.api.model.Auction;
+import com.firesale.api.model.ErrorTypes;
+import com.firesale.api.model.User;
 import com.firesale.api.security.UserPrincipal;
 import com.firesale.api.service.*;
-import com.firesale.api.util.MailUtil;
+import com.firesale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -51,7 +46,6 @@ public class UserController {
     private final ImageService imageService;
     private final AuctionService auctionService;
     private final AuctionMapper auctionMapper;
-    private final JavaMailSender mailSender;
     private final UserSecurityService userSecurityService;
 
     @PostMapping("/authenticate")
@@ -157,24 +151,13 @@ public class UserController {
     @PostMapping("/forgotpassword")
     @ResponseStatus(HttpStatus.OK)
     public void resetPassword(@RequestBody final EmailaddressDTO emailaddressDTO) {
-        final User user = userService.findUserByEmail(emailaddressDTO.getEmailaddress());
-        final UUID token = UUID.randomUUID();
-        final String subject = "Wachtwoord reset - firesale";
-        final String body = "Gebruik de volgende link om uw wachtwoord te resetten: http://localhost:4200/users/changepassword/" + token;
-        userSecurityService.createPasswordResetTokenForUser(user, token);
-        mailSender.send(MailUtil.constructEmail(user, subject, body));
+        userSecurityService.createPasswordResetTokenForUser(emailaddressDTO.getEmailaddress());
     }
 
     @PostMapping(value = "/changepassword")
     @ResponseStatus(HttpStatus.OK)
     public void changePassword(@RequestBody final ChangepasswordDTO changepasswordDTO) {
-        userSecurityService.validatePasswordResetToken(changepasswordDTO.getToken());
-        Optional<User> user = userSecurityService.getUserByPasswordResetToken(changepasswordDTO.getToken());
-        if (user.isPresent()) {
-            userSecurityService.changeUserPassword(user.get(), changepasswordDTO.getPassword());
-        } else {
-            throw new InvalidResetTokenException(String.format("No user exists for reset token: %s", changepasswordDTO.getToken()), ErrorTypes.USER_NOT_FOUND);
-        }
+        userSecurityService.changeUserPassword(changepasswordDTO.getToken(), changepasswordDTO.getPassword());
     }
 }
 

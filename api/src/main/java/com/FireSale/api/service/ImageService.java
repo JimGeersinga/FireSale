@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Base64;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,19 +33,12 @@ public class ImageService {
         this.userService = userService;
     }
 
-    public byte[] getFileBytes(long id) {
-        var image = this.imageRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Image should be in the database but it is not", ErrorTypes.IMAGE_NOT_FOUND));
-        return Base64.getDecoder().decode(image.getPath());
-    }
-
     public Image saveImage(CreateImageDTO imageDTO) {
         Image newImage = new Image();
         if (imageDTO.getId() != null) {
             newImage = this.imageRepository.findById(imageDTO.getId()).orElseThrow(() ->
                     new ResourceNotFoundException("Image should be in the database but it is not", ErrorTypes.IMAGE_NOT_FOUND));
         }
-
         newImage.setPath(imageDTO.getPath());
         newImage.setSort(imageDTO.getSort());
         newImage.setType(imageDTO.getType());
@@ -59,10 +51,7 @@ public class ImageService {
     public void storeAuctionImages(Collection<CreateImageDTO> imageDTOs, Auction auction) {
         Set<Image> images = new HashSet<>();
         for (CreateImageDTO image : imageDTOs) {
-            var newImage = saveImage(image);
-            if (newImage != null) {
-                images.add(newImage);
-            }
+            images.add(saveImage(image));
         }
         auction.setImages(images);
         this.auctionRepository.save(auction);
@@ -71,11 +60,8 @@ public class ImageService {
 
     @Transactional(readOnly = false)
     public void storeAvatar(CreateImageDTO imageDTO, Long userId) {
-        var avatar = saveImage(imageDTO);
-        if (avatar != null) {
-            User user = userService.findUserById(userId);
-            user.setAvatar(avatar);
-            userRepository.save(user);
-        }
+        User user = userService.findUserById(userId);
+        user.setAvatar(saveImage(imageDTO));
+        userRepository.save(user);
     }
 }
