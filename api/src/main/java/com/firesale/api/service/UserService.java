@@ -144,6 +144,7 @@ public class UserService {
             user.setLastName(removed);
             user.setAddress(new Address());
             user.setPassword("xxx");
+            userRepository.save(user);
         }
     }
 }

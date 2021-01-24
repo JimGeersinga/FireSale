@@ -3,10 +3,10 @@ package com.firesale.api.service;
 import com.firesale.api.exception.ResourceNotFoundException;
 import com.firesale.api.exception.UnAuthorizedException;
 import com.firesale.api.exception.UserRegistrationException;
-import com.firesale.api.model.Address;
-import com.firesale.api.model.Role;
-import com.firesale.api.model.User;
+import com.firesale.api.model.*;
 import com.firesale.api.repository.AddressRepository;
+import com.firesale.api.repository.AuctionRepository;
+import com.firesale.api.repository.BidRepository;
 import com.firesale.api.repository.UserRepository;
 import com.firesale.api.security.Guard;
 import org.junit.jupiter.api.AfterAll;
@@ -20,10 +20,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -35,6 +36,12 @@ class  UserServiceTests {
 
     @Mock
     AddressRepository addressRepository;
+
+    @Mock
+    AuctionRepository auctionRepository;
+
+    @Mock
+    BidRepository bidRepository;
 
     @Mock
     PasswordEncoder passwordEncoder;
@@ -54,7 +61,6 @@ class  UserServiceTests {
         mockedGuard.close();
     }
 
-    //TODO: Get all user test
 
     @Test
     void shouldFindUserByEmailSuccessfully(){
@@ -90,6 +96,18 @@ class  UserServiceTests {
         assertThat(user.getId()).isEqualTo(givenUser.getId());
 
         verify(userRepository).findById(any(Long.class));
+    }
+
+    @Test
+    void getAll(){
+        var givenUser = Arrays.asList( getUser());
+
+        doReturn(givenUser).when(userRepository).findAll();
+
+        var users = userService.getAll();
+        assertSame(givenUser, users, "Not the provided mocks");
+
+        verify(userRepository).findAll();
     }
 
     @Test
@@ -134,6 +152,20 @@ class  UserServiceTests {
     }
 
     @Test
+    void shouldNotAuthenticateUserEmptySuccessfully() {
+        final User givenUser = new User();
+        givenUser.setEmail("admin@firesale.nl");
+        givenUser.setPassword("$2a$10$zO.P/jNe8LedLkSAD67AIOXOktIBbsncYE7VcP/cUxvgkiZ4dBgRi");
+
+        when(userRepository.findByEmail(eq("admin@firesale.nl"))).thenReturn(Optional.empty());
+
+        final User user = userService.authenticate("admin@firesale.nl", "abcd");
+        assertThat(user).isNull();
+
+        verify(userRepository).findByEmail(any(String.class));
+    }
+
+    @Test
     void shouldCreateUserSuccessfully() {
         final User user = getUser();
         user.setId(null);
@@ -148,6 +180,24 @@ class  UserServiceTests {
         verify(userRepository).findByEmail(any(String.class));
         verify(userRepository).save(any(User.class));
         verify(addressRepository).save(any(Address.class));
+    }
+
+    @Test
+    void shouldCreateUserWithSASuccessfully() {
+        final User user = getUser();
+        user.setId(null);
+        user.setShippingAddress(new Address());
+
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+        when(userRepository.save(user)).thenAnswer(invocation -> invocation.getArgument(0));
+
+        User savedUser = userService.create(user);
+
+        assertThat(savedUser).isNotNull();
+
+        verify(userRepository).findByEmail(any(String.class));
+        verify(userRepository).save(any(User.class));
+        verify(addressRepository, times(2)).save(any(Address.class));
     }
 
     @Test
@@ -229,7 +279,9 @@ class  UserServiceTests {
         user.setFirstName("John");
         user.setLastName("Doe");
         user.setDateOfBirth(LocalDate.now());
-        // TODO: Test password patch
+        user.setPassword("test");
+
+        doReturn("TEST").when(passwordEncoder).encode(anyString());
 
         when(userRepository.findById(1l)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
@@ -244,6 +296,25 @@ class  UserServiceTests {
         verify(userRepository).findById(any(Long.class));
         verify(userRepository).save(any(User.class));
     }
+    @Test
+    void userShouldPatchUserError() {
+        final User user = new User();
+        user.setEmail("john@firesale.nl");
+        user.setDisplayName("john");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setDateOfBirth(LocalDate.now());
+        user.setPassword("test");
+        when(userRepository.findById(1l)).thenReturn(Optional.of(user));
+        mockedGuard.when(Guard::isAdmin).thenReturn(false);
+        mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(false);
+        Exception exception = assertThrows(UnAuthorizedException.class, () -> {
+            userService.patchUser(1l, user);
+        });
+        assertThat(exception.getMessage()).isEqualTo("User is not authorized for: [Cannot patch user fields]");
+        verify(userRepository).findById(any(Long.class));
+    }
+
 
     @Test
     void userShouldThrowErrorWhenPatchingUser() {
@@ -268,6 +339,96 @@ class  UserServiceTests {
         verify(userRepository).findById(any(Long.class));
         verify(userRepository, never()).save(any(User.class));
     }
+
+    @Test
+    void canDelete() {
+        final User user = new User();
+        user.setId(1L);
+        user.setEmail("john@firesale.nl");
+        user.setDisplayName("john");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setDateOfBirth(LocalDate.now());
+        user.setPassword("test");
+        var auctions = Arrays.asList();
+        var bids = Arrays.asList();
+        doReturn(Optional.of(user)).when(userRepository).findById(anyLong());
+        doReturn(auctions).when(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(anyLong());
+        doReturn(bids).when(bidRepository).findByUserId(anyLong());
+        doNothing().when(userRepository).delete(user);
+        userService.delete( user);
+        verify(userRepository).delete(any(User.class));
+        verify(userRepository).findById(any(Long.class));
+        verify(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(any(Long.class));
+        verify(bidRepository).findByUserId(any(Long.class));
+    }
+
+    @Test
+    void anonymous1() {
+        final User user = new User();
+        user.setId(1L);
+        user.setEmail("john@firesale.nl");
+        user.setDisplayName("john");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setDateOfBirth(LocalDate.now());
+        user.setPassword("test");
+        var auctions = Arrays.asList(new Auction());
+        var bids = Arrays.asList();
+        doReturn(Optional.of(user)).when(userRepository).findById(anyLong());
+        doReturn(auctions).when(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(anyLong());
+        doReturn(bids).when(bidRepository).findByUserId(anyLong());
+        doReturn(user).when(userRepository).save(user);
+        userService.delete( user);
+        verify(userRepository).save(any(User.class));
+        verify(userRepository).findById(any(Long.class));
+        verify(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(any(Long.class));
+        verify(bidRepository).findByUserId(any(Long.class));
+    }
+
+    @Test
+    void anonymous2() {
+        final User user = new User();
+        user.setId(1L);
+        user.setEmail("john@firesale.nl");
+        user.setDisplayName("john");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setDateOfBirth(LocalDate.now());
+        user.setPassword("test");
+        var auctions = Arrays.asList();
+        var bids = Arrays.asList(new Bid());
+        doReturn(Optional.of(user)).when(userRepository).findById(anyLong());
+        doReturn(auctions).when(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(anyLong());
+        doReturn(bids).when(bidRepository).findByUserId(anyLong());
+        doReturn(user).when(userRepository).save(user);
+        userService.delete( user);
+        verify(userRepository).save(any(User.class));
+        verify(userRepository).findById(any(Long.class));
+        verify(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(any(Long.class));
+        verify(bidRepository).findByUserId(any(Long.class));
+    }
+
+
+    @Test
+    void notFoundDelete() {
+        final User user = new User();
+        user.setId(1L);
+        user.setEmail("john@firesale.nl");
+        user.setDisplayName("john");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setDateOfBirth(LocalDate.now());
+        user.setPassword("test");
+        doReturn(Optional.empty()).when(userRepository).findById(anyLong());
+        String expected = "Resource was not found: [No user exists for id: 1]";
+        var exception = assertThrows(ResourceNotFoundException.class, () -> userService.delete(user));
+        verify(userRepository).findById(anyLong());
+        assertEquals(expected, exception.getMessage(), "Incorrect message");
+    }
+
+
+
 
     private User getUser(){
         final User user = new User();

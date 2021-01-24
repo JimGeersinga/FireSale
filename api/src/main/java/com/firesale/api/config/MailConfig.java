@@ -10,16 +10,16 @@ import java.util.Properties;
 @Configuration
 public class MailConfig {
 
-    public static final String FROM = System.getenv("firesale_MAILSERVER_FROM");
+    public static final String FROM = System.getenv("FIRESALE_MAILSERVER_FROM");
 
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
-        javaMailSender.setHost(System.getenv("firesale_MAILSERVER_HOST"));
+        javaMailSender.setHost(System.getenv("FIRESALE_MAILSERVER_HOST"));
         javaMailSender.setPort(587);
-        javaMailSender.setUsername(System.getenv("firesale_MAILSERVER_USER"));
-        javaMailSender.setPassword(System.getenv("firesale_MAILSERVER_PASS"));
+        javaMailSender.setUsername(System.getenv("FIRESALE_MAILSERVER_USER"));
+        javaMailSender.setPassword(System.getenv("FIRESALE_MAILSERVER_PASS"));
 
         Properties javaMailProperties = javaMailSender.getJavaMailProperties();
         javaMailProperties.put("mail.transport.protocol", "smtp");
