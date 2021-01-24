@@ -1,4 +1,4 @@
-package com.FireSale.api.config;
+package com.firesale.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,12 +11,13 @@ import java.util.*;
 
 @Configuration
 public class SwaggerConfig {
-    public static final Contact CONTACT = new Contact("Astrid-HR, Carlo Ligthart, Jim Geersinga, Mike van Leeuwen, 0548643,", "https://github.com/mikevanl/FireSale", "");
-    public static final ApiInfo DEFAULT_API = new ApiInfo("swagger", "Swagger Documentation", "1.0", "urn:tos", CONTACT,
+    protected static final Contact CONTACT = new Contact("Astrid-HR, Carlo Ligthart, Jim Geersinga, Mike van Leeuwen, 0548643,", "https://github.com/mikevanl/FireSale", "");
+    protected static final ApiInfo DEFAULT_API = new ApiInfo("swagger", "Swagger Documentation", "1.0", "urn:tos", CONTACT,
             "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0", new ArrayList<>());
-    public static final Set<String> consumes = new HashSet<String>(Arrays.asList("application/json"));
-    public static final Set<String> produces = new HashSet<String>(Arrays.asList("application/json"));
-    public static final List<SecurityScheme> securitySchemes = Arrays.asList(new BasicAuth("basicAuth"));
+    protected static final Set<String> consumes = new HashSet<>(Arrays.asList("application/json"));
+    protected static final Set<String> produces = new HashSet<>(Arrays.asList("application/json"));
+    protected static final String BASIC_AUTH = "basicAuth";
+    protected static final List<SecurityScheme> securitySchemes = Arrays.asList(new BasicAuth(BASIC_AUTH));
 
     @Bean
     public Docket api() {
@@ -36,10 +37,10 @@ public class SwaggerConfig {
     }
 
     private SecurityScheme basicAuthScheme() {
-        return new BasicAuth("basicAuth");
+        return new BasicAuth(BASIC_AUTH);
     }
 
     private SecurityReference basicAuthReference() {
-        return new SecurityReference("basicAuth", new AuthorizationScope[0]);
+        return new SecurityReference(BASIC_AUTH, new AuthorizationScope[0]);
     }
 }

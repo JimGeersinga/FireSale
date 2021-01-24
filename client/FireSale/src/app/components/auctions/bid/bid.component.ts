@@ -26,7 +26,8 @@ export class BidComponent implements OnInit {
 
   public bids: BidDTO[] = [];
   get lastBid(): BidDTO {
-    return this.bids.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())[0];
+    this.bids.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+    return this.bids[0];
   }
 
   public isWinner = false;

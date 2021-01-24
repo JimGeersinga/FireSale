@@ -1,21 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { ApiResponse } from 'src/app/core/services/apiResponse';
 import { TagDTO } from '../models/tagDto';
-
-interface DataObject {
-  id: number;
-  modified: string;
-  created: string;
-  name: string;
-}
-
-interface GetTagResponse {
-  success: boolean;
-  data: DataObject[];
-}
 
 @Injectable({
   providedIn: 'root'

@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomErrorStateMatcher } from './providers/CustomErrorStateMatcher';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -10,7 +10,7 @@ import { UserService } from 'src/app/shared/services/user.service';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })
-export class LayoutComponent implements OnDestroy, AfterViewInit, OnInit {
+export class LayoutComponent implements OnInit {
   public currentUser$: Observable<UserDTO>;
   public isAdmin$: Observable<boolean>;
 
@@ -22,13 +22,7 @@ export class LayoutComponent implements OnDestroy, AfterViewInit, OnInit {
     this.isAdmin$ = this.userService.userIsAdmin$;
   }
 
-  ngOnDestroy(): void {
-  }
-
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
   }
 
   public logout(): void {

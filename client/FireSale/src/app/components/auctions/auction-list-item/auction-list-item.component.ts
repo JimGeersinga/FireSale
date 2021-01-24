@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuctionDTO } from 'src/app/shared/models/auctionDto';
-import { BidDTO } from 'src/app/shared/models/bidDto';
 import { DisplayType } from 'src/app/shared/enums/display-type.enum';
 import { AuctionMessageResponseType } from 'src/app/shared/models/webSocketAuctionMessage';
 import { WebSocketService } from 'src/app/shared/services/websocket.service';

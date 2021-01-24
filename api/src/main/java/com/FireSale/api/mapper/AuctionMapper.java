@@ -1,13 +1,13 @@
-package com.FireSale.api.mapper;
+package com.firesale.api.mapper;
 
-import com.FireSale.api.dto.auction.AuctionDTO;
-import com.FireSale.api.dto.auction.AuctionWinningInfoDTO;
-import com.FireSale.api.dto.auction.CreateAuctionDTO;
-import com.FireSale.api.dto.user.PersonInfoDTO;
-import com.FireSale.api.model.Auction;
-import com.FireSale.api.model.User;
-import com.FireSale.api.service.AuctionService;
-import com.FireSale.api.util.SecurityUtil;
+import com.firesale.api.dto.auction.AuctionDTO;
+import com.firesale.api.dto.auction.AuctionWinningInfoDTO;
+import com.firesale.api.dto.auction.CreateAuctionDTO;
+import com.firesale.api.dto.user.PersonInfoDTO;
+import com.firesale.api.model.Auction;
+import com.firesale.api.model.User;
+import com.firesale.api.service.AuctionService;
+import com.firesale.api.util.SecurityUtil;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 

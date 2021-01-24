@@ -1,18 +1,18 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.aspect.LogDuration;
-import com.FireSale.api.dto.auction.AuctionFilterDTO;
-import com.FireSale.api.dto.auction.CreateAuctionDTO;
-import com.FireSale.api.exception.ResourceNotFoundException;
-import com.FireSale.api.exception.UnAuthorizedException;
-import com.FireSale.api.mapper.AuctionMapper;
-import com.FireSale.api.model.*;
-import com.FireSale.api.repository.AuctionRepository;
-import com.FireSale.api.repository.CategoryRepository;
-import com.FireSale.api.repository.FavouriteAuctionRepository;
-import com.FireSale.api.repository.UserRepository;
-import com.FireSale.api.security.Guard;
-import com.FireSale.api.util.SecurityUtil;
+import com.firesale.api.aspect.LogDuration;
+import com.firesale.api.dto.auction.AuctionFilterDTO;
+import com.firesale.api.dto.auction.CreateAuctionDTO;
+import com.firesale.api.exception.ResourceNotFoundException;
+import com.firesale.api.exception.UnAuthorizedException;
+import com.firesale.api.mapper.AuctionMapper;
+import com.firesale.api.repository.AuctionRepository;
+import com.firesale.api.repository.CategoryRepository;
+import com.firesale.api.repository.FavouriteAuctionRepository;
+import com.firesale.api.repository.UserRepository;
+import com.firesale.api.util.SecurityUtil;
+import com.firesale.api.model.*;
+import com.firesale.api.security.Guard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -63,7 +63,6 @@ public class AuctionService {
 
         // Alle tags voor auction ophalen en setten bij de auction
         auction.setTags(tags);
-        var t = auction.getTags();
         return auctionRepository.save(auction);
     }
 
@@ -129,10 +128,6 @@ public class AuctionService {
         final Auction existing = findAuctionById(id);
         final Collection<Category> categories = categoryRepository.findByIdIn(createAuctionDTO.getCategories());
 
-        // if (Guard.isSelf(existing.getUser().getId())) {
-        // throw new UnAuthorizedException("Cannot update the auction");
-        // }
-
         if (existing.getStartDate().isBefore(LocalDateTime.now()))
             throw new UnAuthorizedException("Cannot change a running auction");
         existing.setName(createAuctionDTO.getName());
@@ -141,7 +136,6 @@ public class AuctionService {
         existing.setEndDate(createAuctionDTO.getEndDate());
         existing.setMinimalBid(createAuctionDTO.getMinimalBid());
         existing.setCategories(categories);
-        // existing.setTags(createAuctionDTO.getTags());
         // Nog niet bestaande tags wegschrijven naar de database
         List<Tag> tags = new ArrayList<>();
         createAuctionDTO.getTags().stream().forEach(tag -> {

@@ -1,9 +1,9 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.exception.ResourceNotFoundException;
-import com.FireSale.api.model.Category;
-import com.FireSale.api.model.ErrorTypes;
-import com.FireSale.api.repository.CategoryRepository;
+import com.firesale.api.exception.ResourceNotFoundException;
+import com.firesale.api.model.Category;
+import com.firesale.api.model.ErrorTypes;
+import com.firesale.api.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,14 +36,13 @@ public class CategoryService {
         final Category existing = getCategoryById(id);
         existing.setName(category.getName());
         existing.setArchived(category.getArchived());
-        Category c = categoryRepository.save(existing);
-        return c;
+        return categoryRepository.save(existing);
     }
 
     @Transactional(readOnly = false)
     public void deleteCategory(Long id) {
         final Category existing = getCategoryById(id);
-        if (existing.getAuctions().size() != 0) {
+        if (!existing.getAuctions().isEmpty()) {
             existing.setArchived(true);
             categoryRepository.save(existing);
         } else {

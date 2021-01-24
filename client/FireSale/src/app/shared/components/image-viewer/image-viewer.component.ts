@@ -41,7 +41,7 @@ export class ImageViewerComponent implements OnInit {
 
   public expandImage(): void {
     if (!this.enableImageExpansion) { return; }
-    const dialogRef = this.dialog.open(ImageViewerDialogComponent, { data: { images: this.images, imageIndex: this.currentImageIndex }, height: '90vh', width: '90vw' });
+    this.dialog.open(ImageViewerDialogComponent, { data: { images: this.images, imageIndex: this.currentImageIndex }, height: '90vh', width: '90vw' });
   }
 
   private scrollIntoView(): void {

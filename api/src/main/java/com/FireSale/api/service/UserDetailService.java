@@ -1,8 +1,8 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
 
-import com.FireSale.api.repository.UserRepository;
-import com.FireSale.api.security.UserPrincipal;
+import com.firesale.api.repository.UserRepository;
+import com.firesale.api.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +16,7 @@ public class UserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         return new UserPrincipal(userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("No user with email: %s was found", email))));
     }

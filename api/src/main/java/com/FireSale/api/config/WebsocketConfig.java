@@ -1,4 +1,4 @@
-package com.FireSale.api.config;
+package com.firesale.api.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

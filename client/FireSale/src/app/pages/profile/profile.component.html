@@ -1,6 +1,6 @@
 <section *ngIf="user$ | async as user" class="wrapper">
   <div class="profile-header mat-elevation-z2">
-    <img class="avatar" [src]="user.data.avatar | blobToImage" />
+    <img class="avatar" [src]="user.data.avatar | blobToImage" alt="profiel afbeelding" />
     <div class="user-info">
       <h2 class="display-name">{{user.data.displayName}}</h2>
       <span class="user-since">Actief sinds: {{user.data.created | date:'dd MMMM yyyy'}}</span>

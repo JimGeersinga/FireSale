@@ -1,26 +1,27 @@
-package com.FireSale.api.controller;
+package com.firesale.api.controller;
 
-import com.FireSale.api.dto.ApiResponse;
-import com.FireSale.api.dto.ErrorResponse;
-import com.FireSale.api.dto.address.AddressDTO;
-import com.FireSale.api.dto.address.PatchAddressDTO;
-import com.FireSale.api.dto.address.UpdateAddressDTO;
-import com.FireSale.api.dto.auction.CreateImageDTO;
-import com.FireSale.api.dto.user.*;
-import com.FireSale.api.dto.usersecurity.ChangepasswordDTO;
-import com.FireSale.api.dto.usersecurity.EmailaddressDTO;
-import com.FireSale.api.exception.InvalidResetTokenException;
-import com.FireSale.api.mapper.AddressMapper;
-import com.FireSale.api.mapper.AuctionMapper;
-import com.FireSale.api.mapper.UserMapper;
-import com.FireSale.api.model.Address;
-import com.FireSale.api.model.Auction;
-import com.FireSale.api.model.ErrorTypes;
-import com.FireSale.api.model.User;
-import com.FireSale.api.security.UserPrincipal;
-import com.FireSale.api.service.*;
-import com.FireSale.api.util.MailUtil;
-import com.FireSale.api.util.SecurityUtil;
+import com.firesale.api.dto.ApiResponse;
+import com.firesale.api.dto.ErrorResponse;
+import com.firesale.api.dto.address.AddressDTO;
+import com.firesale.api.dto.address.PatchAddressDTO;
+import com.firesale.api.dto.address.UpdateAddressDTO;
+import com.firesale.api.dto.auction.AuctionDTO;
+import com.firesale.api.dto.auction.CreateImageDTO;
+import com.firesale.api.dto.user.*;
+import com.firesale.api.dto.usersecurity.ChangepasswordDTO;
+import com.firesale.api.dto.usersecurity.EmailaddressDTO;
+import com.firesale.api.exception.InvalidResetTokenException;
+import com.firesale.api.mapper.AddressMapper;
+import com.firesale.api.mapper.AuctionMapper;
+import com.firesale.api.mapper.UserMapper;
+import com.firesale.api.model.Address;
+import com.firesale.api.model.Auction;
+import com.firesale.api.model.ErrorTypes;
+import com.firesale.api.model.User;
+import com.firesale.api.security.UserPrincipal;
+import com.firesale.api.service.*;
+import com.firesale.api.util.MailUtil;
+import com.firesale.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -53,26 +53,28 @@ public class UserController {
     private final AuctionMapper auctionMapper;
     private final JavaMailSender mailSender;
     private final UserSecurityService userSecurityService;
-    private final MailUtil mailUtil;
 
     @PostMapping("/authenticate")
-    public ResponseEntity authenticate(@Valid @RequestBody final LoginDTO loginRequest) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> authenticate(@Valid @RequestBody final LoginDTO loginRequest) {
         final User user = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         if (user == null) {
             return new ResponseEntity<>(new ErrorResponse(ErrorTypes.LOGIN_FAILED, "Email or password is incorrect."), HttpStatus.UNAUTHORIZED);
-        } else if (user.getIsLocked()) {
+        } else if (user.getIsLocked().equals(true)) {
             return new ResponseEntity<>(new ErrorResponse(ErrorTypes.ACCOUNT_IS_LOCKED, "Account is locked."), HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(new ApiResponse<>(true, userMapper.toDTO(user)), HttpStatus.OK);
     }
 
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ApiResponse<UserDTO>> register(@Valid @RequestBody RegisterDTO registerRequest) {
         final User user = userService.create(userMapper.toModel(registerRequest));
         return new ResponseEntity<>(new ApiResponse<>(true, userMapper.toDTO(user)), HttpStatus.CREATED);
     }
 
     @GetMapping("/me")
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<UserDTO>> me() {
         final UserPrincipal user = SecurityUtil.getSecurityContextUser();
@@ -80,6 +82,7 @@ public class UserController {
     }
 
     @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ApiResponse<List<UserProfileDTO>>> allUsers() {
         final List<User> users = userService.getAll();
         return new ResponseEntity<>(new ApiResponse<>(true, users.stream().map(userMapper::toProfile).collect(Collectors.toList())), HttpStatus.OK);
@@ -93,6 +96,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ApiResponse<UserProfileDTO>> getUser(@PathVariable("userId") final long userId) {
         final User user = userService.findUserById(userId);
         return new ResponseEntity<>(new ApiResponse<>(true, userMapper.toProfile(user)), HttpStatus.OK);
@@ -108,7 +112,7 @@ public class UserController {
     @PatchMapping(value = "/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("isAuthenticated() and (@guard.isAdmin() or @guard.isSelf(#userId))")
-    public void patchUser(@PathVariable("userId") final long userId, @Valid @RequestBody PatchUserDTO patchUserDTO) throws IOException {
+    public void patchUser(@PathVariable("userId") final long userId, @Valid @RequestBody PatchUserDTO patchUserDTO) {
         CreateImageDTO avatar = patchUserDTO.getAvatar();
         if (avatar != null && avatar.getPath().length > 0) {
             imageService.storeAvatar(avatar, userId);
@@ -117,6 +121,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/address/{addressId}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ApiResponse<AddressDTO>> getAddress(@PathVariable("userId") final long userId, @PathVariable("addressId") final long addressId) {
         final Address address = addressService.findAddressById(addressId);
         return new ResponseEntity<>(new ApiResponse<>(true, addressMapper.toDTO(address)), HttpStatus.OK);
@@ -137,38 +142,38 @@ public class UserController {
     }
 
     @PostMapping(value = "/{userId}/avatar")
-    public ResponseEntity uploadAvatar(@RequestBody CreateImageDTO imageDTO, @PathVariable Long userId) throws IOException {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadAvatar(@RequestBody CreateImageDTO imageDTO, @PathVariable Long userId) {
         imageService.storeAvatar(imageDTO, userId);
-        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}/auctions")
-    public ResponseEntity getAuctionsByUserId(@PathVariable("userId") final long userId) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<List<AuctionDTO>>> getAuctionsByUserId(@PathVariable("userId") final long userId) {
         final Collection<Auction> auctions = auctionService.getAuctionsByUserId(userId);
-        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<>(true, auctions.stream().map(auctionMapper::toDTO).collect(Collectors.toList())), HttpStatus.OK);
     }
 
     @PostMapping("/forgotpassword")
-    public ResponseEntity resetPassword(@RequestBody final EmailaddressDTO emailaddressDTO) {
+    @ResponseStatus(HttpStatus.OK)
+    public void resetPassword(@RequestBody final EmailaddressDTO emailaddressDTO) {
         final User user = userService.findUserByEmail(emailaddressDTO.getEmailaddress());
         final UUID token = UUID.randomUUID();
         final String subject = "Wachtwoord reset - FireSale";
         final String body = "Gebruik de volgende link om uw wachtwoord te resetten: http://localhost:4200/users/changepassword/" + token;
         userSecurityService.createPasswordResetTokenForUser(user, token);
-        mailSender.send(mailUtil.constructEmail(user, subject, body));
-        return new ResponseEntity(HttpStatus.OK);
+        mailSender.send(MailUtil.constructEmail(user, subject, body));
     }
 
     @PostMapping(value = "/changepassword")
-    public ResponseEntity changePassword(@RequestBody final ChangepasswordDTO changepasswordDTO) {
-
+    @ResponseStatus(HttpStatus.OK)
+    public void changePassword(@RequestBody final ChangepasswordDTO changepasswordDTO) {
         userSecurityService.validatePasswordResetToken(changepasswordDTO.getToken());
         Optional<User> user = userSecurityService.getUserByPasswordResetToken(changepasswordDTO.getToken());
         if (user.isPresent()) {
             userSecurityService.changeUserPassword(user.get(), changepasswordDTO.getPassword());
-            return new ResponseEntity(HttpStatus.OK);
         } else {
-            throw new InvalidResetTokenException(String.format("No user exists for reset token: %d", changepasswordDTO.getToken()), ErrorTypes.USER_NOT_FOUND);
+            throw new InvalidResetTokenException(String.format("No user exists for reset token: %s", changepasswordDTO.getToken()), ErrorTypes.USER_NOT_FOUND);
         }
     }
 }

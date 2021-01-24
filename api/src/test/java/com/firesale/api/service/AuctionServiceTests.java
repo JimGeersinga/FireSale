@@ -1,9 +1,9 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.exception.ResourceNotFoundException;
-import com.FireSale.api.model.Auction;
-import com.FireSale.api.model.AuctionStatus;
-import com.FireSale.api.repository.AuctionRepository;
+import com.firesale.api.exception.ResourceNotFoundException;
+import com.firesale.api.model.Auction;
+import com.firesale.api.model.AuctionStatus;
+import com.firesale.api.repository.AuctionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-public class AuctionServiceTests {
+class AuctionServiceTests {
     @Autowired
     private AuctionService auctionService;
 
@@ -67,7 +67,7 @@ public class AuctionServiceTests {
         // Execute service call
         Collection<?> returnedAuction = auctionService.getActiveAuctions(PageRequest.of(0, 10));
         // Assert response
-        Assertions.assertTrue(returnedAuction != null, "Auction was not found");
+        Assertions.assertNotNull(returnedAuction, "Auction was not found");
         Assertions.assertSame(returnedAuction.toArray()[0], a, "The auction returned was not the same as the mock");
         verify(auctionRepository).findActiveAuctions(any(Pageable.class));
     }
@@ -90,7 +90,7 @@ public class AuctionServiceTests {
         // Execute service call
         var returnedAuction = auctionService.getAuctionsByUserId(1l);
         // Assert response
-        Assertions.assertTrue(returnedAuction != null, "Auction was not found");
+        Assertions.assertNotNull(returnedAuction, "Auction was not found");
         Assertions.assertSame(returnedAuction.toArray()[0], a, "The auction returned was not the same as the mock");
         verify(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(any(Long.class));
     }
@@ -107,7 +107,7 @@ public class AuctionServiceTests {
         });
 
         // Assert response
-        assertThat(exception.getMessage()).isEqualTo("Resource of type [Auction] was not found: [No auction exists for id: 1]");
+        assertThat(exception.getMessage()).isEqualTo("Resource was not found: [No auction exists for id: 1]");
         verify(auctionRepository).findById(any(Long.class));
     }
 }

@@ -1,14 +1,14 @@
-package com.FireSale.api.service;
+package com.firesale.api.service;
 
-import com.FireSale.api.exception.ResourceNotFoundException;
-import com.FireSale.api.exception.UnAuthorizedException;
-import com.FireSale.api.exception.UserRegistrationException;
-import com.FireSale.api.model.Address;
-import com.FireSale.api.model.Role;
-import com.FireSale.api.model.User;
-import com.FireSale.api.repository.AddressRepository;
-import com.FireSale.api.repository.UserRepository;
-import com.FireSale.api.security.Guard;
+import com.firesale.api.exception.ResourceNotFoundException;
+import com.firesale.api.exception.UnAuthorizedException;
+import com.firesale.api.exception.UserRegistrationException;
+import com.firesale.api.model.Address;
+import com.firesale.api.model.Role;
+import com.firesale.api.model.User;
+import com.firesale.api.repository.AddressRepository;
+import com.firesale.api.repository.UserRepository;
+import com.firesale.api.security.Guard;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,7 +29,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTests {
+class UserServiceTests {
     @Mock
     UserRepository userRepository;
 

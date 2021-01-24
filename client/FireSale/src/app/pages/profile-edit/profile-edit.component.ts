@@ -88,7 +88,7 @@ export class ProfileEditComponent implements OnInit {
         path: encodedImage,
         type: fileExtension,
         sort: 0,
-      }; // voorbeeld weergevan op pagina
+      }; // voorbeeld weergeven op pagina
     };
     reader.readAsDataURL(event.target.files[0]);
   }

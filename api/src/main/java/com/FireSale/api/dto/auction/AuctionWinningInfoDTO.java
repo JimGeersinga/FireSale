@@ -1,6 +1,6 @@
-package com.FireSale.api.dto.auction;
+package com.firesale.api.dto.auction;
 
-import com.FireSale.api.dto.user.PersonInfoDTO;
+import com.firesale.api.dto.user.PersonInfoDTO;
 import lombok.Data;
 
 @Data

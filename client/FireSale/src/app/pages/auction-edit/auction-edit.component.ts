@@ -206,7 +206,7 @@ export class AuctionEditComponent implements OnInit {
       });
     } else {
       data.tags = [];
-      this.currentTags.map((tag) => {
+      this.currentTags.forEach((tag) => {
         data.tags.push({ name: tag });
       });
 

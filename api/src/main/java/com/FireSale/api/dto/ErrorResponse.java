@@ -1,12 +1,12 @@
-package com.FireSale.api.dto;
+package com.firesale.api.dto;
 
-import com.FireSale.api.model.ErrorTypes;
+import com.firesale.api.model.ErrorTypes;
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
-public class ErrorResponse extends ApiResponse {
+public class ErrorResponse extends ApiResponse<Void> {
     private final String errorCode;
     private final String errorMessage;
     private final List<String> errorDetails;
