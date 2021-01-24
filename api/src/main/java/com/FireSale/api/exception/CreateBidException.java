@@ -1,6 +1,6 @@
-package com.firesale.api.exception;
+package com.FireSale.api.exception;
 
-import com.firesale.api.model.ErrorTypes;
+import com.FireSale.api.model.ErrorTypes;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;

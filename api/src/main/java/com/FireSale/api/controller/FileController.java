@@ -1,7 +1,7 @@
-package com.firesale.api.controller;
+package com.FireSale.api.controller;
 
 
-import com.firesale.api.service.ImageService;
+import com.FireSale.api.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

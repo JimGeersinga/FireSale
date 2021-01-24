@@ -1,4 +1,4 @@
-package com.firesale.api.mapper;
+package com.FireSale.api.mapper;
 
 public interface ModelToDTOMapper<M, D> {
     M toModel(D dto);

@@ -1,4 +1,4 @@
-package com.firesale.api.dto.bid;
+package com.FireSale.api.dto.bid;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

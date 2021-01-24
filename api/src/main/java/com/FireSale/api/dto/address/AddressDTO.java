@@ -1,6 +1,6 @@
-package com.firesale.api.dto.address;
+package com.FireSale.api.dto.address;
 
-import com.firesale.api.dto.BaseDTO;
+import com.FireSale.api.dto.BaseDTO;
 import lombok.Data;
 
 @Data

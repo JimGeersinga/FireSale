@@ -1,14 +1,14 @@
-package com.firesale.api.service;
+package com.FireSale.api.service;
 
-import com.firesale.api.dto.auction.CreateImageDTO;
-import com.firesale.api.exception.ResourceNotFoundException;
-import com.firesale.api.model.Auction;
-import com.firesale.api.model.ErrorTypes;
-import com.firesale.api.model.Image;
-import com.firesale.api.model.User;
-import com.firesale.api.repository.AuctionRepository;
-import com.firesale.api.repository.ImageRepository;
-import com.firesale.api.repository.UserRepository;
+import com.FireSale.api.dto.auction.CreateImageDTO;
+import com.FireSale.api.exception.ResourceNotFoundException;
+import com.FireSale.api.model.Auction;
+import com.FireSale.api.model.ErrorTypes;
+import com.FireSale.api.model.Image;
+import com.FireSale.api.model.User;
+import com.FireSale.api.repository.AuctionRepository;
+import com.FireSale.api.repository.ImageRepository;
+import com.FireSale.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package com.firesale.api.mockdata;
+package com.FireSale.api.mockdata;
 
 public class BidData {
 }

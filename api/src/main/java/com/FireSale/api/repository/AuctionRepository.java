@@ -1,6 +1,6 @@
-package com.firesale.api.repository;
+package com.FireSale.api.repository;
 
-import com.firesale.api.model.Auction;
+import com.FireSale.api.model.Auction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

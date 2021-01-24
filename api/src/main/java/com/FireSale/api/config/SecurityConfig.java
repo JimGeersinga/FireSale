@@ -1,6 +1,6 @@
-package com.firesale.api.config;
+package com.FireSale.api.config;
 
-import com.firesale.api.service.UserDetailService;
+import com.FireSale.api.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,14 +1,14 @@
-package com.firesale.api.service;
+package com.FireSale.api.service;
 
-import com.firesale.api.exception.ResourceNotFoundException;
-import com.firesale.api.exception.UnAuthorizedException;
-import com.firesale.api.exception.UserRegistrationException;
-import com.firesale.api.model.Address;
-import com.firesale.api.model.Role;
-import com.firesale.api.model.User;
-import com.firesale.api.repository.AddressRepository;
-import com.firesale.api.repository.UserRepository;
-import com.firesale.api.security.Guard;
+import com.FireSale.api.exception.ResourceNotFoundException;
+import com.FireSale.api.exception.UnAuthorizedException;
+import com.FireSale.api.exception.UserRegistrationException;
+import com.FireSale.api.model.Address;
+import com.FireSale.api.model.Role;
+import com.FireSale.api.model.User;
+import com.FireSale.api.repository.AddressRepository;
+import com.FireSale.api.repository.UserRepository;
+import com.FireSale.api.security.Guard;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
-package com.firesale.api.mapper;
+package com.FireSale.api.mapper;
 
-import com.firesale.api.dto.category.CategoryDTO;
-import com.firesale.api.dto.category.UpsertCategoryDTO;
-import com.firesale.api.model.Category;
+import com.FireSale.api.dto.category.CategoryDTO;
+import com.FireSale.api.dto.category.UpsertCategoryDTO;
+import com.FireSale.api.model.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
