@@ -1,19 +1,20 @@
 package com.firesale.api.service;
 
-import com.firesale.api.model.ErrorTypes;
 import com.firesale.api.exception.InvalidResetTokenException;
+import com.firesale.api.model.ErrorTypes;
 import com.firesale.api.model.PasswordResetToken;
 import com.firesale.api.model.User;
-import com.firesale.api.repository.UserRepository;
 import com.firesale.api.repository.PasswordResetTokenRepository;
+import com.firesale.api.repository.UserRepository;
+import com.firesale.api.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -25,39 +26,31 @@ public class UserSecurityService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final UserService userService;
+    private final JavaMailSender mailSender;
 
-    public Boolean validatePasswordResetToken(String token) {
+    @Transactional(readOnly = false)
+    public void createPasswordResetTokenForUser(String email) {
+        final User user = userService.findUserByEmail(email);
+        final UUID token = UUID.randomUUID();
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
+        final String subject = "Wachtwoord reset - firesale";
+        final String body = "Gebruik de volgende link om uw wachtwoord te resetten: http://localhost:4200/users/changepassword/" + myToken.getToken();
+        passwordResetTokenRepository.save(myToken);
+        var message = MailUtil.constructEmail(user, subject, body);
+        mailSender.send(message);
+    }
+
+    @Transactional(readOnly = false)
+    public void changeUserPassword(String token, String password) {
+
         final PasswordResetToken passToken = passwordResetTokenRepository.findByToken(token);
-
-        if (!isTokenFound(passToken)) {
+        if (passToken == null) {
             throw new InvalidResetTokenException("Password reset token is invalid", ErrorTypes.INVALID_RESET_TOKEN);
-        } else if (isTokenExpired(passToken)) {
+        } else if (passToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             throw new InvalidResetTokenException("Password reset token is expired", ErrorTypes.EXPIRED_RESET_TOKEN);
         }
-
-        return true;
-    }
-
-    private boolean isTokenFound(PasswordResetToken passToken) {
-        return passToken != null;
-    }
-
-    private boolean isTokenExpired(PasswordResetToken passToken) {
-        return passToken.getExpiryDate().isBefore(LocalDateTime.now());
-    }
-
-    public Optional<User> getUserByPasswordResetToken(final String token) {
-        return Optional.ofNullable(passwordResetTokenRepository.findByToken(token).getUser());
-    }
-
-    @Transactional(readOnly = false)
-    public void createPasswordResetTokenForUser(User user, UUID token) {
-        PasswordResetToken myToken = new PasswordResetToken(token, user);
-        passwordResetTokenRepository.save(myToken);
-    }
-
-    @Transactional(readOnly = false)
-    public void changeUserPassword(User user, String password) {
+        var user = passToken.getUser();
         user.setPassword(passwordEncoder.encode(password));
         passwordResetTokenRepository.delete(passwordResetTokenRepository.findByUser(user));
         userRepository.save(user);
