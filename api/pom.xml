@@ -149,6 +149,42 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.6</version>
+				<configuration>
+					<output>file</output>
+					<append>true</append>
+					<excludes>
+						<exclude>**/*Config.*</exclude>
+						<exclude>**/dto/**</exclude>
+						<exclude>**/ApiApplication.*</exclude>
+						<exclude>**/model/**</exclude>
+						<exclude>**/controller/**</exclude>
+						<exclude>**/mapper/**</exclude>
+						<exclude>**/exception/**</exclude>
+						<exclude>**/aspect/**</exclude>
+						<exclude>**/util/**</exclude>
+					</excludes>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>jacoco-initialize</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

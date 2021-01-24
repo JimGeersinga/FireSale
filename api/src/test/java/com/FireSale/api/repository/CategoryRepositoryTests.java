@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserRepositoryTests {
+public class CategoryRepositoryTests {
     @Autowired
     private DataSource dataSource;
     @Autowired
@@ -23,7 +23,7 @@ class UserRepositoryTests {
     @Autowired
     private EntityManager entityManager;
     @Autowired
-    private UserRepository repository;
+    private CategoryRepository repository;
 
     @Test
     void injectedComponentsAreNotNull(){

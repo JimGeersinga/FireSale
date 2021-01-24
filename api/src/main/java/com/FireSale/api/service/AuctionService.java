@@ -43,14 +43,11 @@ public class AuctionService {
         final User user = userRepository.getOne(SecurityUtil.getSecurityContextUser().getUser().getId());
         final Collection<Category> categories = categoryRepository.findByIdIn(createAuctionDTO.getCategories());
         final Auction auction = auctionMapper.toModel(createAuctionDTO);
-
         auction.setUser(user);
         auction.setIsDeleted(false);
         auction.setIsFeatured(false);
         auction.setStatus(AuctionStatus.READY);
         auction.setCategories(categories);
-
-        // Nog niet bestaande tags wegschrijven naar de database
         List<Tag> tags = new ArrayList<>();
         createAuctionDTO.getTags().stream().forEach(tag -> {
             var t = tagService.getTagByName(tag.getName());
@@ -60,8 +57,6 @@ public class AuctionService {
                 tags.add(t);
             }
         });
-
-        // Alle tags voor auction ophalen en setten bij de auction
         auction.setTags(tags);
         return auctionRepository.save(auction);
     }
@@ -193,18 +188,6 @@ public class AuctionService {
         auctionNotificationService.sendStatusNotification(existing.getId(), existing.getStatus());
 
         return auctionRepository.save(existing);
-    }
-
-    @LogDuration
-    @Transactional(readOnly = false)
-    public Category createCategory(Category category) {
-        return categoryRepository.save(category);
-    }
-
-    @LogDuration
-    @Transactional(readOnly = true)
-    public Collection<Category> getAllCategories() {
-        return categoryRepository.findAll();
     }
 
     @Transactional(readOnly = false)

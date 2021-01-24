@@ -16,8 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AddressServiceTests {
@@ -102,15 +101,36 @@ public class AddressServiceTests {
     void testPatchAddress() {
         // Setup mock repository
         Address address = this.get();
-        doReturn(address).when(addressRepository).save(address);
-        doReturn(Optional.of(address)).when(addressRepository).findById(1L);
+        when(addressRepository.save(any(Address.class))).thenAnswer((answer) -> answer.getArguments()[0]);
+        var add = new Address();
+        add.setId(1L);
+        doReturn(Optional.of(add)).when(addressRepository).findById(1L);
 
         // Execute service call
         Address returnedAddress = addressService.patchAddress(1L, address);
 
         // Assert response
         Assertions.assertTrue(returnedAddress != null, "Address was not found");
-        Assertions.assertSame(returnedAddress, address, "The address returned was not the same as the mock");
+        Assertions.assertSame(returnedAddress.getId(), address.getId(), "The address returned was not the same as the mock");
+        verify(addressRepository).findById(any(Long.class));
+        verify(addressRepository).save(any(Address.class));
+    }
+
+    @Test
+    @DisplayName("Test patch empty Success")
+    void testPatchAddressEmpty() {
+        // Setup mock repository
+        var address = this.getEmpty();
+        when(addressRepository.save(any(Address.class))).thenAnswer((answer) -> answer.getArguments()[0]);
+        var add = this.get();
+        doReturn(Optional.of(add)).when(addressRepository).findById(1L);
+
+        // Execute service call
+        Address returnedAddress = addressService.patchAddress(1L, address);
+
+        // Assert response
+        Assertions.assertTrue(returnedAddress != null, "Address was not found");
+        Assertions.assertSame(returnedAddress.getId(), address.getId(), "The address returned was not the same as the mock");
         verify(addressRepository).findById(any(Long.class));
         verify(addressRepository).save(any(Address.class));
     }
@@ -143,6 +163,18 @@ public class AddressServiceTests {
         address.setPostalCode("2871RK");
         address.setCity("Schoonhoven");
         address.setCountry("Nederland");
+        return  address;
+    }
+
+    private Address getEmpty()
+    {
+        Address address = new Address();
+        address.setId(1L);
+        address.setStreet("");
+        address.setHouseNumber("");
+        address.setPostalCode("");
+        address.setCity("");
+        address.setCountry("");
         return  address;
     }
 

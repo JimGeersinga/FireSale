@@ -12,10 +12,11 @@ import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserRepositoryTests {
+public class AddressRepositoryTests {
     @Autowired
     private DataSource dataSource;
     @Autowired
@@ -23,7 +24,7 @@ class UserRepositoryTests {
     @Autowired
     private EntityManager entityManager;
     @Autowired
-    private UserRepository repository;
+    private AddressRepository repository;
 
     @Test
     void injectedComponentsAreNotNull(){
@@ -32,4 +33,5 @@ class UserRepositoryTests {
         assertThat(entityManager).isNotNull();
         assertThat(repository).isNotNull();
     }
+
 }
