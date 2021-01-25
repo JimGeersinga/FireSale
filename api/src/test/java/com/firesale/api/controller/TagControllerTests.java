@@ -19,7 +19,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @ExtendWith(MockitoExtension.class)
-public class TagControllerTests {
+class TagControllerTests {
     private MockMvc mvc;
     @Mock
     private TagService tagService;
@@ -40,17 +40,15 @@ public class TagControllerTests {
     private TagController tagController;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         JacksonTester.initFields(this, new ObjectMapper());
         mvc = MockMvcBuilders.standaloneSetup(tagController)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
     }
 
-
-
     @Test
-    public void getAll() throws Exception {
+    void getAll() throws Exception {
         // given
         Tag t = new Tag();
         t.setName("test");
@@ -59,7 +57,7 @@ public class TagControllerTests {
         TagDTO dto = new TagDTO();
         dto.setName("test");
         dto.setId(1L);
-        doReturn(Arrays.asList(t)).when(tagService).getAllTags();
+        doReturn(Collections.singletonList(t)).when(tagService).getAllTags();
         doReturn(dto).when(tagMapper).toDTO(any(Tag.class));
 
 
@@ -74,7 +72,7 @@ public class TagControllerTests {
     }
 
     @Test
-    public void getSearch() throws Exception {
+    void getSearch() throws Exception {
         // given
         Tag t = new Tag();
         t.setName("test");
@@ -83,7 +81,7 @@ public class TagControllerTests {
         TagDTO dto = new TagDTO();
         dto.setName("test");
         dto.setId(1L);
-        doReturn(Arrays.asList(t)).when(tagService).searchTagsByName(anyString());
+        doReturn(Collections.singletonList(t)).when(tagService).searchTagsByName(anyString());
         doReturn(dto).when(tagMapper).toDTO(any(Tag.class));
 
 

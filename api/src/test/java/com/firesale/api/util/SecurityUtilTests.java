@@ -10,11 +10,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SecurityUtilTests {
+    @Test
+    @DisplayName("Test security is a utility class Success")
+    void isUtilityClass() {
+        // Execute service call
+        var exception = assertThrows(IllegalStateException.class, () ->new SecurityUtil());
+
+        // Assert response
+        assertTrue(exception.getMessage().contains("Utility class"));
+    }
 
     @Test
     @DisplayName("Test SecurityUtil Success")
@@ -46,7 +57,7 @@ class SecurityUtilTests {
         var userPrincipal = SecurityUtil.getSecurityContextUser();
 
         // Assert response
-        Assertions.assertSame(null, userPrincipal, "Incorrect userPrincipal");
+        Assertions.assertNull(userPrincipal, "Incorrect userPrincipal");
     }
 
     @Test
@@ -60,6 +71,6 @@ class SecurityUtilTests {
         var userPrincipal = SecurityUtil.getSecurityContextUser();
 
         // Assert response
-        Assertions.assertSame(null, userPrincipal, "Incorrect userPrincipal");
+        Assertions.assertNull(userPrincipal, "Incorrect userPrincipal");
     }
 }

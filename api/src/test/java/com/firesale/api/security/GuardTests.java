@@ -10,17 +10,27 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GuardTests {
+    @Test
+    @DisplayName("Test Guard is a utility class Success")
+    void isUtilityClass() {
+        // Execute service call
+        var exception = assertThrows(IllegalStateException.class, () ->new Guard());
+
+        // Assert response
+        assertTrue(exception.getMessage().contains("Utility class"));
+    }
 
     @Test
     @DisplayName("Test Guard is admin with no authentication Success")
-    void isAdminNoAuthetication() {
+    void isAdminNoAuthentication() {
         SecurityContext securityContext = mock(SecurityContext.class);
         SecurityContextHolder.setContext(securityContext);
 
@@ -33,7 +43,7 @@ class GuardTests {
 
     @Test
     @DisplayName("Test Guard is admin with authentication, wrong role Success")
-    void isAdminWithAutheticationWrongRole() {
+    void isAdminWithAuthenticationWrongRole() {
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);
         UserPrincipal principal = mock(UserPrincipal.class);
@@ -53,7 +63,7 @@ class GuardTests {
 
     @Test
     @DisplayName("Test Guard is admin with authentication, correct role Success")
-    void isAdminWithAutheticationCorrectRole() {
+    void isAdminWithAuthenticationCorrectRole() {
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);
         UserPrincipal principal = mock(UserPrincipal.class);
@@ -73,7 +83,7 @@ class GuardTests {
 
     @Test
     @DisplayName("Test Guard is admin with no authentication Success")
-    void isSelfNoAuthetication() {
+    void isSelfNoAuthentication() {
         SecurityContext securityContext = mock(SecurityContext.class);
         SecurityContextHolder.setContext(securityContext);
 
@@ -86,7 +96,7 @@ class GuardTests {
 
     @Test
     @DisplayName("Test Guard is self with authentication, wrong id Success")
-    void isSelfWithAutheticationWrongId() {
+    void isSelfWithAuthenticationWrongId() {
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);
         UserPrincipal principal = mock(UserPrincipal.class);
@@ -106,7 +116,7 @@ class GuardTests {
 
     @Test
     @DisplayName("Test Guard is self with authentication, correct id Success")
-    void isSelfWithAutheticationCorrectId() {
+    void isSelfWithAuthenticationCorrectId() {
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);
         UserPrincipal principal = mock(UserPrincipal.class);

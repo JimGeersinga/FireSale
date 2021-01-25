@@ -2,11 +2,12 @@ package com.firesale.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firesale.api.dto.auction.AuctionDTO;
+import com.firesale.api.dto.auction.CreateAuctionDTO;
 import com.firesale.api.exception.GlobalExceptionHandler;
 import com.firesale.api.mapper.AuctionMapper;
-import com.firesale.api.mapper.BidMapper;
 import com.firesale.api.model.Auction;
-import com.firesale.api.service.*;
+import com.firesale.api.service.AuctionService;
+import com.firesale.api.service.ImageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +21,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,28 +29,25 @@ import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @ExtendWith(MockitoExtension.class)
-public class AuctionControllerTests {
+class AuctionControllerTests {
     private MockMvc mvc;
+
     @Mock
     private AuctionService auctionService;
-    @Mock
-    private UserService userService;
-    @Mock
-    private AuctionMapper auctionMapper;
+
     @Mock
     private ImageService imageService;
+
     @Mock
-    private AuctionNotificationService auctionNotificationService;
-    @Mock
-    private BidService bidService;
-    @Mock
-    private BidMapper bidMapper;
+    private AuctionMapper auctionMapper;
 
     @InjectMocks
     private AuctionController auctionController;
 
+    private JacksonTester<CreateAuctionDTO> createAuctionDTOJacksonTester;
+
     @BeforeEach
-    public void setup() {
+    void setup() {
         JacksonTester.initFields(this, new ObjectMapper());
         mvc = MockMvcBuilders.standaloneSetup(auctionController)
                 .setControllerAdvice(new GlobalExceptionHandler())
@@ -57,7 +55,7 @@ public class AuctionControllerTests {
     }
 
     @Test
-    public void all() throws Exception {
+    void all() throws Exception {
         // given
         Auction a = new Auction();
         a.setName("test");
@@ -67,7 +65,7 @@ public class AuctionControllerTests {
         aDTO.setName("test");
         aDTO.setId(1L);
 
-        doReturn(Arrays.asList(a)).when(auctionService).getAuctions();
+        doReturn(Collections.singletonList(a)).when(auctionService).getAuctions();
         doReturn(aDTO).when(auctionMapper).toDTO(any(Auction.class), any(AuctionService.class));
 
 

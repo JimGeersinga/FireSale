@@ -36,7 +36,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
@@ -79,7 +79,7 @@ class UserControllerTests {
     private JacksonTester<PatchUserDTO> patchUserDtoJacksonTester;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         JacksonTester.initFields(this, new ObjectMapper());
         mvc = MockMvcBuilders.standaloneSetup(userController)
                 .setControllerAdvice(new GlobalExceptionHandler())
@@ -87,7 +87,7 @@ class UserControllerTests {
     }
 
     @Test
-    public void authenticate() throws Exception {
+    void authenticate() throws Exception {
         // given
         LoginDTO c = new LoginDTO();
         c.setEmail("test@firesale.com");
@@ -116,7 +116,7 @@ class UserControllerTests {
     }
 
     @Test
-    public void authenticateFailedByLock() throws Exception {
+    void authenticateFailedByLock() throws Exception {
         // given
         LoginDTO c = new LoginDTO();
         c.setEmail("test@firesale.com");
@@ -140,7 +140,7 @@ class UserControllerTests {
     }
 
     @Test
-    public void authenticateFailedByNull() throws Exception {
+    void authenticateFailedByNull() throws Exception {
         // given
         LoginDTO c = new LoginDTO();
         c.setEmail("test@firesale.com");
@@ -285,8 +285,80 @@ class UserControllerTests {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
+    @Test
+    void patchUserNoAvatar() throws Exception {
+        // given
+        PatchUserDTO c = new PatchUserDTO();
+        c.setEmail("test@firesale.com");
+        c.setFirstName("test@firesale.com");
+        c.setLastName("test@firesale.com");
+        c.setDisplayName("test");
+        c.setGender(Gender.OTHER);
+        c.setDateOfBirth(null);
+
+        User user = new User();
+        user.setDisplayName("test");
+        user.setIsLocked(false);
 
 
+        when(userMapper.toModel(any(PatchUserDTO.class))).thenAnswer((i)->{
+            var u = (PatchUserDTO)i.getArguments()[0];
+            var dto = new User();
+            dto.setDisplayName(u.getDisplayName());
+            return dto;
+        });
+
+        doReturn(user).when(userService).patchUser(anyLong(),any(User.class));
+
+        var json = patchUserDtoJacksonTester.write(c).getJson();
+        json = json.replace("\"dateOfBirth\":null", "\"dateOfBirth\":\"1992-07-12\"");
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                patch("/users/1").contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON).content(json))
+                .andReturn().getResponse();
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    void patchUserWrongAvatar() throws Exception {
+        // given
+        PatchUserDTO c = new PatchUserDTO();
+        c.setEmail("test@firesale.com");
+        c.setFirstName("test@firesale.com");
+        c.setLastName("test@firesale.com");
+        c.setDisplayName("test");
+        c.setGender(Gender.OTHER);
+        c.setDateOfBirth(null);
+        CreateImageDTO avatar = new CreateImageDTO();
+        avatar.setPath(new byte[0]);
+        c.setAvatar(avatar);
+
+        User user = new User();
+        user.setDisplayName("test");
+        user.setIsLocked(false);
+
+
+        when(userMapper.toModel(any(PatchUserDTO.class))).thenAnswer((i)->{
+            var u = (PatchUserDTO)i.getArguments()[0];
+            var dto = new User();
+            dto.setDisplayName(u.getDisplayName());
+            return dto;
+        });
+
+        doReturn(user).when(userService).patchUser(anyLong(),any(User.class));
+
+        var json = patchUserDtoJacksonTester.write(c).getJson();
+        json = json.replace("\"dateOfBirth\":null", "\"dateOfBirth\":\"1992-07-12\"");
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                patch("/users/1").contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON).content(json))
+                .andReturn().getResponse();
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
 
     @Test
     void getMe() throws Exception {
@@ -302,7 +374,7 @@ class UserControllerTests {
             return dto;
         });
         try(MockedStatic<SecurityUtil> mockSecUtil = Mockito.mockStatic(SecurityUtil.class)){
-            mockSecUtil.when(()->SecurityUtil.getSecurityContextUser()).thenAnswer((i)->principal);
+            mockSecUtil.when(SecurityUtil::getSecurityContextUser).thenAnswer((i)->principal);
             // when
             MockHttpServletResponse response = mvc.perform(
                     get("/users/me")
@@ -326,7 +398,7 @@ class UserControllerTests {
             dto.setDisplayName(u.getDisplayName());
             return dto;
         });
-        doReturn(Arrays.asList(user)).when(userService).getAll();
+        doReturn(Collections.singletonList(user)).when(userService).getAll();
 
         // when
         MockHttpServletResponse response = mvc.perform(
@@ -348,7 +420,7 @@ class UserControllerTests {
         UserPrincipal principal = new UserPrincipal(user);
 
         try(MockedStatic<SecurityUtil> mockSecUtil = Mockito.mockStatic(SecurityUtil.class)){
-            mockSecUtil.when(()->SecurityUtil.getSecurityContextUser()).thenAnswer((i)->principal);
+            mockSecUtil.when(SecurityUtil::getSecurityContextUser).thenAnswer((i)->principal);
             doNothing().when(userService).delete(any(User.class));
             // when
             MockHttpServletResponse response = mvc.perform(
@@ -429,7 +501,7 @@ class UserControllerTests {
         Auction auction = new Auction();
         auction.setName("test");
 
-        doReturn(Arrays.asList(auction)).when(auctionService).getAuctionsByUserId(anyLong());
+        doReturn(Collections.singletonList(auction)).when(auctionService).getAuctionsByUserId(anyLong());
 
         when(auctionMapper.toDTO(any(Auction.class))).thenAnswer((i)->{
             var u = (Auction)i.getArguments()[0];
@@ -464,6 +536,33 @@ class UserControllerTests {
                 .andReturn().getResponse();
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void updateAddress() throws Exception {
+//         given
+        UpdateAddressDTO auction = new UpdateAddressDTO();
+        auction.setStreet("kerkstraat");
+        auction.setHouseNumber("1");
+        auction.setPostalCode("1111AA");
+        auction.setCity("Amsterdam");
+        auction.setCountry("Nederland");
+
+        doReturn(new Address()).when(addressService).updateAddress( anyLong(),any(Address.class));
+        when(addressMapper.toModel(any(UpdateAddressDTO.class))).thenAnswer((i)->{
+            var u = (UpdateAddressDTO)i.getArguments()[0];
+            var dto = new Address();
+            dto.setPostalCode(u.getPostalCode());
+            return dto;
+        });
+
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                put("/users/1/address/1").contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON).content(updateAddressDTOJacksonTester.write(auction).getJson()))
+                .andReturn().getResponse();
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
     @Test

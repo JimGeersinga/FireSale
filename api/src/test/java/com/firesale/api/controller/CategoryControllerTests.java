@@ -43,8 +43,6 @@ class CategoryControllerTests {
     @InjectMocks
     private CategoryController categoryController;
 
-    private JacksonTester<CategoryDTO> categoryDTOJacksonTester;
-
     private JacksonTester<UpsertCategoryDTO> upsertCategoryDTOJacksonTester;
 
     @BeforeEach
@@ -68,7 +66,7 @@ class CategoryControllerTests {
             return dto;
         });
         given(categoryService.getAvailableCategories())
-                .willReturn(Arrays.asList(c));
+                .willReturn(Collections.singletonList(c));
         // when
         MockHttpServletResponse response = mvc.perform(
                  get("/categories")
@@ -101,12 +99,7 @@ class CategoryControllerTests {
         UpsertCategoryDTO dto = new UpsertCategoryDTO();
         dto.setName("test");
 
-        when(categoryService.create(any(Category.class))).thenAnswer((i)->{
-            return i.getArguments()[0];
-        });
-
-        given(categoryService.getAvailableCategories())
-                .willReturn(Collections.singletonList(c));
+        when(categoryService.create(any(Category.class))).thenAnswer((i)-> i.getArguments()[0]);
 
         // when
         MockHttpServletResponse response = mvc.perform(
@@ -134,9 +127,7 @@ class CategoryControllerTests {
         UpsertCategoryDTO dto = new UpsertCategoryDTO();
         dto.setName("test");
 
-        when(categoryService.updateCategory(anyLong(),any(Category.class))).thenAnswer((i)->{
-            return i.getArguments()[1];
-        });
+        when(categoryService.updateCategory(anyLong(),any(Category.class))).thenAnswer((i)-> i.getArguments()[1]);
 
         // when
         MockHttpServletResponse response = mvc.perform(
@@ -178,7 +169,7 @@ class CategoryControllerTests {
             return dto;
         });
         given(categoryService.getArchivedCategories())
-                .willReturn(Arrays.asList(c));
+                .willReturn(Collections.singletonList(c));
         // when
         MockHttpServletResponse response = mvc.perform(
                 get("/categories/archived")

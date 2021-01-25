@@ -4,7 +4,7 @@ import com.firesale.api.model.Role;
 import com.firesale.api.util.SecurityUtil;
 
 public class Guard {
-    private Guard() {
+    public Guard() {
         throw new IllegalStateException("Utility class");
     }
 

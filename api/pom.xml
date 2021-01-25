@@ -18,10 +18,8 @@
 	<properties>
 		<java.version>15</java.version>
 		<!-- Sonar -->
-		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-		<sonar.language>java</sonar.language>
+		<aggregate.report.dir>/target/site/jacoco/jacoco.xml</aggregate.report.dir>
+		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<dependencies>
@@ -162,11 +160,13 @@
 					<output>file</output>
 					<append>true</append>
 					<excludes>
+						<exclude>**/aspect/*</exclude>
 						<exclude>**/*Config.*</exclude>
 						<exclude>**/dto/**</exclude>
 						<exclude>**/model/**</exclude>
 						<exclude>**/mapper/**</exclude>
 						<exclude>**/exception/**</exclude>
+						<exclude>**/ApiApplication.</exclude>
 					</excludes>
 				</configuration>
 
@@ -183,6 +183,13 @@
 						<goals>
 							<goal>report</goal>
 						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<goals>
+							<goal>report-aggregate</goal>
+						</goals>
+						<phase>verify</phase>
 					</execution>
 				</executions>
 			</plugin>

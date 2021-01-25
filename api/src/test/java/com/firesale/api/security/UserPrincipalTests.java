@@ -107,4 +107,38 @@ class UserPrincipalTests {
         // Assert response
         Assertions.assertSame(true, value, "Incorrect isEnabled");
     }
+
+    @Test
+    @DisplayName("Test UserPrincipal equals Success")
+    void userPrincipalEquals() {
+        User user = mock(User.class);
+        final var a = new UserPrincipal(user);
+        final var b = new UserPrincipal(user);
+
+        Assertions.assertTrue(a.canEqual(b));
+        Assertions.assertEquals(a, b);
+        Assertions.assertEquals(a.hashCode(), b.hashCode());
+    }
+
+    @Test
+    @DisplayName("Test UserPrincipal not equals Success")
+    void userPrincipalNotEquals() {
+        User userA = mock(User.class);
+        final var a = new UserPrincipal(userA);
+        User userB = mock(User.class);
+        final var b = new UserPrincipal(userB);
+
+        Assertions.assertFalse(a.canEqual(userA));
+        Assertions.assertNotEquals(a, b);
+        Assertions.assertNotEquals(a.hashCode(), b.hashCode());
+    }
+
+    @Test
+    @DisplayName("Test UserPrincipal ToString Success")
+    void userPrincipalToString() {
+        User user = mock(User.class);
+        final var a = new UserPrincipal(user);
+
+        Assertions.assertNotNull(a.toString());
+    }
 }

@@ -5,7 +5,7 @@ import com.firesale.api.model.User;
 import org.springframework.mail.SimpleMailMessage;
 
 public class MailUtil {
-    private MailUtil() {
+    public MailUtil() {
         throw new IllegalStateException("Utility class");
     }
 
