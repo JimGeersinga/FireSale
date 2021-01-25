@@ -13,7 +13,7 @@
       </a>
     </div>
     <span class="spacer"></span>
-    <button mat-icon-button [routerLink]="['/auctions/my-favourites']" class="menu-item">
+    <button mat-icon-button [routerLink]="['/auctions/my-favourites']" class="menu-item" *ngIf="(currentUser$ | async) == null">
       <mat-icon>favorite</mat-icon>
     </button>
     <div class="profile" [matMenuTriggerFor]="profileMenu" *ngIf="currentUser$ | async as user">
