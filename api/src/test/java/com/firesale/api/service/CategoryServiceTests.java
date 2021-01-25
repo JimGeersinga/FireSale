@@ -14,16 +14,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class CategoryServiceTests {
+class CategoryServiceTests {
     @Mock
     private CategoryRepository categoryRepository;
 
@@ -43,7 +40,7 @@ public class CategoryServiceTests {
 
         // Assert response
         verify(categoryRepository).findAll();
-        Assertions.assertTrue(returned == categories, "Incorrect categories returned");
+        Assertions.assertSame(returned, categories, "Incorrect categories returned");
     }
 
     @Test
@@ -58,7 +55,7 @@ public class CategoryServiceTests {
 
         // Assert response
         verify(categoryRepository).findByArchived(false);
-        Assertions.assertTrue(returned == categories, "Incorrect categories returned");
+        Assertions.assertSame(returned, categories, "Incorrect categories returned");
     }
 
     @Test
@@ -73,7 +70,7 @@ public class CategoryServiceTests {
 
         // Assert response
         verify(categoryRepository).findByArchived(true);
-        Assertions.assertTrue(returned == categories, "Incorrect categories returned");
+        Assertions.assertSame(returned, categories, "Incorrect categories returned");
     }
 
     @Test
@@ -88,21 +85,21 @@ public class CategoryServiceTests {
 
         // Assert response
         verify(categoryRepository).findById(1L);
-        Assertions.assertTrue(returned == category, "Incorrect category returned");
+        Assertions.assertSame(returned, category, "Incorrect category returned");
     }
 
     @Test
     @DisplayName("Test getCategoryById Failure")
     void getCategoryByIdFailure() {
         // Setup mock repository
-        doReturn(Optional.ofNullable(null)).when(categoryRepository).findById(1L);
+        doReturn(Optional.empty()).when(categoryRepository).findById(1L);
         String expected = String.format("Resource was not found: [No category exists for id: %d]", 1L);
         // Execute service call
         var returned = Assertions.assertThrows(ResourceNotFoundException.class, () ->categoryService.getCategoryById(1L));
         String actual = returned.getMessage();
         // Assert response
         verify(categoryRepository).findById(1L);
-        Assertions.assertTrue(actual.equals(expected), "Error message is incorrect");
+        Assertions.assertEquals(expected, actual, "Error message is incorrect");
     }
 
     @Test
@@ -117,7 +114,7 @@ public class CategoryServiceTests {
 
         // Assert response
         verify(categoryRepository).save(any(Category.class));
-        Assertions.assertTrue(returned == category, "Incorrect category returned");
+        Assertions.assertSame(returned, category, "Incorrect category returned");
     }
 
     @Test
@@ -133,7 +130,7 @@ public class CategoryServiceTests {
 
         // Assert response
         verify(categoryRepository).save(any(Category.class));
-        Assertions.assertTrue(returned == category, "Incorrect category returned");
+        Assertions.assertSame(returned, category, "Incorrect category returned");
     }
 
 
@@ -141,35 +138,36 @@ public class CategoryServiceTests {
     @DisplayName("Test updateCategory Failure")
     void updateCategoryFailure() {
         // Setup mock repository
-        doReturn(Optional.ofNullable(null)).when(categoryRepository).findById(1L);
+        doReturn(Optional.empty()).when(categoryRepository).findById(1L);
         String expected = String.format("Resource was not found: [No category exists for id: %d]", 1L);
+        var category = this.getEmpty(1L);
         // Execute service call
-        var returned = Assertions.assertThrows(ResourceNotFoundException.class, () ->categoryService.updateCategory(1L, this.getEmpty(1L)));
+        var returned = Assertions.assertThrows(ResourceNotFoundException.class, () -> categoryService.updateCategory(1L, category));
         String actual = returned.getMessage();
         // Assert response
         verify(categoryRepository).findById(1L);
-        Assertions.assertTrue(actual.equals(expected), "Error message is incorrect");
+        Assertions.assertEquals(expected, actual, "Error message is incorrect");
     }
 
     @Test
     @DisplayName("Test deleteCategory Failure")
     void deleteCategoryFailure() {
         // Setup mock repository
-        doReturn(Optional.ofNullable(null)).when(categoryRepository).findById(1L);
+        doReturn(Optional.empty()).when(categoryRepository).findById(1L);
         String expected = String.format("Resource was not found: [No category exists for id: %d]", 1L);
         // Execute service call
-        var returned = Assertions.assertThrows(ResourceNotFoundException.class, () ->categoryService.deleteCategory(1L));
+        var returned = Assertions.assertThrows(ResourceNotFoundException.class, () -> categoryService.deleteCategory(1L));
         String actual = returned.getMessage();
         // Assert response
         verify(categoryRepository).findById(1L);
-        Assertions.assertTrue(actual.equals(expected), "Error message is incorrect");
+        Assertions.assertEquals(expected, actual, "Error message is incorrect");
     }
 
     @Test
     @DisplayName("Test deleteCategoryFilled Success")
     void deleteCategoryFilled() {
         // Setup mock repository
-        var category = this.getFilled(1L);
+        var category = this.getFilled();
         when(categoryRepository.save(any(Category.class))).thenAnswer((answer) -> answer.getArguments()[0]);
         doReturn(Optional.of(category)).when(categoryRepository).findById(1L);
 
@@ -207,11 +205,11 @@ public class CategoryServiceTests {
         return category;
     }
 
-    private Category getFilled(Long id)
+    private Category getFilled()
     {
         Category category = new Category();
-        category.setName("test " + id);
-        category.setId(id);
+        category.setName("test 1");
+        category.setId(1L);
         category.setArchived(false);
         Auction a = new Auction();
         a.setId(1L);
@@ -222,7 +220,7 @@ public class CategoryServiceTests {
         a.setStartDate(LocalDateTime.now());
         a.setStatus(AuctionStatus.READY);
         a.setDescription("Description");
-        List<Auction> auctions = (Arrays.asList(a));
+        List<Auction> auctions = (Collections.singletonList(a));
         category.setAuctions(auctions);
         return category;
     }
@@ -234,7 +232,7 @@ public class CategoryServiceTests {
         ArrayList<Category> categories = new ArrayList<>();
         for(int i = 1; i <= 10; i++)
         {
-            var c = getEmpty(Long.valueOf(i));
+            var c = getEmpty((long) i);
             categories.add(c);
         }
         return categories;

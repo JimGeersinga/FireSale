@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -88,11 +88,11 @@ class  UserServiceTests {
     @Test
     void shouldFindUserByIdSuccessfully(){
         final User givenUser = getUser();
-        givenUser.setId(5l);
+        givenUser.setId(5L);
 
-        when(userRepository.findById(eq(5l))).thenReturn(Optional.of(givenUser));
+        when(userRepository.findById(eq(5L))).thenReturn(Optional.of(givenUser));
 
-        final User user = userService.findUserById(5l);
+        final User user = userService.findUserById(5L);
         assertThat(user.getId()).isEqualTo(givenUser.getId());
 
         verify(userRepository).findById(any(Long.class));
@@ -100,7 +100,7 @@ class  UserServiceTests {
 
     @Test
     void getAll(){
-        var givenUser = Arrays.asList( getUser());
+        var givenUser = Collections.singletonList(getUser());
 
         doReturn(givenUser).when(userRepository).findAll();
 
@@ -112,9 +112,7 @@ class  UserServiceTests {
 
     @Test
     void shouldThrowErrorWhenFindingUserWithNonExistingId(){
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            userService.findUserById(5l);
-        });
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> userService.findUserById(5L));
 
         assertThat(exception.getMessage()).isEqualTo("Resource was not found: [No user exists for id: 5]");
 
@@ -207,9 +205,7 @@ class  UserServiceTests {
 
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
-        assertThrows(UserRegistrationException.class, () -> {
-           userService.create(user);
-        });
+        assertThrows(UserRegistrationException.class, () -> userService.create(user));
 
         verify(userRepository).findByEmail(any(String.class));
         verify(userRepository, never()).save(any(User.class));
@@ -236,13 +232,13 @@ class  UserServiceTests {
         user.setIsLocked(true);
         user.setRole(Role.USER);
 
-        when(userRepository.findById(1l)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
 
         mockedGuard.when(Guard::isAdmin).thenReturn(true);
         mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(false);
 
-        User patchedUser = userService.patchUser(1l, user);
+        User patchedUser = userService.patchUser(1L, user);
 
         assertThat(patchedUser).isEqualTo(user);
 
@@ -256,14 +252,12 @@ class  UserServiceTests {
         user.setIsLocked(true);
         user.setRole(Role.USER);
 
-        when(userRepository.findById(1l)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         mockedGuard.when(Guard::isAdmin).thenReturn(true);
         mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(true);
 
-        Exception exception = assertThrows(UnAuthorizedException.class, () -> {
-            userService.patchUser(1l, user);
-        });
+        Exception exception = assertThrows(UnAuthorizedException.class, () -> userService.patchUser(1L, user));
 
         assertThat(exception.getMessage()).isEqualTo("User is not authorized for: [Cannot patch admin fields]");
 
@@ -283,13 +277,13 @@ class  UserServiceTests {
 
         doReturn("TEST").when(passwordEncoder).encode(anyString());
 
-        when(userRepository.findById(1l)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
 
         mockedGuard.when(Guard::isAdmin).thenReturn(false);
         mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(true);
 
-        User patchedUser = userService.patchUser(1l, user);
+        User patchedUser = userService.patchUser(1L, user);
 
         assertThat(patchedUser).isEqualTo(user);
 
@@ -305,12 +299,10 @@ class  UserServiceTests {
         user.setLastName("Doe");
         user.setDateOfBirth(LocalDate.now());
         user.setPassword("test");
-        when(userRepository.findById(1l)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         mockedGuard.when(Guard::isAdmin).thenReturn(false);
         mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(false);
-        Exception exception = assertThrows(UnAuthorizedException.class, () -> {
-            userService.patchUser(1l, user);
-        });
+        Exception exception = assertThrows(UnAuthorizedException.class, () -> userService.patchUser(1L, user));
         assertThat(exception.getMessage()).isEqualTo("User is not authorized for: [Cannot patch user fields]");
         verify(userRepository).findById(any(Long.class));
     }
@@ -325,14 +317,12 @@ class  UserServiceTests {
         user.setLastName("Doe");
         user.setDateOfBirth(LocalDate.now());
 
-        when(userRepository.findById(1l)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         mockedGuard.when(Guard::isAdmin).thenReturn(false);
         mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(false);
 
-        Exception exception = assertThrows(UnAuthorizedException.class, () -> {
-            userService.patchUser(1l, user);
-        });
+        Exception exception = assertThrows(UnAuthorizedException.class, () -> userService.patchUser(1L, user));
 
         assertThat(exception.getMessage()).isEqualTo("User is not authorized for: [Cannot patch user fields]");
 
@@ -350,8 +340,8 @@ class  UserServiceTests {
         user.setLastName("Doe");
         user.setDateOfBirth(LocalDate.now());
         user.setPassword("test");
-        var auctions = Arrays.asList();
-        var bids = Arrays.asList();
+        var auctions = Collections.emptyList();
+        var bids = Collections.emptyList();
         doReturn(Optional.of(user)).when(userRepository).findById(anyLong());
         doReturn(auctions).when(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(anyLong());
         doReturn(bids).when(bidRepository).findByUserId(anyLong());
@@ -373,8 +363,8 @@ class  UserServiceTests {
         user.setLastName("Doe");
         user.setDateOfBirth(LocalDate.now());
         user.setPassword("test");
-        var auctions = Arrays.asList(new Auction());
-        var bids = Arrays.asList();
+        var auctions = Collections.singletonList(new Auction());
+        var bids = Collections.emptyList();
         doReturn(Optional.of(user)).when(userRepository).findById(anyLong());
         doReturn(auctions).when(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(anyLong());
         doReturn(bids).when(bidRepository).findByUserId(anyLong());
@@ -396,8 +386,8 @@ class  UserServiceTests {
         user.setLastName("Doe");
         user.setDateOfBirth(LocalDate.now());
         user.setPassword("test");
-        var auctions = Arrays.asList();
-        var bids = Arrays.asList(new Bid());
+        var auctions = Collections.emptyList();
+        var bids = Collections.singletonList(new Bid());
         doReturn(Optional.of(user)).when(userRepository).findById(anyLong());
         doReturn(auctions).when(auctionRepository).findByUserIdAndIsDeletedFalseOrderByEndDateDesc(anyLong());
         doReturn(bids).when(bidRepository).findByUserId(anyLong());
@@ -432,7 +422,7 @@ class  UserServiceTests {
 
     private User getUser(){
         final User user = new User();
-        user.setId(1l);
+        user.setId(1L);
         user.setEmail("admin@firesale.nl");
         user.setPassword(passwordEncoder.encode("admin"));
         user.setAddress(new Address());

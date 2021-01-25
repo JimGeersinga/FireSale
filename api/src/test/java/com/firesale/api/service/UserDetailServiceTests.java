@@ -17,7 +17,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class UserDetailServiceTests {
+class UserDetailServiceTests {
     @Mock
     private UserRepository userRepository;
 
@@ -29,14 +29,14 @@ public class UserDetailServiceTests {
     void loadUserByUsername() {
         // Setup mock repository
         String email = "test@test.nl";
-        doReturn(Optional.ofNullable(null)).when(userRepository).findByEmail(email);
+        doReturn(Optional.empty()).when(userRepository).findByEmail(email);
         String expected = String.format("No user with email: %s was found", email);
         // Execute service call
         var returned = Assertions.assertThrows(UsernameNotFoundException.class, () ->userDetailService.loadUserByUsername(email));
         String actual = returned.getMessage();
         // Assert response
         verify(userRepository).findByEmail(email);
-        Assertions.assertTrue(actual.equals(expected), "Error message is incorrect");
+        Assertions.assertEquals(expected, actual, "Error message is incorrect");
     }
 
 
@@ -47,11 +47,11 @@ public class UserDetailServiceTests {
         String email = "test@test.nl";
         User user = new User();
         user.setId(1L);
-        doReturn(Optional.ofNullable(user)).when(userRepository).findByEmail(email);
+        doReturn(Optional.of(user)).when(userRepository).findByEmail(email);
         // Execute service call
         var returned = userDetailService.loadUserByUsername(email);
         // Assert response
         verify(userRepository).findByEmail(email);
-        Assertions.assertTrue(returned != null, "Incorrect user");
+        Assertions.assertNotNull(returned, "Incorrect user");
     }
 }

@@ -20,7 +20,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @ExtendWith(MockitoExtension.class)
-public class CategoryControllerTests {
+class CategoryControllerTests {
     private MockMvc mvc;
 
     @Mock
@@ -47,9 +47,8 @@ public class CategoryControllerTests {
 
     private JacksonTester<UpsertCategoryDTO> upsertCategoryDTOJacksonTester;
 
-
     @BeforeEach
-    public void setup() {
+    void setup() {
         JacksonTester.initFields(this, new ObjectMapper());
         mvc = MockMvcBuilders.standaloneSetup(categoryController)
                 .setControllerAdvice(new GlobalExceptionHandler())
@@ -57,7 +56,7 @@ public class CategoryControllerTests {
     }
 
     @Test
-    public void getAll() throws Exception {
+    void canRetrieveByIdWhenExists() throws Exception {
         // given
         Category c = new Category();
         c.setName("test");
@@ -105,6 +104,9 @@ public class CategoryControllerTests {
         when(categoryService.create(any(Category.class))).thenAnswer((i)->{
             return i.getArguments()[0];
         });
+
+        given(categoryService.getAvailableCategories())
+                .willReturn(Collections.singletonList(c));
 
         // when
         MockHttpServletResponse response = mvc.perform(

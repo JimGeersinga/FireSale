@@ -4,8 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HeaderComponent } from './core/components/header/header.component';
-import { FooterComponent } from './core/components/footer/footer.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { SharedModule } from './shared/shared.module';
 import { SideBarComponent } from './core/components/side-bar/side-bar.component';
@@ -43,8 +41,6 @@ import { AuctionsFilteredComponent } from './pages/auctions-filtered/auctions-fi
     AuctionListComponent,
     AuctionDetailComponent,
     BidComponent,
-    HeaderComponent,
-    FooterComponent,
     RegisterComponent,
     SideBarComponent,
     LoginComponent,

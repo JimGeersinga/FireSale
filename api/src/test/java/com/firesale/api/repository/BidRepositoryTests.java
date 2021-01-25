@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class BidRepositoryTests {
+class BidRepositoryTests {
     @Autowired
     private DataSource dataSource;
     @Autowired

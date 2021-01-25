@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest(classes = {AuctionMapperImpl.class, BidMapperImpl.class, UserMapperImpl.class, AddressMapperImpl.class})
-public class AuctionMapperTests {
+class AuctionMapperTests {
 
     @Autowired
     private AuctionMapper auctionMapper;
@@ -26,7 +26,7 @@ public class AuctionMapperTests {
     @Test
     void testAuctionMap() {
         // Setup mock repository
-        Auction auction = this.getAuction(1L);
+        Auction auction = this.getAuction();
         doReturn(auction.getUser()).when(userService).findUserById(anyLong());
         // Execute
         var dto = auctionMapper.toDTO(auction);
@@ -41,31 +41,31 @@ public class AuctionMapperTests {
 
 
 
-    private Auction getAuction(Long id)
+    private Auction getAuction()
     {
         Image i = new Image();
-        i.setId(id);
+        i.setId(1L);
         i.setPath(new byte[0]);
         i.setSort(1);
         i.setType("test");
 
         Tag t = new Tag();
         t.setName("test-tag");
-        t.setId(id);
+        t.setId(1L);
 
         Category c = new Category();
         c.setName("test-tag");
-        c.setId(id);
+        c.setId(1L);
 
         Address address = new Address();
-        address.setId(id);
+        address.setId(1L);
         address.setCity("getCity");
         address.setCountry("getCountry");
         address.setHouseNumber("setHouseNumber");
         address.setPostalCode("setPostalCode");
 
         User user = new User();
-        user.setId(id);
+        user.setId(1L);
         user.setDisplayName("setDisplayName");
         user.setFirstName("setFirstName");
         user.setAddress(address);
@@ -78,19 +78,19 @@ public class AuctionMapperTests {
 
 
         Auction auction = new Auction();
-        auction.setName("test " + id);
+        auction.setName("test 1");
         auction.setIsFeatured(true);
         auction.setMinimalBid(10d);
         auction.setEndDate(LocalDateTime.now());
         auction.setStartDate(LocalDateTime.now());
-        auction.setDescription("Description " + id);
-        auction.setId(id);
+        auction.setDescription("Description 1");
+        auction.setId(1L);
 
         auction.setUser(user);
-        auction.setBids(Arrays.asList(b));
+        auction.setBids(Collections.singletonList(b));
         auction.setFinalBid(b);
-        auction.setCategories(Arrays.asList(c));
-        auction.setImages(Arrays.asList(i));
+        auction.setCategories(Collections.singletonList(c));
+        auction.setImages(Collections.singletonList(i));
         auction.setIsDeleted(false);
         auction.setIsFeatured(true);
         auction.setStatus(AuctionStatus.CLOSED);

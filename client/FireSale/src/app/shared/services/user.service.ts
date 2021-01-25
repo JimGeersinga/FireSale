@@ -32,7 +32,7 @@ export class UserService {
       tap({
         next: (response) => {
           const user = response.data;
-          if (response.success && response.data) {
+          if (user) {
             user.authData = window.btoa(
               `${loginDto.email}:${loginDto.password}`
             );

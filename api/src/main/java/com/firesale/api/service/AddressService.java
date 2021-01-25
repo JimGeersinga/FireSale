@@ -18,9 +18,8 @@ public class AddressService {
     private final AddressRepository addressRepository;
 
     public Address findAddressById(final long addressId) {
-        var result = addressRepository.findById(addressId)
+        return addressRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("No address exists for id: %d", addressId), ErrorTypes.ADDRESS_NOT_FOUND));
-        return result;
     }
 
     @Transactional(readOnly = false)

@@ -3,13 +3,14 @@ package com.firesale.api.service;
 import com.firesale.api.exception.ResourceNotFoundException;
 import com.firesale.api.model.Tag;
 import com.firesale.api.repository.TagRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TagServiceTests {
+class TagServiceTests {
 
     @Mock
     TagRepository tagRepository;
@@ -57,10 +58,10 @@ public class TagServiceTests {
         final Tag givenTag = getTag();
         givenTag.setName("Auto");
 
-        when(tagRepository.findByNameContaining(eq("Auto"))).thenReturn(Arrays.asList(givenTag));
+        when(tagRepository.findByNameContaining(eq("Auto"))).thenReturn(Collections.singletonList(givenTag));
 
         var tags = tagService.searchTagsByName("Auto");
-        assertThat(tags.stream().count() == 1L);
+        assertThat((long) tags.size()).isEqualTo(1L);
 
         verify(tagRepository).findByNameContaining(any(String.class));
     }
@@ -72,11 +73,10 @@ public class TagServiceTests {
         final Tag givenTag = getTag();
         givenTag.setName("Auto");
 
-        when(tagRepository.findByName(eq("Auto"))).thenReturn(Optional.ofNullable(null));
+        when(tagRepository.findByName(eq("Auto"))).thenReturn(Optional.empty());
 
         var exc = assertThrows(ResourceNotFoundException.class, () ->tagService.getTagByName("Auto"));
-        assertThat(exc.getMessage().length() > 0);
-
+        Assertions.assertTrue(exc.getMessage().length() > 0);
     }
 
 

@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ImageServiceTests {
+class ImageServiceTests {
     @Mock
     private ImageRepository imageRepository;
     @Mock
@@ -42,14 +42,14 @@ public class ImageServiceTests {
     void saveImageNotFoundFailure() {
         // Setup mock repository
         CreateImageDTO dto = this.getImageDTO(1L);
-        doReturn(Optional.ofNullable(null)).when(imageRepository).findById(1L);
+        doReturn(Optional.empty()).when(imageRepository).findById(1L);
         String expected = "Resource was not found: [Image should be in the database but it is not]";
         // Execute service call
         var returned = Assertions.assertThrows(ResourceNotFoundException.class, () ->imageService.saveImage(dto));
         String actual = returned.getMessage();
         // Assert response
         verify(imageRepository).findById(1L);
-        Assertions.assertTrue(actual.equals(expected), "Error message is incorrect");
+        Assertions.assertEquals(expected, actual, "Error message is incorrect");
     }
 
     @Test
@@ -57,7 +57,7 @@ public class ImageServiceTests {
     void saveImageExistingSuccess() {
         // Setup mock repository
         CreateImageDTO dto = this.getImageDTO(1L);
-        doReturn(Optional.ofNullable(this.getImage(1L))).when(imageRepository).findById(1L);
+        doReturn(Optional.of(this.getImage())).when(imageRepository).findById(1L);
         when(imageRepository.save(any(Image.class))).thenAnswer((answer) -> answer.getArguments()[0]);
 
         // Execute service call
@@ -65,7 +65,7 @@ public class ImageServiceTests {
         // Assert response
         verify(imageRepository).findById(1L);
         verify(imageRepository).save(any(Image.class));
-        Assertions.assertTrue(returned.getId().equals(1L), "Incorrect image returned");
+        Assertions.assertEquals(1L, (long) returned.getId(), "Incorrect image returned");
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ImageServiceTests {
         var returned = imageService.saveImage(dto);
         // Assert response
         verify(imageRepository).save(any(Image.class));
-        Assertions.assertTrue(returned.getId().equals(1L), "Incorrect image");
+        Assertions.assertEquals(1L, (long) returned.getId(), "Incorrect image");
     }
 
 
@@ -142,13 +142,10 @@ public class ImageServiceTests {
         verify(userRepository).save(any(User.class));
     }
 
-
-
-
-    private Image getImage(Long id)
+    private Image getImage()
     {
         Image img = new Image();
-        img.setId(id);
+        img.setId(1L);
         img.setSort(1);
         img.setPath(new byte[]{});
         img.setType(".jpg");

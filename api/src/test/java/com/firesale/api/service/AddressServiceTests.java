@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AddressServiceTests {
+class AddressServiceTests {
 
     @InjectMocks
     private AddressService addressService;
@@ -47,7 +47,7 @@ public class AddressServiceTests {
     @DisplayName("Test findById Failure")
     void testFindByIdFailure() {
         // Setup mock repository
-        doReturn(Optional.ofNullable(null)).when(addressRepository).findById(1L);
+        doReturn(Optional.empty()).when(addressRepository).findById(1L);
 
         // Execute service call
         var exception = assertThrows(ResourceNotFoundException.class, () ->addressService.findAddressById(1L));
@@ -71,7 +71,7 @@ public class AddressServiceTests {
         Address returnedAddress = addressService.updateAddress(1L, address);
 
         // Assert response
-        Assertions.assertTrue(returnedAddress != null, "Address was not found");
+        Assertions.assertNotNull(returnedAddress, "Address was not found");
         Assertions.assertSame(returnedAddress, address, "The address returned was not the same as the mock");
         verify(addressRepository).findById(any(Long.class));
         verify(addressRepository).save(any(Address.class));
@@ -83,7 +83,7 @@ public class AddressServiceTests {
         // Setup mock repository
         Address address = this.get();
 
-        doReturn(Optional.ofNullable(null)).when(addressRepository).findById(1L);
+        doReturn(Optional.empty()).when(addressRepository).findById(1L);
 
         // Execute service call
         var exception = assertThrows(ResourceNotFoundException.class, () ->addressService.updateAddress(1L, address));
@@ -110,7 +110,7 @@ public class AddressServiceTests {
         Address returnedAddress = addressService.patchAddress(1L, address);
 
         // Assert response
-        Assertions.assertTrue(returnedAddress != null, "Address was not found");
+        Assertions.assertNotNull(returnedAddress, "Address was not found");
         Assertions.assertSame(returnedAddress.getId(), address.getId(), "The address returned was not the same as the mock");
         verify(addressRepository).findById(any(Long.class));
         verify(addressRepository).save(any(Address.class));
@@ -129,7 +129,7 @@ public class AddressServiceTests {
         Address returnedAddress = addressService.patchAddress(1L, address);
 
         // Assert response
-        Assertions.assertTrue(returnedAddress != null, "Address was not found");
+        Assertions.assertNotNull(returnedAddress, "Address was not found");
         Assertions.assertSame(returnedAddress.getId(), address.getId(), "The address returned was not the same as the mock");
         verify(addressRepository).findById(any(Long.class));
         verify(addressRepository).save(any(Address.class));
@@ -141,7 +141,7 @@ public class AddressServiceTests {
         // Setup mock repository
         Address address = this.get();
 
-        doReturn(Optional.ofNullable(null)).when(addressRepository).findById(1L);
+        doReturn(Optional.empty()).when(addressRepository).findById(1L);
 
         // Execute service call
         var exception = assertThrows(ResourceNotFoundException.class, () ->addressService.patchAddress(1L, address));

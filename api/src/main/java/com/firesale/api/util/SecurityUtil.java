@@ -9,8 +9,15 @@ public class SecurityUtil {
     }
 
     public static UserPrincipal getSecurityContextUser() {
-        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var context = SecurityContextHolder.getContext();
+        if(context == null) return null;
+
+        var authentication = context.getAuthentication();
+        if(authentication == null) return null;
+
+        var principal = authentication.getPrincipal();
         if(principal == "anonymousUser") return  null;
+
         return (UserPrincipal) principal;
     }
 }

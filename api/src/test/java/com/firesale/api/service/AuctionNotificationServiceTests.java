@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AuctionNotificationServiceTests {
+class AuctionNotificationServiceTests {
     @Mock
     private SimpMessagingTemplate template;
     @Mock
@@ -47,7 +47,6 @@ public class AuctionNotificationServiceTests {
     @DisplayName("Test sendStatusNotification Success")
     void sendStatusNotification() {
         // Setup mock repository
-        BidDTO dto = this.getBid();
         doNothing().when(template).convertAndSend(any(String.class), any(WebsocketAuctionMessage.class));
 
         // Execute service call

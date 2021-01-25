@@ -26,7 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserSecurityServiceTests {
+class UserSecurityServiceTests {
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -69,7 +69,7 @@ public class UserSecurityServiceTests {
         String actual = returned.getMessage();
         // Assert response
         verify(passwordResetTokenRepository).findByToken(any(String.class));
-        Assertions.assertTrue(actual.equals(expected), "Error message is incorrect");
+        Assertions.assertEquals(expected, actual, "Error message is incorrect");
     }
 
     @Test
@@ -86,7 +86,7 @@ public class UserSecurityServiceTests {
         String actual = returned.getMessage();
         // Assert response
         verify(passwordResetTokenRepository).findByToken(any(String.class));
-        Assertions.assertTrue(actual.equals(expected), "Error message is incorrect");
+        Assertions.assertEquals(expected, actual, "Error message is incorrect");
     }
 
     @Test
@@ -99,6 +99,7 @@ public class UserSecurityServiceTests {
         doReturn(token).when(passwordResetTokenRepository).findByToken(any(String.class));
         doNothing().when(passwordResetTokenRepository).delete(any(PasswordResetToken.class));
         doReturn(token).when(passwordResetTokenRepository).findByUser(any(User.class));
+        doReturn("").when(passwordEncoder).encode(any(String.class));
         when(userRepository.save(any(User.class))).thenAnswer((answer) -> answer.getArguments()[0]);
 
         // Execute service call
@@ -106,6 +107,7 @@ public class UserSecurityServiceTests {
         // Assert response
         verify(passwordResetTokenRepository).findByToken(any(String.class));
         verify(userRepository).save(any(User.class));
+        verify(passwordEncoder).encode(any(String.class));
         verify(passwordResetTokenRepository).delete(any(PasswordResetToken.class));
         verify(passwordResetTokenRepository).findByUser(any(User.class));
     }

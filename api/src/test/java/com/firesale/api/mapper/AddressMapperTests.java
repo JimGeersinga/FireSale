@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {AddressMapperImpl.class})
-public class AddressMapperTests {
+class AddressMapperTests {
     @Autowired
     private AddressMapper addressMapper;
 

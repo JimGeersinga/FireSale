@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class BidServiceTests {
+class BidServiceTests {
 
     @Mock
     private BidRepository bidRepository;
@@ -40,7 +40,7 @@ public class BidServiceTests {
 
         // Assert response
         verify(bidRepository).findByAuctionId(any(Long.class));
-        Assertions.assertTrue(returned == bids, "Incorrect bids returned");
+        Assertions.assertSame(returned, bids, "Incorrect bids returned");
     }
 
 
@@ -58,7 +58,7 @@ public class BidServiceTests {
 
         // Assert response
         verify(bidRepository).save(bid);
-        Assertions.assertTrue(bid.getId() == returned.getId(), "Not the same bid is returned");
+        Assertions.assertSame(bid.getId(), returned.getId(), "Not the same bid is returned");
     }
 
     @Test
@@ -71,7 +71,7 @@ public class BidServiceTests {
         var returned = assertThrows(CreateBidException.class, () ->bidService.create(bid));
         var actual = returned.getMessage();
         // Assert response
-        Assertions.assertTrue(actual == expected, "Error message is not correct");
+        Assertions.assertSame(actual, expected, "Error message is not correct");
     }
 
     @Test
@@ -88,7 +88,7 @@ public class BidServiceTests {
         var returned = assertThrows(CreateBidException.class, () ->bidService.create(bid));
         var actual = returned.getMessage();
         // Assert response
-        Assertions.assertTrue(actual == expected, "Error message is not correct");
+        Assertions.assertSame(actual, expected, "Error message is not correct");
     }
 
 
