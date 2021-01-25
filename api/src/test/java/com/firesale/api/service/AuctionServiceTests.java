@@ -628,6 +628,135 @@ class AuctionServiceTests {
 
     }
 
+
+
+    @Test
+    @DisplayName("Test toggleFavourite Success")
+    void toggleFavouriteTrue() {
+        // Setup mock repository
+        FavouriteAuction auction = new FavouriteAuction();
+        doReturn(Optional.of(auction)).when(favouriteAuctionRepository).findByAuctionIdAndUserId(anyLong(), anyLong());
+        // Execute service call
+        auctionService.toggleFavourite(1L, 1L, true);
+        // Assert response
+        verify(favouriteAuctionRepository).findByAuctionIdAndUserId(anyLong(), anyLong());
+    }
+
+    @Test
+    @DisplayName("Test toggleFavourite Success")
+    void toggleFavouriteFalse() {
+        // Setup mock repository
+        FavouriteAuction auction = new FavouriteAuction();
+        doReturn(Optional.of(auction)).when(favouriteAuctionRepository).findByAuctionIdAndUserId(anyLong(), anyLong());
+        doNothing().when(favouriteAuctionRepository).delete(any(FavouriteAuction.class));
+        // Execute service call
+        auctionService.toggleFavourite(1L, 1L, false);
+        // Assert response
+        verify(favouriteAuctionRepository).delete(any(FavouriteAuction.class));
+        verify(favouriteAuctionRepository).findByAuctionIdAndUserId(anyLong(), anyLong());
+    }
+
+
+    @Test
+    @DisplayName("Test toggleFavourite Success")
+    void toggleFavouriteTrueSave() {
+        // Setup mock repository
+        doReturn(Optional.empty()).when(favouriteAuctionRepository).findByAuctionIdAndUserId(anyLong(), anyLong());
+        // Execute service call
+        auctionService.toggleFavourite(1L, 1L, false);
+        // Assert response
+        verify(favouriteAuctionRepository).findByAuctionIdAndUserId(anyLong(), anyLong());
+    }
+
+    @Test
+    @DisplayName("Test toggleFavourite Success")
+    void toggleFavouriteFalseSave() {
+        // Setup mock repository
+        FavouriteAuction auction = new FavouriteAuction();
+
+        doReturn(Optional.empty()).when(favouriteAuctionRepository).findByAuctionIdAndUserId(anyLong(), anyLong());
+        doReturn(auction).when(favouriteAuctionRepository).save(any(FavouriteAuction.class));
+        // Execute service call
+        auctionService.toggleFavourite(1L, 1L, true);
+        // Assert response
+        verify(favouriteAuctionRepository).save(any(FavouriteAuction.class));
+        verify(favouriteAuctionRepository).findByAuctionIdAndUserId(anyLong(), anyLong());
+    }
+
+
+
+
+
+    @Test
+    @DisplayName("Test update Success")
+    void testupdateEmpty() {
+        // Setup mock repository
+        mockedGuard.when(Guard::isAdmin).thenReturn(true);
+        mockedGuard.when(() -> Guard.isSelf(anyLong())).thenReturn(false);
+        Auction auction = getEmptyAuction(1L);
+        auction.setStartDate(LocalDateTime.now().plusHours(10));
+
+        CreateAuctionDTO auctionDTO = new CreateAuctionDTO();
+        User u = new User();
+        u.setId(1L);
+        auctionDTO.setId(1L);
+        when(tagService.getTagByName(anyString())).thenReturn(null, new Tag());
+        doReturn(new Tag()).when(tagService).createTag(anyString());
+        doReturn(Optional.of(auction)).when(auctionRepository).findById(anyLong());
+        when(auctionRepository.save(any(Auction.class))).thenAnswer((answer) -> {
+            return (Auction)answer.getArguments()[0];
+        });
+
+        var categories = this.getEmptyCategories();
+        auctionDTO.setCategories(Arrays.asList(1L, 2L));
+        doReturn(categories).when(categoryRepository).findByIdIn(any());
+
+
+        var tag1 = new TagDTO();
+        tag1.setName("test");
+        var tag2 = new TagDTO();
+        tag2.setName("test2");
+
+        auctionDTO.setTags(Arrays.asList(tag1, tag2));
+
+        // Execute service call
+        var returnedAuction = auctionService.updateAuction(1L, auctionDTO);
+        // Assert response
+        Assertions.assertTrue(returnedAuction != null, "Auction was not found");
+        Assertions.assertSame(auction.getId(), returnedAuction.getId(), "The auction returned was not the same as the mock");
+
+    }
+
+
+    @Test
+    @DisplayName("Test update Failure")
+    void testupdateEmptyFailure() {
+        // Setup mock repository
+        Auction auction = getEmptyAuction(1L);
+        auction.setStartDate(LocalDateTime.now().minusHours(10));
+
+        CreateAuctionDTO auctionDTO = new CreateAuctionDTO();
+        User u = new User();
+        u.setId(1L);
+        auctionDTO.setId(1L);
+        doReturn(Optional.of(auction)).when(auctionRepository).findById(anyLong());
+
+        var categories = this.getEmptyCategories();
+        auctionDTO.setCategories(Arrays.asList(1L, 2L));
+        doReturn(categories).when(categoryRepository).findByIdIn(any());
+
+
+        String expected = "User is not authorized for: [Cannot change a running auction]";
+        // Execute service call
+        var returnedAuction = Assertions.assertThrows(UnAuthorizedException.class, () ->auctionService.updateAuction(1L, auctionDTO));
+        // Assert response
+        Assertions.assertEquals(returnedAuction.getMessage(), expected, "Auction was not found");
+
+    }
+
+
+
+
     @Test
     @DisplayName("Test patch empty Failure")
     void testPatchFailure() {
