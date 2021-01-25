@@ -33,7 +33,7 @@
       *ngIf="(isAdmin || isOwner) && (state !== auctionState.CLOSED || auction.status === 'CANCELLED')">
       <button (click)="cancelAuction()" mat-raised-button color="primary"
         *ngIf="(isAdmin || (isOwner && state === auctionState.SCHEDULED)) && state !== auctionState.CLOSED">Veiling
-        annuleren</button>
+        sluiten</button>
       <button (click)="deleteAuction()" mat-raised-button color="warn"
         *ngIf="(isAdmin || isOwner) && auction.status === 'CANCELLED'">Veiling verwijderen</button>
       <button mat-raised-button color="primary" (click)="toggleFeatured()"
