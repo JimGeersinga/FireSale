@@ -2,6 +2,36 @@
 
 [![Build Status](https://travis-ci.com/mikevanl/FireSale.svg?branch=main)](https://travis-ci.com/mikevanl/FireSale)
 
+## Gettings started
+### Database gegevens
+Om FireSale te gebruiken moeten de databaseinstellingen in de omgevingsvariabelen worden opgenomen. De gegeven waarden zijn als voorbeeld, de juiste waarden zijn op aanvraag te verkrijgen.
+
+```
+FIRESALE_HOST jdbc:mariadb://sql.hosted.hro.nl/0999999?username=0999999&password=Welkom01
+FIRESALE_PASSWORD Welkom01
+FIRESALE_USER 0999999
+```
+
+### E-mailinstelligen
+Om de wachtwoord-vergeten functionaliteit te kunnen gebruiken moet je e-mailinstellingen in je omgevingsvariabelen opnemen. Voorbeeldgegevens om je schoolaccount te gebruiken:
+
+```
+FIRESALE_MAILSERVER_HOST outlook.office365.com
+FIRESALE_MAILSERVER_USER 0999999@hr.nl
+FIRESALE_MAILSERVER_PASS Welkom01
+FIRESALE_MAILSERVER_FROM FireSale <0999999@hr.nl>
+```
+
+Voorbeeldgegevens om je Gmail-account te gebruiken. Wil je je Gmail account gebruiken, dan moet je een zogenaamd app-wachtwoord genereren en dat gebruiken als wachtwoord: https://myaccount.google.com/apppasswords
+
+```
+FIRESALE_MAILSERVER_HOST smtp.gmail.com
+FIRESALE_MAILSERVER_USER janjansen@gmail.com
+FIRESALE_MAILSERVER_PASS p@ssw0rd
+FIRESALE_MAILSERVER_FROM FireSale <janjansen@gmail.com>
+```
+
+Let in elk geval op dat je altijd bij from het adres gebruikt wat bij de username hoort (meestal is het hetzelfde, maar niet altijd)
 
 ## Definition of done
 ### Server:
@@ -32,24 +62,3 @@ stackoverflow als je niet begrijpt wat hier staat)
 ofwel die andere features zijn aangepast zodat deze blijven werken.
 - De checklists in de issue zijn achteraf nog gecontroleerd op volledigheid tegen je code
 en bij vragen is hierover overleg geweest met een codeowner en is de checklist aangepast
-
-## E-mailinstelligen
-Om de wachtwoord-vergeten functionaliteit te kunnen gebruiken moet je e-mailinstellingen in je omgevingsvariabelen opnemen. Voorbeeldgegevens om je schoolaccount te gebruiken:
-
-```
-FIRESALE_MAILSERVER_HOST outlook.office365.com
-FIRESALE_MAILSERVER_USER 0999999@hr.nl
-FIRESALE_MAILSERVER_PASS Welkom01
-FIRESALE_MAILSERVER_FROM FireSale <0999999@hr.nl>
-```
-
-Voorbeeldgegevens om je Gmail-account te gebruiken. Wil je je Gmail account gebruiken, dan moet je een zogenaamd app-wachtwoord genereren en dat gebruiken als wachtwoord: https://myaccount.google.com/apppasswords
-
-```
-FIRESALE_MAILSERVER_HOST smtp.gmail.com
-FIRESALE_MAILSERVER_USER janjansen@gmail.com
-FIRESALE_MAILSERVER_PASS p@ssw0rd
-FIRESALE_MAILSERVER_FROM FireSale <janjansen@gmail.com>
-```
-
-Let in elk geval op dat je altijd bij from het adres gebruikt wat bij de username hoort (meestal is het hetzelfde, maar niet altijd)
