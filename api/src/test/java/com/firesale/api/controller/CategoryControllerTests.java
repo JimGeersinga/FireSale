@@ -2,6 +2,7 @@ package com.firesale.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firesale.api.dto.category.CategoryDTO;
+import com.firesale.api.dto.category.UpsertCategoryDTO;
 import com.firesale.api.exception.GlobalExceptionHandler;
 import com.firesale.api.mapper.CategoryMapper;
 import com.firesale.api.model.Category;
@@ -23,9 +24,11 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CategoryControllerTests {
@@ -41,6 +44,10 @@ public class CategoryControllerTests {
     private CategoryController categoryController;
 
     private JacksonTester<CategoryDTO> categoryDTOJacksonTester;
+
+    private JacksonTester<UpsertCategoryDTO> upsertCategoryDTOJacksonTester;
+
+
     @BeforeEach
     public void setup() {
         JacksonTester.initFields(this, new ObjectMapper());
@@ -50,22 +57,17 @@ public class CategoryControllerTests {
     }
 
     @Test
-    public void canRetrieveByIdWhenExists() throws Exception {
+    public void getAll() throws Exception {
         // given
-
         Category c = new Category();
         c.setName("test");
         c.setId(1L);
-
         when(categoryMapper.toDTO(any(Category.class))).thenAnswer((i)->{
             var category = (Category)i.getArguments()[0];
             var dto = new CategoryDTO();
             dto.setName(category.getName());
             return dto;
         });
-
-
-
         given(categoryService.getAvailableCategories())
                 .willReturn(Arrays.asList(c));
         // when
@@ -73,7 +75,113 @@ public class CategoryControllerTests {
                  get("/categories")
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("test");
+    }
 
+    @Test
+    void postDTO() throws Exception {
+        // given
+        Category c = new Category();
+        c.setName("test");
+        c.setId(1L);
+        when(categoryMapper.toDTO(any(Category.class))).thenAnswer((i)->{
+            var category = (Category)i.getArguments()[0];
+            var dto = new CategoryDTO();
+            dto.setName(category.getName());
+            return dto;
+        });
+        when(categoryMapper.toModel(any(UpsertCategoryDTO.class))).thenAnswer((i)->{
+            var category = (UpsertCategoryDTO)i.getArguments()[0];
+            var dto = new Category();
+            dto.setName(category.getName());
+            return dto;
+        });
+
+        UpsertCategoryDTO dto = new UpsertCategoryDTO();
+        dto.setName("test");
+
+        when(categoryService.create(any(Category.class))).thenAnswer((i)->{
+            return i.getArguments()[0];
+        });
+
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                post("/categories").contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON).content(upsertCategoryDTOJacksonTester.write(dto).getJson()))
+                .andReturn().getResponse();
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.getContentAsString()).contains("test");
+    }
+
+    @Test
+    void putDTO() throws Exception {
+        // given
+        Category c = new Category();
+        c.setName("test");
+        c.setId(1L);
+        when(categoryMapper.toModel(any(UpsertCategoryDTO.class))).thenAnswer((i)->{
+            var category = (UpsertCategoryDTO)i.getArguments()[0];
+            var dto = new Category();
+            dto.setName(category.getName());
+            return dto;
+        });
+
+        UpsertCategoryDTO dto = new UpsertCategoryDTO();
+        dto.setName("test");
+
+        when(categoryService.updateCategory(anyLong(),any(Category.class))).thenAnswer((i)->{
+            return i.getArguments()[1];
+        });
+
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                put("/categories/1").contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON).content(upsertCategoryDTOJacksonTester.write(dto).getJson()))
+                .andReturn().getResponse();
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+
+    @Test
+    void deleteAction() throws Exception {
+        // given
+        doNothing().when(categoryService).deleteCategory(anyLong());
+
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                delete("/categories/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+
+
+
+    @Test
+    void getArchived() throws Exception {
+        // given
+        Category c = new Category();
+        c.setName("test");
+        c.setId(1L);
+        when(categoryMapper.toDTO(any(Category.class))).thenAnswer((i)->{
+            var category = (Category)i.getArguments()[0];
+            var dto = new CategoryDTO();
+            dto.setName(category.getName());
+            return dto;
+        });
+        given(categoryService.getArchivedCategories())
+                .willReturn(Arrays.asList(c));
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                get("/categories/archived")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).contains("test");
