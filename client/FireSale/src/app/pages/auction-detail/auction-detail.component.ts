@@ -53,7 +53,10 @@ export class AuctionDetailComponent implements OnInit {
 
       this.webSocketService.listenForAuctionUpdate<AuctionState>(this.auction.id).subscribe((message) => {
         if (message.responseType === AuctionMessageResponseType.UPDATED) {
-          this.state = message.data;
+          this.auctionService.getSingle(this.auctionId).subscribe(r => {
+            this.auction = r.data;
+            this.checkAuctionState();
+          });
         }
       });
     });
