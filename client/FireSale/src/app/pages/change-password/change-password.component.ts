@@ -64,31 +64,17 @@ export class ChangePasswordComponent implements OnInit {
     } else {
       this.userService
         .changePassword({ password: formdata.password, token: formdata.token })
-        .subscribe(response => {
-          if (!response.success) {
-            console.log('entered error dialog body');
-            const dialogRef = this.dialog.open(OkDialogComponent, {
-              data: {
-                title: response.errorMessage,
-                message: response.errorDetails[0],
-              },
-            });
-            dialogRef
-              .afterClosed()
-              .subscribe(() => this.router.navigate(['/login']));
-          }
-          else {
-            const dialogRef = this.dialog.open(OkDialogComponent, {
-              data: {
-                title: 'Wijzigen gegevens',
-                message: 'Gegevens zijn gewijzigd',
-              },
-            });
-            dialogRef
-              .afterClosed()
-              .subscribe(() => this.router.navigate(['/login']));
-          }
-      });
+        .subscribe(() => {
+          const dialogRef = this.dialog.open(OkDialogComponent, {
+            data: {
+              title: 'Wijzigen gegevens',
+              message: 'Gegevens zijn gewijzigd',
+            },
+          });
+          dialogRef
+            .afterClosed()
+            .subscribe(() => this.router.navigate(['/login']));
+        });
     }
   }
 }
