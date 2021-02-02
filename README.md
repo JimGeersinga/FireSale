@@ -62,4 +62,4 @@ stackoverflow als je niet begrijpt wat hier staat)
 - Je code is encapsulated voor jouw feature en zou geen andere features moeten treffen
 ofwel die andere features zijn aangepast zodat deze blijven werken.
 - De checklists in de issue zijn achteraf nog gecontroleerd op volledigheid tegen je code
-en bij vragen is hierover overleg geweest met een codeowner en is de checklist aangepast
+en bij vragen is hierover overleg geweest met een codeowner en is de checklist aangepast 
