@@ -20,6 +20,11 @@
 		<!-- Sonar -->
 		<aggregate.report.dir>/target/site/jacoco/jacoco.xml</aggregate.report.dir>
 		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+		
+		  <sonar.projectKey>JimGeersinga_FireSale</sonar.projectKey>
+		  <sonar.organization>jimgeersinga</sonar.organization>
+		  <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
 	</properties>
 
 	<dependencies>
